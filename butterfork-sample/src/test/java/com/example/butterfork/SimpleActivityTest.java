@@ -6,7 +6,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import butterfork.ButterKnife;
+import butterfork.ButterFork;
 
 import static org.assertj.android.api.Assertions.assertThat;
 
@@ -24,7 +24,7 @@ public class SimpleActivityTest {
     assertThat(activity.listOfThings).hasId(R.id.list_of_things);
     assertThat(activity.footer).hasId(R.id.footer);
 
-    ButterKnife.unbind(activity);
+    ButterFork.unbind(activity);
     assertThat(activity.title).isNull();
     assertThat(activity.subtitle).isNull();
     assertThat(activity.hello).isNull();

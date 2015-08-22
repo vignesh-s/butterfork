@@ -27,7 +27,7 @@ import java.util.Map;
  *   {@literal @}Override protected void onCreate(Bundle savedInstanceState) {
  *     super.onCreate(savedInstanceState);
  *     setContentView(R.layout.example_activity);
- *     ButterKnife.bind(this);
+ *     ButterFork.bind(this);
  *   }
  * }
  * </code></pre>
@@ -75,8 +75,8 @@ import java.util.Map;
  * {@literal @}BindColor(R.color.error_red) int errorRed;
  * </code></pre>
  */
-public final class ButterKnife {
-  private ButterKnife() {
+public final class ButterFork {
+  private ButterFork() {
     throw new AssertionError("No instances.");
   }
 
@@ -222,7 +222,7 @@ public final class ButterKnife {
     void set(T view, V value, int index);
   }
 
-  private static final String TAG = "ButterKnife";
+  private static final String TAG = "ButterFork";
   private static boolean debug = false;
 
   static final Map<Class<?>, ViewBinder<Object>> BINDERS = new LinkedHashMap<>();
@@ -233,7 +233,7 @@ public final class ButterKnife {
 
   /** Control whether debug logging is enabled. */
   public static void setDebug(boolean debug) {
-    ButterKnife.debug = debug;
+    ButterFork.debug = debug;
   }
 
   /**

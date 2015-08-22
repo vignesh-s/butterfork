@@ -15,7 +15,7 @@ public class BindBoolTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.BindBool;",
+        "import butterfork.BindBool;",
         "public class Test extends Activity {",
         "  @BindBool(1) boolean one;",
         "}"
@@ -25,11 +25,11 @@ public class BindBoolTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.content.res.Resources;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
             "    target.one = res.getBoolean(1);",
             "  }",
@@ -39,7 +39,7 @@ public class BindBoolTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -49,14 +49,14 @@ public class BindBoolTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.BindBool;",
+        "import butterfork.BindBool;",
         "public class Test extends Activity {",
         "  @BindBool(1) String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindBool field type must be 'boolean'. (test.Test.one)")
         .in(source).onLine(5);

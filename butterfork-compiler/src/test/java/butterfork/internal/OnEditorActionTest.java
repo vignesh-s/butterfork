@@ -15,7 +15,7 @@ public class OnEditorActionTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnEditorAction;",
+        "import butterfork.OnEditorAction;",
         "public class Test extends Activity {",
         "  @OnEditorAction(1) boolean doStuff() { return false; }",
         "}"
@@ -27,11 +27,11 @@ public class OnEditorActionTest {
             "import android.view.KeyEvent;",
             "import android.view.View;",
             "import android.widget.TextView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    ((TextView) view).setOnEditorActionListener(new TextView.OnEditorActionListener() {",
@@ -46,7 +46,7 @@ public class OnEditorActionTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);

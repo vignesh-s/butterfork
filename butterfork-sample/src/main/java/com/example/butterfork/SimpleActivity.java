@@ -11,7 +11,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import butterfork.Bind;
-import butterfork.ButterKnife;
+import butterfork.ButterFork;
 import butterfork.OnClick;
 import butterfork.OnItemClick;
 import butterfork.OnLongClick;
@@ -19,7 +19,7 @@ import butterfork.OnLongClick;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class SimpleActivity extends BaseActivity {
-  private static final ButterKnife.Action<View> ALPHA_FADE = new ButterKnife.Action<View>() {
+  private static final ButterFork.Action<View> ALPHA_FADE = new ButterFork.Action<View>() {
     @Override public void apply(View view, int index) {
       AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
       alphaAnimation.setFillBefore(true);
@@ -42,7 +42,7 @@ public class SimpleActivity extends BaseActivity {
 
   @OnClick("hello") void sayHello() {
     Toast.makeText(this, "Hello, views!", LENGTH_SHORT).show();
-    ButterKnife.apply(headerViews, ALPHA_FADE);
+    ButterFork.apply(headerViews, ALPHA_FADE);
   }
 
   @OnLongClick("hello") boolean sayGetOffMe() {
@@ -57,10 +57,10 @@ public class SimpleActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.simple_activity);
-    ButterKnife.bind(this);
+    ButterFork.bind(this);
 
     // Contrived code to use the bound fields.
-    title.setText("Butter Knife");
+    title.setText("Butter Fork");
     subtitle.setText("Field and method binding for Android views.");
     footer.setText("by Jake Wharton");
     hello.setText("Say Hello");

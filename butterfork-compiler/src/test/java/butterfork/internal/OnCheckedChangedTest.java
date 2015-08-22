@@ -15,7 +15,7 @@ public class OnCheckedChangedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnCheckedChanged;",
+        "import butterfork.OnCheckedChanged;",
         "public class Test extends Activity {",
         "  @OnCheckedChanged(1) void doStuff() {}",
         "}"
@@ -26,11 +26,11 @@ public class OnCheckedChangedTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.CompoundButton;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    ((CompoundButton) view).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {",
@@ -45,7 +45,7 @@ public class OnCheckedChangedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);

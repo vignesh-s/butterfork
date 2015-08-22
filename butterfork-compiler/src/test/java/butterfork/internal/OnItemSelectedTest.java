@@ -16,7 +16,7 @@ public class OnItemSelectedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnItemSelected;",
+        "import butterfork.OnItemSelected;",
         "public class Test extends Activity {",
         "  @OnItemSelected(1) void doStuff() {}",
         "}"
@@ -27,11 +27,11 @@ public class OnItemSelectedTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.AdapterView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    ((AdapterView<?>) view).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {",
@@ -48,7 +48,7 @@ public class OnItemSelectedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -58,7 +58,7 @@ public class OnItemSelectedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnItemSelected;",
+        "import butterfork.OnItemSelected;",
         "import static butterfork.OnItemSelected.Callback.NOTHING_SELECTED;",
         "public class Test extends Activity {",
         "  @OnItemSelected(value = 1, callback = NOTHING_SELECTED)",
@@ -71,11 +71,11 @@ public class OnItemSelectedTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.AdapterView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    ((AdapterView<?>) view).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {",
@@ -92,7 +92,7 @@ public class OnItemSelectedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -102,7 +102,7 @@ public class OnItemSelectedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnItemSelected;",
+        "import butterfork.OnItemSelected;",
         "import static butterfork.OnItemSelected.Callback.NOTHING_SELECTED;",
         "public class Test extends Activity {",
         "  @OnItemSelected(1)",
@@ -117,11 +117,11 @@ public class OnItemSelectedTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.AdapterView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'onItemSelected' and method 'onNothingSelected'\");",
             "    ((AdapterView<?>) view).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {",
@@ -139,7 +139,7 @@ public class OnItemSelectedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -149,7 +149,7 @@ public class OnItemSelectedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnItemSelected;",
+        "import butterfork.OnItemSelected;",
         "import static butterfork.OnItemSelected.Callback.NOTHING_SELECTED;",
         "public class Test extends Activity {",
         "  @OnItemSelected({ 1, 2 })",
@@ -164,11 +164,11 @@ public class OnItemSelectedTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.AdapterView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'onItemSelected' and method 'onNothingSelected'\");",
             "    ((AdapterView<?>) view).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {",
@@ -202,7 +202,7 @@ public class OnItemSelectedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);

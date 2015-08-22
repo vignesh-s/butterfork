@@ -16,7 +16,7 @@ public class OnItemClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnItemClick;",
+        "import butterfork.OnItemClick;",
         "public class Test extends Activity {",
         "  @OnItemClick(1) void doStuff() {}",
         "}"));
@@ -26,11 +26,11 @@ public class OnItemClickTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.AdapterView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {",
@@ -45,7 +45,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -57,7 +57,7 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import android.widget.AdapterView;",
-        "import butterknife.OnItemClick;",
+        "import butterfork.OnItemClick;",
         "public class Test extends Activity {",
         "  @OnItemClick(1) void doStuff(",
         "    AdapterView<?> parent,",
@@ -72,11 +72,11 @@ public class OnItemClickTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.AdapterView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {",
@@ -91,7 +91,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -103,7 +103,7 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import android.widget.ListView;",
-        "import butterknife.OnItemClick;",
+        "import butterfork.OnItemClick;",
         "public class Test extends Activity {",
         "  @OnItemClick(1) void doStuff(",
         "    ListView parent,",
@@ -117,11 +117,11 @@ public class OnItemClickTest {
             "import android.view.View;",
             "import android.widget.AdapterView;",
             "import android.widget.ListView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {",
@@ -136,7 +136,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -148,7 +148,7 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import android.widget.ListView;",
-        "import butterknife.OnItemClick;",
+        "import butterfork.OnItemClick;",
         "public class Test<T extends ListView> extends Activity {",
         "  @OnItemClick(1) void doStuff(",
         "    T parent,",
@@ -162,11 +162,11 @@ public class OnItemClickTest {
             "import android.view.View;",
             "import android.widget.AdapterView;",
             "import android.widget.ListView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {",
@@ -181,7 +181,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -192,7 +192,7 @@ public class OnItemClickTest {
         "package test;",
         "import android.content.Context;",
         "import android.widget.ListView;",
-        "import butterknife.OnItemClick;",
+        "import butterfork.OnItemClick;",
         "public class Test extends ListView {",
         "  @OnItemClick void doStuff() {}",
         "  public Test(Context context) {",
@@ -205,11 +205,11 @@ public class OnItemClickTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.AdapterView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = target;",
             "    ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {",
@@ -224,7 +224,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -235,13 +235,13 @@ public class OnItemClickTest {
         "package test;",
         "import android.content.Context;",
         "import android.app.Activity;",
-        "import butterknife.OnItemClick;",
+        "import butterfork.OnItemClick;",
         "public class Test extends Activity {",
         "  @OnItemClick({1, -1}) void doStuff() {}",
         "}"));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@OnItemClick annotation contains invalid ID -1. (test.Test.doStuff)")
         .in(source).onLine(6);
@@ -253,7 +253,7 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import android.widget.AdapterView;",
-        "import butterknife.OnItemClick;",
+        "import butterfork.OnItemClick;",
         "public class Test extends Activity {",
         "  @OnItemClick(1) void doStuff(",
         "    AdapterView<?> parent,",
@@ -263,7 +263,7 @@ public class OnItemClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(Joiner.on('\n').join(
             "Unable to match @OnItemClick method arguments. (test.Test.doStuff)",

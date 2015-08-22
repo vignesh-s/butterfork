@@ -16,7 +16,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "    @Bind(1) View thing;",
         "}"
@@ -26,11 +26,11 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
             "    target.thing = view;",
@@ -42,7 +42,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -52,14 +52,14 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "    @Bind({1, 2}) View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind for a view must only specify one ID. Found: [1, 2]. (test.Test.thing)")
         .in(source).onLine(6);
@@ -70,7 +70,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "    interface TestInterface {}",
         "    @Bind(1) TestInterface thing;",
@@ -81,11 +81,11 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
             "    target.thing = finder.castView(view, 1, \"field 'thing'\");",
@@ -97,7 +97,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -109,7 +109,7 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.widget.EditText;",
         "import android.widget.TextView;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "class Test<T extends TextView> extends Activity {",
         "    @Bind(1) T thing;",
         "}"
@@ -119,11 +119,11 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
             "    target.thing = finder.castView(view, 1, \"field 'thing'\");",
@@ -135,7 +135,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -146,8 +146,8 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
-        "import butterknife.OnClick;",
+        "import butterfork.Bind;",
+        "import butterfork.OnClick;",
         "public class Test extends Activity {",
         "  @Bind(1) View thing1;",
         "  @OnClick(1) void doStuff() {}",
@@ -158,12 +158,12 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
-            "import butterknife.internal.DebouncingOnClickListener;",
+            "import butterfork.ButterFork;",
+            "import butterfork.internal.DebouncingOnClickListener;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"field 'thing1' and method 'doStuff'\");",
             "    target.thing1 = view;",
@@ -180,7 +180,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -191,7 +191,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "  @Bind(1) public View thing1;",
         "  @Bind(2) View thing2;",
@@ -200,7 +200,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError();
   }
 
@@ -209,7 +209,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "  @interface Nullable {}",
         "  @Nullable @Bind(1) View view;",
@@ -220,11 +220,11 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findOptionalView(source, 1, null);",
             "    target.view = view;",
@@ -236,7 +236,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -247,7 +247,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "  @Bind(1) View view;",
         "}",
@@ -262,11 +262,11 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"field 'view'\");",
             "    target.view = view;",
@@ -281,12 +281,12 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class TestOne$$ViewBinder<T extends TestOne> ",
             "    extends Test$$ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    super.bind(finder, target, source);",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
@@ -300,7 +300,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource1, expectedSource2);
@@ -311,7 +311,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test<T> extends Activity {",
         "  @Bind(1) View view;",
         "}",
@@ -326,11 +326,11 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"field 'view'\");",
             "    target.view = view;",
@@ -345,12 +345,12 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class TestOne$$ViewBinder<T extends TestOne> ",
             "    extends Test$$ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    super.bind(finder, target, source);",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
@@ -364,7 +364,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource1, expectedSource2);
@@ -374,14 +374,14 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package java.test;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test {",
         "  @Bind(1) View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "@Bind-annotated class incorrectly in Java framework package. (java.test.Test)")
@@ -392,14 +392,14 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package android.test;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test {",
         "  @Bind(1) View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "@Bind-annotated class incorrectly in Android framework package. (android.test.Test)")
@@ -410,7 +410,7 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test {",
         "  private static class Inner {",
         "    @Bind(1) View thing;",
@@ -419,7 +419,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "@Bind fields may not be contained in private classes. (test.Test.Inner.thing)")
@@ -430,14 +430,14 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "  @Bind(1) String thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must extend from View or be an interface. (test.Test.thing)")
         .in(source).onLine(5);
@@ -447,14 +447,14 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public interface Test {",
         "    @Bind(1) View thing = null;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "@Bind fields may only be contained in classes. (test.Test.thing)")
@@ -466,14 +466,14 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "    @Bind(1) private View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must not be private or static. (test.Test.thing)")
         .in(source).onLine(6);
@@ -484,14 +484,14 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "    @Bind(1) static View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must not be private or static. (test.Test.thing)")
         .in(source).onLine(6);
@@ -502,7 +502,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "    @Bind(1) View thing1;",
         "    @Bind(1) View thing2;",
@@ -510,7 +510,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "Attempt to use @Bind for an already bound ID 1 on 'thing1'. (test.Test.thing2)")
@@ -523,7 +523,7 @@ public class BindTest {
             "package test;",
             "import android.content.Context;",
             "import android.view.View;",
-            "import butterknife.OnItemClick;",
+            "import butterfork.OnItemClick;",
             "public class Test extends View {",
             "  @OnItemClick void doStuff() {}",
             "  public Test(Context context) {",
@@ -533,7 +533,7 @@ public class BindTest {
 
     ASSERT.about(javaSource())
         .that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining((
             "@OnItemClick annotation without an ID may only be used with an object of type "
@@ -548,7 +548,7 @@ public class BindTest {
             "package test;",
             "import android.content.Context;",
             "import android.view.View;",
-            "import butterknife.OnClick;",
+            "import butterfork.OnClick;",
             "public class Test extends View {",
             "  @interface Nullable {}",
             "  @Nullable @OnClick void doStuff() {}",
@@ -559,7 +559,7 @@ public class BindTest {
 
     ASSERT.about(javaSource())
         .that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             ("ID-free binding must not be annotated with @Nullable. (test.Test.doStuff)"))
@@ -572,7 +572,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "    @Bind({1, 2, 3}) View[] thing;",
         "}"
@@ -582,13 +582,13 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    target.thing = ButterKnife.Finder.arrayOf(",
+            "    target.thing = ButterFork.Finder.arrayOf(",
             "        finder.<View>findRequiredView(source, 1, \"field 'thing'\"),",
             "        finder.<View>findRequiredView(source, 2, \"field 'thing'\"),",
             "        finder.<View>findRequiredView(source, 3, \"field 'thing'\")",
@@ -601,7 +601,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -612,7 +612,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test<T extends View> extends Activity {",
         "    @Bind({1, 2, 3}) T[] thing;",
         "}"
@@ -622,13 +622,13 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    target.thing = ButterKnife.Finder.arrayOf(",
+            "    target.thing = ButterFork.Finder.arrayOf(",
             "        finder.<View>findRequiredView(source, 1, \"field 'thing'\"),",
             "        finder.<View>findRequiredView(source, 2, \"field 'thing'\"),",
             "        finder.<View>findRequiredView(source, 3, \"field 'thing'\")",
@@ -641,7 +641,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -652,7 +652,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.widget.TextView;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "    @Bind({1, 2, 3}) TextView[] thing;",
         "}"
@@ -663,13 +663,13 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import android.widget.TextView;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    target.thing = ButterKnife.Finder.arrayOf(",
+            "    target.thing = ButterFork.Finder.arrayOf(",
             "        finder.<TextView>findRequiredView(source, 1, \"field 'thing'\"),",
             "        finder.<TextView>findRequiredView(source, 2, \"field 'thing'\"),",
             "        finder.<TextView>findRequiredView(source, 3, \"field 'thing'\")",
@@ -682,7 +682,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -693,7 +693,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test extends Activity {",
         "    @Bind({1, 2, 3}) List<View> thing;",
@@ -704,13 +704,13 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    target.thing = ButterKnife.Finder.listOf(",
+            "    target.thing = ButterFork.Finder.listOf(",
             "        finder.<View>findRequiredView(source, 1, \"field 'thing'\"),",
             "        finder.<View>findRequiredView(source, 2, \"field 'thing'\"),",
             "        finder.<View>findRequiredView(source, 3, \"field 'thing'\")",
@@ -723,7 +723,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -733,7 +733,7 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test {",
         "    interface TestInterface {}",
@@ -745,13 +745,13 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    target.thing = ButterKnife.Finder.listOf(",
+            "    target.thing = ButterFork.Finder.listOf(",
             "        finder.<Test.TestInterface>findRequiredView(source, 1, \"field 'thing'\"),",
             "        finder.<Test.TestInterface>findRequiredView(source, 2, \"field 'thing'\"),",
             "        finder.<Test.TestInterface>findRequiredView(source, 3, \"field 'thing'\")",
@@ -764,7 +764,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -775,7 +775,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test<T extends View> extends Activity {",
         "    @Bind({1, 2, 3}) List<T> thing;",
@@ -786,13 +786,13 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    target.thing = ButterKnife.Finder.listOf(",
+            "    target.thing = ButterFork.Finder.listOf(",
             "        finder.<View>findRequiredView(source, 1, \"field 'thing'\"),",
             "        finder.<View>findRequiredView(source, 2, \"field 'thing'\"),",
             "        finder.<View>findRequiredView(source, 3, \"field 'thing'\")",
@@ -805,7 +805,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -816,7 +816,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test extends Activity {",
         "    @interface Nullable {}",
@@ -828,13 +828,13 @@ public class BindTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    target.thing = ButterKnife.Finder.listOf(",
+            "    target.thing = ButterFork.Finder.listOf(",
             "        finder.<View>findOptionalView(source, 1, \"field 'thing'\"),",
             "        finder.<View>findOptionalView(source, 2, \"field 'thing'\"),",
             "        finder.<View>findOptionalView(source, 3, \"field 'thing'\")",
@@ -847,7 +847,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -857,7 +857,7 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test {",
         "  @Bind({}) List<View> thing;",
@@ -865,7 +865,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind must specify at least one ID. (test.Test.thing)")
         .in(source).onLine(6);
@@ -874,7 +874,7 @@ public class BindTest {
   @Test public void failsIfNoGenericType() {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test {",
         "  @Bind(1) List thing;",
@@ -882,7 +882,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind List must have a generic component. (test.Test.thing)")
         .in(source).onLine(5);
@@ -892,7 +892,7 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.Deque;",
         "public class Test {",
         "  @Bind(1) Deque<View> thing;",
@@ -900,7 +900,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind must be a List or array. (test.Test.thing)")
         .in(source).onLine(6);
@@ -910,7 +910,7 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test extends Activity {",
         "  @Bind(1) List<String> thing;",
@@ -918,7 +918,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind List or array type must extend from View or be an interface. (test.Test.thing)")
         .in(source).onLine(6);
@@ -928,13 +928,13 @@ public class BindTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "public class Test extends Activity {",
         "  @Bind(1) String[] thing;",
         "}"));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind List or array type must extend from View or be an interface. (test.Test.thing)")
         .in(source).onLine(5);
@@ -945,7 +945,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterknife.Bind;",
+        "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test extends Activity {",
         "    @Bind({1, 1}) List<View> thing;",
@@ -953,7 +953,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind annotation contains duplicate ID 1. (test.Test.thing)")
         .in(source).onLine(7);

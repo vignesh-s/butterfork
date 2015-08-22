@@ -69,7 +69,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 import static javax.tools.Diagnostic.Kind.ERROR;
 
 @AutoService(Processor.class)
-public final class ButterKnifeProcessor extends AbstractProcessor {
+public final class ButterForkProcessor extends AbstractProcessor {
   static final String VIEW_TYPE = "android.view.View";
   private static final String BINDING_CLASS_SUFFIX = "$$ViewBinder";
   private static final String COLOR_STATE_LIST_TYPE = "android.content.res.ColorStateList";

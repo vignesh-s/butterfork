@@ -18,15 +18,15 @@ import java.util.List;
 
 import butterfork.shadow.EditModeShadowView;
 
-import static butterfork.ButterKnife.Finder.arrayOf;
-import static butterfork.ButterKnife.Finder.listOf;
+import static butterfork.ButterFork.Finder.arrayOf;
+import static butterfork.ButterFork.Finder.listOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
-public class ButterKnifeTest {
+public class ButterForkTest {
   private static final Property<View, Boolean> PROPERTY_ENABLED =
       new Property<View, Boolean>(Boolean.class, "enabled") {
         @Override public Boolean get(View view) {
@@ -37,13 +37,13 @@ public class ButterKnifeTest {
           view.setEnabled(enabled);
         }
       };
-  private static final ButterKnife.Setter<View, Boolean> SETTER_ENABLED =
-      new ButterKnife.Setter<View, Boolean>() {
+  private static final ButterFork.Setter<View, Boolean> SETTER_ENABLED =
+      new ButterFork.Setter<View, Boolean>() {
         @Override public void set(View view, Boolean value, int index) {
           view.setEnabled(value);
         }
       };
-  private static final ButterKnife.Action<View> ACTION_DISABLE = new ButterKnife.Action<View>() {
+  private static final ButterFork.Action<View> ACTION_DISABLE = new ButterFork.Action<View>() {
     @Override public void apply(View view, int index) {
       view.setEnabled(false);
     }
@@ -51,7 +51,7 @@ public class ButterKnifeTest {
 
   @Before @After // Clear out cache of binders before and after each test.
   public void resetViewsCache() {
-    ButterKnife.BINDERS.clear();
+    ButterFork.BINDERS.clear();
   }
 
   @Test public void listOfFiltersNull() {
@@ -83,7 +83,7 @@ public class ButterKnifeTest {
     assertThat(view3.isEnabled()).isTrue();
 
     List<View> views = Arrays.asList(view1, view2, view3);
-    ButterKnife.apply(views, PROPERTY_ENABLED, false);
+    ButterFork.apply(views, PROPERTY_ENABLED, false);
 
     assertThat(view1.isEnabled()).isFalse();
     assertThat(view2.isEnabled()).isFalse();
@@ -99,7 +99,7 @@ public class ButterKnifeTest {
     assertThat(view3.isEnabled()).isTrue();
 
     List<View> views = Arrays.asList(view1, view2, view3);
-    ButterKnife.apply(views, ACTION_DISABLE);
+    ButterFork.apply(views, ACTION_DISABLE);
 
     assertThat(view1.isEnabled()).isFalse();
     assertThat(view2.isEnabled()).isFalse();
@@ -115,7 +115,7 @@ public class ButterKnifeTest {
     assertThat(view3.isEnabled()).isTrue();
 
     List<View> views = Arrays.asList(view1, view2, view3);
-    ButterKnife.apply(views, SETTER_ENABLED, false);
+    ButterFork.apply(views, SETTER_ENABLED, false);
 
     assertThat(view1.isEnabled()).isFalse();
     assertThat(view2.isEnabled()).isFalse();
@@ -127,8 +127,8 @@ public class ButterKnifeTest {
     }
 
     Example example = new Example();
-    ButterKnife.bind(example, null, null);
-    assertThat(ButterKnife.BINDERS).contains(entry(Example.class, ButterKnife.NOP_VIEW_BINDER));
+    ButterFork.bind(example, null, null);
+    assertThat(ButterFork.BINDERS).contains(entry(Example.class, ButterFork.NOP_VIEW_BINDER));
   }
 
   @Test public void zeroBindingsUnbindDoesNotThrowException() {
@@ -136,21 +136,21 @@ public class ButterKnifeTest {
     }
 
     Example example = new Example();
-    ButterKnife.unbind(example);
-    assertThat(ButterKnife.BINDERS).contains(entry(Example.class, ButterKnife.NOP_VIEW_BINDER));
+    ButterFork.unbind(example);
+    assertThat(ButterFork.BINDERS).contains(entry(Example.class, ButterFork.NOP_VIEW_BINDER));
   }
 
   @Test public void bindingKnownPackagesIsNoOp() {
-    ButterKnife.bind(Robolectric.buildActivity(Activity.class).create().get());
-    assertThat(ButterKnife.BINDERS).isEmpty();
-    ButterKnife.bind(new Object(), Robolectric.buildActivity(Activity.class).create().get());
-    assertThat(ButterKnife.BINDERS).isEmpty();
+    ButterFork.bind(Robolectric.buildActivity(Activity.class).create().get());
+    assertThat(ButterFork.BINDERS).isEmpty();
+    ButterFork.bind(new Object(), Robolectric.buildActivity(Activity.class).create().get());
+    assertThat(ButterFork.BINDERS).isEmpty();
   }
 
   @Test public void finderThrowsNiceError() {
     View view = new View(RuntimeEnvironment.application);
     try {
-      ButterKnife.Finder.VIEW.findRequiredView(view, android.R.id.button1, "yo mama");
+      ButterFork.Finder.VIEW.findRequiredView(view, android.R.id.button1, "yo mama");
       fail("View 'button1' with ID " + android.R.id.button1 + " should not have been found.");
     } catch (IllegalStateException e) {
       assertThat(e).hasMessage("Required view 'button1' with ID "
@@ -163,7 +163,7 @@ public class ButterKnifeTest {
   @Test public void finderThrowsLessNiceErrorInEditMode() {
     View view = new View(RuntimeEnvironment.application);
     try {
-      ButterKnife.Finder.VIEW.findRequiredView(view, android.R.id.button1, "yo mama");
+      ButterFork.Finder.VIEW.findRequiredView(view, android.R.id.button1, "yo mama");
       fail("View 'button1' with ID " + android.R.id.button1 + " should not have been found.");
     } catch (IllegalStateException e) {
       assertThat(e).hasMessage("Required view '<unavailable while editing>' "

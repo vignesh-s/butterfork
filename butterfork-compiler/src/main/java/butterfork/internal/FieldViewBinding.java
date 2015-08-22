@@ -2,7 +2,7 @@ package butterfork.internal;
 
 import com.squareup.javapoet.TypeName;
 
-import static butterfork.internal.ButterKnifeProcessor.VIEW_TYPE;
+import static butterfork.internal.ButterForkProcessor.VIEW_TYPE;
 
 final class FieldViewBinding implements ViewBinding {
   private final String name;

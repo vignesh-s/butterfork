@@ -10,7 +10,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import butterfork.ButterKnife;
+import butterfork.ButterFork;
 
 import static com.example.butterfork.SimpleAdapter.ViewHolder;
 import static org.assertj.android.api.Assertions.assertThat;
@@ -28,7 +28,7 @@ public class SimpleAdapterTest {
     assertThat(holder.length).hasId(R.id.length);
     assertThat(holder.position).hasId(R.id.position);
 
-    ButterKnife.unbind(holder);
+    ButterFork.unbind(holder);
     assertThat(holder.word).isNull();
     assertThat(holder.length).isNull();
     assertThat(holder.position).isNull();

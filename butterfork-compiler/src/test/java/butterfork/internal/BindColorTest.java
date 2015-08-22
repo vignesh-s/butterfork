@@ -15,7 +15,7 @@ public class BindColorTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.BindColor;",
+        "import butterfork.BindColor;",
         "public class Test extends Activity {",
         "  @BindColor(1) int one;",
         "}"
@@ -25,11 +25,11 @@ public class BindColorTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.content.res.Resources;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
             "    target.one = res.getColor(1);",
             "  }",
@@ -39,7 +39,7 @@ public class BindColorTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -50,7 +50,7 @@ public class BindColorTest {
         "package test;",
         "import android.app.Activity;",
         "import android.content.res.ColorStateList;",
-        "import butterknife.BindColor;",
+        "import butterfork.BindColor;",
         "public class Test extends Activity {",
         "  @BindColor(1) ColorStateList one;",
         "}"
@@ -60,11 +60,11 @@ public class BindColorTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.content.res.Resources;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
             "    target.one = res.getColorStateList(1);",
             "  }",
@@ -74,7 +74,7 @@ public class BindColorTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -84,14 +84,14 @@ public class BindColorTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.BindColor;",
+        "import butterfork.BindColor;",
         "public class Test extends Activity {",
         "  @BindColor(1) String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindColor field type must be 'int' or 'ColorStateList'. (test.Test.one)")
         .in(source).onLine(5);

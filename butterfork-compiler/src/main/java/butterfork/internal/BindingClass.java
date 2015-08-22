@@ -25,15 +25,15 @@ import java.util.Set;
 
 import javax.lang.model.element.TypeElement;
 
-import static butterfork.internal.ButterKnifeProcessor.VIEW_TYPE;
+import static butterfork.internal.ButterForkProcessor.VIEW_TYPE;
 import static java.util.Collections.singletonList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
 final class BindingClass {
-  private static final ClassName FINDER = ClassName.get("butterfork", "ButterKnife", "Finder");
+  private static final ClassName FINDER = ClassName.get("butterfork", "ButterFork", "Finder");
   private static final ClassName VIEW_BINDER =
-      ClassName.get("butterfork", "ButterKnife", "ViewBinder");
+      ClassName.get("butterfork", "ButterFork", "ViewBinder");
 
   private final Map<String, ViewBindings> viewIdMap = new LinkedHashMap<>();
   private final Map<FieldCollectionViewBinding, String[]> collectionBindings = new LinkedHashMap<>();
@@ -112,7 +112,7 @@ final class BindingClass {
     result.addMethod(createUnbindMethod());
 
     return JavaFile.builder(classPackage, result.build())
-        .addFileComment("Generated code from Butter Knife. Do not modify!")
+        .addFileComment("Generated code from Butter Fork. Do not modify!")
         .build();
   }
 

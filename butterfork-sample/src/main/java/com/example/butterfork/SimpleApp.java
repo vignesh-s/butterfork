@@ -2,11 +2,11 @@ package com.example.butterfork;
 
 import android.app.Application;
 
-import butterfork.ButterKnife;
+import butterfork.ButterFork;
 
 public class SimpleApp extends Application {
   @Override public void onCreate() {
     super.onCreate();
-    ButterKnife.setDebug(BuildConfig.DEBUG);
+    ButterFork.setDebug(BuildConfig.DEBUG);
   }
 }

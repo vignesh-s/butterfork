@@ -16,7 +16,7 @@ public class BindDrawableTest {
         "package test;",
         "import android.app.Activity;",
         "import android.graphics.drawable.Drawable;",
-        "import butterknife.BindDrawable;",
+        "import butterfork.BindDrawable;",
         "public class Test extends Activity {",
         "  @BindDrawable(1) Drawable one;",
         "}"
@@ -26,11 +26,11 @@ public class BindDrawableTest {
         Joiner.on('\n').join(
             "package test;",
             "import android.content.res.Resources;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
             "    target.one = res.getDrawable(1);",
             "  }",
@@ -40,7 +40,7 @@ public class BindDrawableTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -50,14 +50,14 @@ public class BindDrawableTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.BindDrawable;",
+        "import butterfork.BindDrawable;",
         "public class Test extends Activity {",
         "  @BindDrawable(1) String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindDrawable field type must be 'Drawable'. (test.Test.one)")
         .in(source).onLine(5);

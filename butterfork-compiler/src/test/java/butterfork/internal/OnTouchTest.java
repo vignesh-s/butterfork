@@ -15,7 +15,7 @@ public class OnTouchTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnTouch;",
+        "import butterfork.OnTouch;",
         "public class Test extends Activity {",
         "  @OnTouch(1) boolean doStuff() { return false; }",
         "}"
@@ -26,11 +26,11 @@ public class OnTouchTest {
             "package test;",
             "import android.view.MotionEvent;",
             "import android.view.View;",
-            "import butterknife.ButterKnife;",
+            "import butterfork.ButterFork;",
             "import java.lang.Object;",
             "import java.lang.Override;",
-            "public class Test$$ViewBinder<T extends Test> implements ButterKnife.ViewBinder<T> {",
-            "  @Override public void bind(final ButterKnife.Finder finder, final T target, Object source) {",
+            "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
+            "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
             "    view.setOnTouchListener(new View.OnTouchListener() {",
@@ -45,7 +45,7 @@ public class OnTouchTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedSource);
@@ -55,14 +55,14 @@ public class OnTouchTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterknife.OnTouch;",
+        "import butterfork.OnTouch;",
         "public class Test extends Activity {",
         "  @OnTouch(1) boolean doStuff1() {}",
         "  @OnTouch(1) boolean doStuff2() {}",
         "}"));
 
     ASSERT.about(javaSource()).that(source)
-        .processedWith(new ButterKnifeProcessor())
+        .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "Multiple listener methods with return value specified for ID 1. (test.Test.doStuff2)")

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import butterfork.Bind;
 import butterfork.BindResources;
-import butterfork.ButterKnife;
+import butterfork.ButterFork;
 
 public class SimpleAdapter extends BaseAdapter {
   private static final String[] CONTENTS =
@@ -59,7 +59,7 @@ public class SimpleAdapter extends BaseAdapter {
     @Bind("position") TextView position;
 
     ViewHolder(View view) {
-      ButterKnife.bind(this, view);
+      ButterFork.bind(this, view);
     }
   }
 }
