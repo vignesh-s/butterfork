@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+
+    defaultConfig {
+        applicationId "com.example.butterfork"
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Ensure processor is compiled
+    applicationVariants.all { variant ->
+        variant.javaCompile.dependsOn ':butterfork-compiler:jar'
+    }
+}
+
+dependencies {
+    compile project(':butterfork')
+    apt project(':butterfork-compiler')
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.easytesting', name: 'fest-assert-core', version: '2.0M10'
+    testCompile group: 'com.squareup', name: 'fest-android', version: '1.0.7'
+    testCompile group: 'org.robolectric', name: 'robolectric', version: '3.0'
+}

@@ -1,0 +1,5 @@
+include ':butterfork'
+include ':butterfork-compiler'
+include ':butterfork-sample'
+
+rootProject.name = 'butterfork-parent'
