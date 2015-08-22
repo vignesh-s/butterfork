@@ -1,17 +1,19 @@
 package butterfork.internal;
 
 final class FieldResourceBinding {
-  private final int id;
+  private final String id;
   private final String name;
   private final String method;
+  private final String type;
 
-  FieldResourceBinding(int id, String name, String method) {
+  FieldResourceBinding(String id, String name, String method, String type) {
     this.id = id;
     this.name = name;
     this.method = method;
+    this.type = type;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
@@ -21,5 +23,9 @@ final class FieldResourceBinding {
 
   public String getMethod() {
     return method;
+  }
+
+  public String getType() {
+    return type;
   }
 }

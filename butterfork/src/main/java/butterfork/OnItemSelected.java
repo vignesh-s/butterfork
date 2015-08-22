@@ -44,7 +44,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 )
 public @interface OnItemSelected {
   /** View IDs to which the method will be bound. */
-  int[] value() default { View.NO_ID };
+  String[] value() default { "" };
 
   /** Listener callback to which the method will be bound. */
   Callback callback() default Callback.ITEM_SELECTED;

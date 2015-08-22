@@ -9,16 +9,16 @@ import java.util.Map;
 import java.util.Set;
 
 final class ViewBindings {
-  private final int id;
+  private final String id;
   private final Set<FieldViewBinding> fieldBindings = new LinkedHashSet<>();
   private final LinkedHashMap<ListenerClass, Map<ListenerMethod, Set<MethodViewBinding>>>
       methodBindings = new LinkedHashMap<>();
 
-  ViewBindings(int id) {
+  ViewBindings(String id) {
     this.id = id;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 

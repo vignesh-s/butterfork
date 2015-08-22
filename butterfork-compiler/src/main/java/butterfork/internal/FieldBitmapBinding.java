@@ -1,15 +1,15 @@
 package butterfork.internal;
 
 final class FieldBitmapBinding {
-  private final int id;
+  private final String id;
   private final String name;
 
-  FieldBitmapBinding(int id, String name) {
+  FieldBitmapBinding(String id, String name) {
     this.id = id;
     this.name = name;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 

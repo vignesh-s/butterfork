@@ -17,5 +17,5 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS) @Target(FIELD)
 public @interface BindBitmap {
   /** Drawable resource ID from which the {@link Bitmap} will be created. */
-  int value();
+  String value();
 }

@@ -1,7 +1,5 @@
 package butterfork.internal;
 
-import android.view.View;
-
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeName;
 
@@ -34,6 +32,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
@@ -48,6 +47,7 @@ import butterfork.BindColor;
 import butterfork.BindDimen;
 import butterfork.BindDrawable;
 import butterfork.BindInt;
+import butterfork.BindResources;
 import butterfork.BindString;
 import butterfork.OnCheckedChanged;
 import butterfork.OnClick;
@@ -108,6 +108,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
   @Override public Set<String> getSupportedAnnotationTypes() {
     Set<String> types = new LinkedHashSet<>();
 
+    types.add(BindResources.class.getCanonicalName());
     types.add(Bind.class.getCanonicalName());
 
     for (Class<? extends Annotation> listener : LISTENERS) {
@@ -147,6 +148,15 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
   private Map<TypeElement, BindingClass> findAndParseTargets(RoundEnvironment env) {
     Map<TypeElement, BindingClass> targetClassMap = new LinkedHashMap<>();
     Set<String> erasedTargetNames = new LinkedHashSet<>();
+
+    // Process each @BindResources element. Must be done first.
+    for (Element element : env.getElementsAnnotatedWith(BindResources.class)) {
+      try {
+        parseBindResources(element, targetClassMap, erasedTargetNames);
+      } catch (Exception e) {
+        logParsingError(element, BindResources.class, e);
+      }
+    }
 
     // Process each @Bind element.
     for (Element element : env.getElementsAnnotatedWith(Bind.class)) {
@@ -304,6 +314,28 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     return false;
   }
 
+  private void parseBindResources(Element element, Map<TypeElement, BindingClass> targetClassMap,
+      Set<String> erasedTargetNames) {
+
+    if (element.getKind() != CLASS) {
+      error(element, "Only classes can be annotated with @%s",
+          BindResources.class.getSimpleName());
+      return;
+    }
+
+    TypeElement resClass = null;
+
+    try {
+      element.getAnnotation(BindResources.class).value();
+    } catch (MirroredTypeException exception) {
+      resClass = (TypeElement) typeUtils.asElement(exception.getTypeMirror());
+    }
+
+    createTargetClass(targetClassMap, (TypeElement) element, resClass);
+
+    erasedTargetNames.add(element.toString());
+  }
+
   private void parseBind(Element element, Map<TypeElement, BindingClass> targetClassMap,
       Set<String> erasedTargetNames) {
     // Verify common generated code restrictions.
@@ -344,7 +376,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
     // Assemble information on the field.
-    int[] ids = element.getAnnotation(Bind.class).value();
+    String[] ids = element.getAnnotation(Bind.class).value();
     if (ids.length != 1) {
       error(element, "@%s for a view must only specify one ID. Found: %s. (%s.%s)",
           Bind.class.getSimpleName(), Arrays.toString(ids), enclosingElement.getQualifiedName(),
@@ -356,7 +388,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
       return;
     }
 
-    int id = ids[0];
+    String id = ids[0];
     BindingClass bindingClass = targetClassMap.get(enclosingElement);
     if (bindingClass != null) {
       ViewBindings viewBindings = bindingClass.getViewBinding(id);
@@ -364,14 +396,14 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
         Iterator<FieldViewBinding> iterator = viewBindings.getFieldBindings().iterator();
         if (iterator.hasNext()) {
           FieldViewBinding existingBinding = iterator.next();
-          error(element, "Attempt to use @%s for an already bound ID %d on '%s'. (%s.%s)",
+          error(element, "Attempt to use @%s for an already bound ID %s on '%s'. (%s.%s)",
               Bind.class.getSimpleName(), id, existingBinding.getName(),
               enclosingElement.getQualifiedName(), element.getSimpleName());
           return;
         }
       }
     } else {
-      bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
+      bindingClass = targetClassMap.get(enclosingElement);
     }
 
     String name = element.getSimpleName().toString();
@@ -432,16 +464,16 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int[] ids = element.getAnnotation(Bind.class).value();
+    String[] ids = element.getAnnotation(Bind.class).value();
     if (ids.length == 0) {
       error(element, "@%s must specify at least one ID. (%s.%s)", Bind.class.getSimpleName(),
           enclosingElement.getQualifiedName(), element.getSimpleName());
       return;
     }
 
-    Integer duplicateId = findDuplicate(ids);
+    String duplicateId = findDuplicate(ids);
     if (duplicateId != null) {
-      error(element, "@%s annotation contains duplicate ID %d. (%s.%s)", Bind.class.getSimpleName(),
+      error(element, "@%s annotation contains duplicate ID %s. (%s.%s)", Bind.class.getSimpleName(),
           duplicateId, enclosingElement.getQualifiedName(), element.getSimpleName());
     }
 
@@ -449,7 +481,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     TypeName type = TypeName.get(viewType);
     boolean required = isRequiredBinding(element);
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
     FieldCollectionViewBinding binding = new FieldCollectionViewBinding(name, type, kind, required);
     bindingClass.addFieldCollection(ids, binding);
 
@@ -479,10 +511,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int id = element.getAnnotation(BindBool.class).value();
+    String id = element.getAnnotation(BindBool.class).value();
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
-    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getBoolean");
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getBoolean", "bool");
     bindingClass.addResource(binding);
 
     erasedTargetNames.add(enclosingElement.toString());
@@ -515,11 +547,11 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int id = element.getAnnotation(BindColor.class).value();
+    String id = element.getAnnotation(BindColor.class).value();
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name,
-        isColorStateList ? "getColorStateList" : "getColor");
+        isColorStateList ? "getColorStateList" : "getColor", "color");
     bindingClass.addResource(binding);
 
     erasedTargetNames.add(enclosingElement.toString());
@@ -552,11 +584,11 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int id = element.getAnnotation(BindDimen.class).value();
+    String id = element.getAnnotation(BindDimen.class).value();
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name,
-        isInt ? "getDimensionPixelSize" : "getDimension");
+        isInt ? "getDimensionPixelSize" : "getDimension", "dimen");
     bindingClass.addResource(binding);
 
     erasedTargetNames.add(enclosingElement.toString());
@@ -585,9 +617,9 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int id = element.getAnnotation(BindBitmap.class).value();
+    String id = element.getAnnotation(BindBitmap.class).value();
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
     FieldBitmapBinding binding = new FieldBitmapBinding(id, name);
     bindingClass.addBitmap(binding);
 
@@ -617,10 +649,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int id = element.getAnnotation(BindDrawable.class).value();
+    String id = element.getAnnotation(BindDrawable.class).value();
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
-    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getDrawable");
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getDrawable", "drawable");
     bindingClass.addResource(binding);
 
     erasedTargetNames.add(enclosingElement.toString());
@@ -648,10 +680,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int id = element.getAnnotation(BindInt.class).value();
+    String id = element.getAnnotation(BindInt.class).value();
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
-    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getInteger");
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getInteger", "int");
     bindingClass.addResource(binding);
 
     erasedTargetNames.add(enclosingElement.toString());
@@ -680,10 +712,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int id = element.getAnnotation(BindString.class).value();
+    String id = element.getAnnotation(BindString.class).value();
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
-    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getString");
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getString", "string");
     bindingClass.addResource(binding);
 
     erasedTargetNames.add(enclosingElement.toString());
@@ -714,10 +746,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     // Assemble information on the field.
     String name = element.getSimpleName().toString();
-    int id = element.getAnnotation(BindArray.class).value();
+    String id = element.getAnnotation(BindArray.class).value();
 
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
-    FieldResourceBinding binding = new FieldResourceBinding(id, name, methodName);
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    FieldResourceBinding binding = new FieldResourceBinding(id, name, methodName, "array");
     bindingClass.addResource(binding);
 
     erasedTargetNames.add(enclosingElement.toString());
@@ -747,10 +779,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
   }
 
   /** Returns the first duplicate element inside an array, null if there are no duplicates. */
-  private static Integer findDuplicate(int[] array) {
-    Set<Integer> seenElements = new LinkedHashSet<>();
+  private static String findDuplicate(String[] array) {
+    Set<String> seenElements = new LinkedHashSet<>();
 
-    for (int element : array) {
+    for (String element : array) {
       if (!seenElements.add(element)) {
         return element;
       }
@@ -800,12 +832,12 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     // Assemble information on the method.
     Annotation annotation = element.getAnnotation(annotationClass);
     Method annotationValue = annotationClass.getDeclaredMethod("value");
-    if (annotationValue.getReturnType() != int[].class) {
+    if (annotationValue.getReturnType() != String[].class) {
       throw new IllegalStateException(
-          String.format("@%s annotation value() type not int[].", annotationClass));
+          String.format("@%s annotation value() type not String[].", annotationClass));
     }
 
-    int[] ids = (int[]) annotationValue.invoke(annotation);
+    String[] ids = (String[]) annotationValue.invoke(annotation);
     String name = executableElement.getSimpleName().toString();
     boolean required = isRequiredBinding(element);
 
@@ -813,9 +845,9 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     boolean hasError = isInaccessibleViaGeneratedCode(annotationClass, "methods", element);
     hasError |= isBindingInWrongPackage(annotationClass, element);
 
-    Integer duplicateId = findDuplicate(ids);
+    String duplicateId = findDuplicate(ids);
     if (duplicateId != null) {
-      error(element, "@%s annotation for method contains duplicate ID %d. (%s.%s)",
+      error(element, "@%s annotation for method contains duplicate ID %s. (%s.%s)",
           annotationClass.getSimpleName(), duplicateId, enclosingElement.getQualifiedName(),
           element.getSimpleName());
       hasError = true;
@@ -828,8 +860,8 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
               annotationClass.getSimpleName()));
     }
 
-    for (int id : ids) {
-      if (id == View.NO_ID) {
+    for (String id : ids) {
+      if (id.isEmpty()) {
         if (ids.length == 1) {
           if (!required) {
             error(element, "ID-free binding must not be annotated with @Nullable. (%s.%s)",
@@ -848,7 +880,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             hasError = true;
           }
         } else {
-          error(element, "@%s annotation contains invalid ID %d. (%s.%s)",
+          error(element, "@%s annotation contains invalid ID %s. (%s.%s)",
               annotationClass.getSimpleName(), id, enclosingElement.getQualifiedName(),
               element.getSimpleName());
           hasError = true;
@@ -971,10 +1003,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
     MethodViewBinding binding = new MethodViewBinding(name, Arrays.asList(parameters), required);
-    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
-    for (int id : ids) {
+    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    for (String id : ids) {
       if (!bindingClass.addMethod(id, listener, method, binding)) {
-        error(element, "Multiple listener methods with return value specified for ID %d. (%s.%s)",
+        error(element, "Multiple listener methods with return value specified for ID %s. (%s.%s)",
             id, enclosingElement.getQualifiedName(), element.getSimpleName());
         return;
       }
@@ -1029,15 +1061,15 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     return false;
   }
 
-  private BindingClass getOrCreateTargetClass(Map<TypeElement, BindingClass> targetClassMap,
-      TypeElement enclosingElement) {
+  private BindingClass createTargetClass(Map<TypeElement, BindingClass> targetClassMap,
+      TypeElement enclosingElement, TypeElement resClass) {
     BindingClass bindingClass = targetClassMap.get(enclosingElement);
     if (bindingClass == null) {
       String targetType = enclosingElement.getQualifiedName().toString();
       String classPackage = getPackageName(enclosingElement);
       String className = getClassName(enclosingElement, classPackage) + BINDING_CLASS_SUFFIX;
 
-      bindingClass = new BindingClass(classPackage, className, targetType);
+      bindingClass = new BindingClass(classPackage, className, targetType, resClass);
       targetClassMap.put(enclosingElement, bindingClass);
     }
     return bindingClass;

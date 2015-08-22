@@ -43,5 +43,5 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 )
 public @interface OnItemClick {
   /** View IDs to which the method will be bound. */
-  int[] value() default { View.NO_ID };
+  String[] value() default { "" };
 }

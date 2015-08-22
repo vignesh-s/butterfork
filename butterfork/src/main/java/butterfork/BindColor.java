@@ -17,5 +17,5 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS) @Target(FIELD)
 public @interface BindColor {
   /** Color resource ID to which the field will be bound. */
-  int value();
+  String value();
 }

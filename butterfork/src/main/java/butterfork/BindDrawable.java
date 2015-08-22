@@ -15,5 +15,5 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS) @Target(FIELD)
 public @interface BindDrawable {
   /** Drawable resource ID to which the field will be bound. */
-  int value();
+  String value();
 }

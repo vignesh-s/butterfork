@@ -1,6 +1,5 @@
 package com.example.butterfork;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -19,7 +18,7 @@ import butterfork.OnLongClick;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class SimpleActivity extends Activity {
+public class SimpleActivity extends BaseActivity {
   private static final ButterKnife.Action<View> ALPHA_FADE = new ButterKnife.Action<View>() {
     @Override public void apply(View view, int index) {
       AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
@@ -30,28 +29,28 @@ public class SimpleActivity extends Activity {
     }
   };
 
-  @Bind(R.id.title) TextView title;
-  @Bind(R.id.subtitle) TextView subtitle;
-  @Bind(R.id.hello) Button hello;
-  @Bind(R.id.list_of_things) ListView listOfThings;
-  @Bind(R.id.footer) TextView footer;
+  @Bind("title") TextView title;
+  @Bind("subtitle") TextView subtitle;
+  @Bind("hello") Button hello;
+  @Bind("list_of_things") ListView listOfThings;
+  @Bind("footer") TextView footer;
 
-  @Bind({ R.id.title, R.id.subtitle, R.id.hello })
+  @Bind({ "title", "subtitle", "hello" })
   List<View> headerViews;
 
   private SimpleAdapter adapter;
 
-  @OnClick(R.id.hello) void sayHello() {
+  @OnClick("hello") void sayHello() {
     Toast.makeText(this, "Hello, views!", LENGTH_SHORT).show();
     ButterKnife.apply(headerViews, ALPHA_FADE);
   }
 
-  @OnLongClick(R.id.hello) boolean sayGetOffMe() {
+  @OnLongClick("hello") boolean sayGetOffMe() {
     Toast.makeText(this, "Let go of me!", LENGTH_SHORT).show();
     return true;
   }
 
-  @OnItemClick(R.id.list_of_things) void onItemClick(int position) {
+  @OnItemClick("list_of_things") void onItemClick(int position) {
     Toast.makeText(this, "You clicked: " + adapter.getItem(position), LENGTH_SHORT).show();
   }
 

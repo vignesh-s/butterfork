@@ -8,7 +8,7 @@ import org.robolectric.annotation.Config;
 
 import butterfork.ButterKnife;
 
-import static org.fest.assertions.api.ANDROID.assertThat;
+import static org.assertj.android.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class) //
 @Config(manifest = "src/main/AndroidManifest.xml")

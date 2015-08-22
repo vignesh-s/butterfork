@@ -2,7 +2,6 @@ package butterfork.internal;
 
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
-import android.view.View;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -24,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.lang.model.element.TypeElement;
+
 import static butterfork.internal.ButterKnifeProcessor.VIEW_TYPE;
 import static java.util.Collections.singletonList;
 import static javax.lang.model.element.Modifier.FINAL;
@@ -34,34 +35,36 @@ final class BindingClass {
   private static final ClassName VIEW_BINDER =
       ClassName.get("butterfork", "ButterKnife", "ViewBinder");
 
-  private final Map<Integer, ViewBindings> viewIdMap = new LinkedHashMap<>();
-  private final Map<FieldCollectionViewBinding, int[]> collectionBindings = new LinkedHashMap<>();
+  private final Map<String, ViewBindings> viewIdMap = new LinkedHashMap<>();
+  private final Map<FieldCollectionViewBinding, String[]> collectionBindings = new LinkedHashMap<>();
   private final List<FieldBitmapBinding> bitmapBindings = new ArrayList<>();
   private final List<FieldResourceBinding> resourceBindings = new ArrayList<>();
   private final String classPackage;
   private final String className;
   private final String targetClass;
+  private final ClassName resClass;
   private String parentViewBinder;
 
-  BindingClass(String classPackage, String className, String targetClass) {
+  BindingClass(String classPackage, String className, String targetClass, TypeElement resType) {
     this.classPackage = classPackage;
     this.className = className;
     this.targetClass = targetClass;
+    this.resClass = ClassName.get(resType);
   }
 
   void addBitmap(FieldBitmapBinding binding) {
     bitmapBindings.add(binding);
   }
 
-  void addField(int id, FieldViewBinding binding) {
+  void addField(String id, FieldViewBinding binding) {
     getOrCreateViewBindings(id).addFieldBinding(binding);
   }
 
-  void addFieldCollection(int[] ids, FieldCollectionViewBinding binding) {
+  void addFieldCollection(String[] ids, FieldCollectionViewBinding binding) {
     collectionBindings.put(binding, ids);
   }
 
-  boolean addMethod(int id, ListenerClass listener, ListenerMethod method,
+  boolean addMethod(String id, ListenerClass listener, ListenerMethod method,
       MethodViewBinding binding) {
     ViewBindings viewBindings = getOrCreateViewBindings(id);
     if (viewBindings.hasMethodBinding(listener, method)
@@ -80,11 +83,11 @@ final class BindingClass {
     this.parentViewBinder = parentViewBinder;
   }
 
-  ViewBindings getViewBinding(int id) {
+  ViewBindings getViewBinding(String id) {
     return viewIdMap.get(id);
   }
 
-  private ViewBindings getOrCreateViewBindings(int id) {
+  private ViewBindings getOrCreateViewBindings(String id) {
     ViewBindings viewId = viewIdMap.get(id);
     if (viewId == null) {
       viewId = new ViewBindings(id);
@@ -128,7 +131,7 @@ final class BindingClass {
 
     if (!viewIdMap.isEmpty() || !collectionBindings.isEmpty()) {
       // Local variable in which all views will be temporarily stored.
-      result.addStatement("$T view", View.class);
+      result.addStatement("$T view", ClassName.get("android.view", "View"));
 
       // Loop over each view bindings and emit it.
       for (ViewBindings bindings : viewIdMap.values()) {
@@ -136,7 +139,7 @@ final class BindingClass {
       }
 
       // Loop over each collection binding and emit it.
-      for (Map.Entry<FieldCollectionViewBinding, int[]> entry : collectionBindings.entrySet()) {
+      for (Map.Entry<FieldCollectionViewBinding, String[]> entry : collectionBindings.entrySet()) {
         emitCollectionBinding(result, entry.getKey(), entry.getValue());
       }
     }
@@ -146,15 +149,15 @@ final class BindingClass {
 
       if (!bitmapBindings.isEmpty()) {
         for (FieldBitmapBinding binding : bitmapBindings) {
-          result.addStatement("target.$L = $T.decodeResource(res, $L)", binding.getName(),
-              BitmapFactory.class, binding.getId());
+          result.addStatement("target.$L = $T.decodeResource(res, $T.drawable.$L)",
+              binding.getName(), BitmapFactory.class, resClass, binding.getId());
         }
       }
 
       if (!resourceBindings.isEmpty()) {
         for (FieldResourceBinding binding : resourceBindings) {
-          result.addStatement("target.$L = res.$L($L)", binding.getName(), binding.getMethod(),
-              binding.getId());
+          result.addStatement("target.$L = res.$L($T.$L.$L)", binding.getName(),
+              binding.getMethod(), resClass, binding.getType(), binding.getId());
         }
       }
     }
@@ -163,7 +166,7 @@ final class BindingClass {
   }
 
   private void emitCollectionBinding(MethodSpec.Builder result, FieldCollectionViewBinding binding,
-      int[] ids) {
+      String[] ids) {
     String ofName;
     switch (binding.getKind()) {
       case ARRAY:
@@ -182,8 +185,8 @@ final class BindingClass {
         builder.add(", ");
       }
       String findMethod = binding.isRequired() ? "findRequiredView" : "findOptionalView";
-      builder.add("\nfinder.<$T>$L(source, $L, $S)", binding.getType(), findMethod, ids[i],
-          asHumanDescription(singletonList(binding)));
+      builder.add("\nfinder.<$T>$L(source, $T.id.$L, $S)", binding.getType(), findMethod,
+          resClass, ids[i], asHumanDescription(singletonList(binding)));
     }
 
     result.addStatement("target.$L = $T.$L($L)", binding.getName(), FINDER, ofName,
@@ -193,13 +196,14 @@ final class BindingClass {
   private void addViewBindings(MethodSpec.Builder result, ViewBindings bindings) {
     List<ViewBinding> requiredViewBindings = bindings.getRequiredBindings();
     if (requiredViewBindings.isEmpty()) {
-      result.addStatement("view = finder.findOptionalView(source, $L, null)", bindings.getId());
+      result.addStatement("view = finder.findOptionalView(source, $T.id.$L, null)",
+          resClass, bindings.getId());
     } else {
-      if (bindings.getId() == View.NO_ID) {
-        result.addStatement("view = target", bindings.getId());
+      if (bindings.getId().isEmpty()) {
+        result.addStatement("view = target");
       } else {
-        result.addStatement("view = finder.findRequiredView(source, $L, $S)", bindings.getId(),
-            asHumanDescription(requiredViewBindings));
+        result.addStatement("view = finder.findRequiredView(source, $T.id.$L, $S)",
+            resClass, bindings.getId(), asHumanDescription(requiredViewBindings));
       }
     }
 
@@ -211,8 +215,8 @@ final class BindingClass {
     Collection<FieldViewBinding> fieldBindings = bindings.getFieldBindings();
     for (FieldViewBinding fieldBinding : fieldBindings) {
       if (fieldBinding.requiresCast()) {
-        result.addStatement("target.$L = finder.castView(view, $L, $S)", fieldBinding.getName(),
-            bindings.getId(), asHumanDescription(fieldBindings));
+        result.addStatement("target.$L = finder.castView(view, $T.id.$L, $S)", fieldBinding.getName(),
+            resClass, bindings.getId(), asHumanDescription(fieldBindings));
       } else {
         result.addStatement("target.$L = view", fieldBinding.getName());
       }

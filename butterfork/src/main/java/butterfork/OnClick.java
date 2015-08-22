@@ -30,7 +30,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @ListenerClass(
     targetType = "android.view.View",
     setter = "setOnClickListener",
-    type = "butterknife.internal.DebouncingOnClickListener",
+    type = "butterfork.internal.DebouncingOnClickListener",
     method = @ListenerMethod(
         name = "doClick",
         parameters = "android.view.View"
@@ -38,5 +38,5 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 )
 public @interface OnClick {
   /** View IDs to which the method will be bound. */
-  int[] value() default { View.NO_ID };
+  String[] value() default { "" };
 }
