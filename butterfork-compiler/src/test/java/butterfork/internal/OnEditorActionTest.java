@@ -15,9 +15,11 @@ public class OnEditorActionTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnEditorAction;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnEditorAction(1) boolean doStuff() { return false; }",
+        "  @OnEditorAction(\"one\") boolean doStuff() { return false; }",
         "}"
     ));
 
@@ -28,12 +30,13 @@ public class OnEditorActionTest {
             "import android.view.View;",
             "import android.widget.TextView;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff'\");",
             "    ((TextView) view).setOnEditorActionListener(new TextView.OnEditorActionListener() {",
             "      @Override public boolean onEditorAction(TextView p0, int p1, KeyEvent p2) {",
             "        return target.doStuff();",

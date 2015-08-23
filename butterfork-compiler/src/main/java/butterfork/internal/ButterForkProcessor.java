@@ -683,7 +683,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String id = element.getAnnotation(BindInt.class).value();
 
     BindingClass bindingClass = targetClassMap.get(enclosingElement);
-    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getInteger", "int");
+    FieldResourceBinding binding = new FieldResourceBinding(id, name, "getInteger", "integer");
     bindingClass.addResource(binding);
 
     erasedTargetNames.add(enclosingElement.toString());
@@ -880,8 +880,8 @@ public final class ButterForkProcessor extends AbstractProcessor {
             hasError = true;
           }
         } else {
-          error(element, "@%s annotation contains invalid ID %s. (%s.%s)",
-              annotationClass.getSimpleName(), id, enclosingElement.getQualifiedName(),
+          error(element, "@%s annotation contains empty ID. (%s.%s)",
+              annotationClass.getSimpleName(), enclosingElement.getQualifiedName(),
               element.getSimpleName());
           hasError = true;
         }

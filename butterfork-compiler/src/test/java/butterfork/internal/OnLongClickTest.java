@@ -16,9 +16,11 @@ public class OnLongClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnLongClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnLongClick(1) boolean doStuff() {",
+        "  @OnLongClick(\"one\") boolean doStuff() {",
         "    return true;",
         "  }",
         "}"));
@@ -28,12 +30,13 @@ public class OnLongClickTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff'\");",
             "    view.setOnLongClickListener(new View.OnLongClickListener() {",
             "      @Override public boolean onLongClick(View p0) {",
             "        return target.doStuff();",
@@ -56,9 +59,11 @@ public class OnLongClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnLongClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnLongClick(1)",
+        "  @OnLongClick(\"one\")",
         "  public void doStuff() {",
         "  }",
         "}"));
@@ -68,6 +73,6 @@ public class OnLongClickTest {
         .failsToCompile()
         .withErrorContaining(
             "@OnLongClick methods must have a 'boolean' return type. (test.Test.doStuff)")
-        .in(source).onLine(6);
+        .in(source).onLine(8);
   }
 }

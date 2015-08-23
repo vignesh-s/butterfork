@@ -16,8 +16,10 @@ public class BindDimenTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindDimen;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindDimen(1) float one;",
+        "  @BindDimen(\"one\") float one;",
         "}"
     ));
 
@@ -26,12 +28,13 @@ public class BindDimenTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getDimension(1);",
+            "    target.one = res.getDimension(R.dimen.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -50,8 +53,10 @@ public class BindDimenTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindDimen;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindDimen(1) int one;",
+        "  @BindDimen(\"one\") int one;",
         "}"
     ));
 
@@ -60,12 +65,13 @@ public class BindDimenTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getDimensionPixelSize(1);",
+            "    target.one = res.getDimensionPixelSize(R.dimen.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -84,8 +90,10 @@ public class BindDimenTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindDimen;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindDimen(1) String one;",
+        "  @BindDimen(\"one\") String one;",
         "}"
     ));
 
@@ -93,6 +101,6 @@ public class BindDimenTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindDimen field type must be 'int' or 'float'. (test.Test.one)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 }

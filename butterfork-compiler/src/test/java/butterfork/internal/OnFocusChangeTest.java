@@ -15,9 +15,11 @@ public class OnFocusChangeTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnFocusChange;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnFocusChange(1) void doStuff() {}",
+        "  @OnFocusChange(\"one\") void doStuff() {}",
         "}"
     ));
 
@@ -26,12 +28,13 @@ public class OnFocusChangeTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff'\");",
             "    view.setOnFocusChangeListener(new View.OnFocusChangeListener() {",
             "      @Override public void onFocusChange(View p0, boolean p1) {",
             "        target.doStuff();",

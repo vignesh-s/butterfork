@@ -16,8 +16,10 @@ public class BindColorTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindColor;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindColor(1) int one;",
+        "  @BindColor(\"one\") int one;",
         "}"
     ));
 
@@ -26,12 +28,13 @@ public class BindColorTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getColor(1);",
+            "    target.one = res.getColor(R.color.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -51,8 +54,10 @@ public class BindColorTest {
         "import android.app.Activity;",
         "import android.content.res.ColorStateList;",
         "import butterfork.BindColor;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindColor(1) ColorStateList one;",
+        "  @BindColor(\"one\") ColorStateList one;",
         "}"
     ));
 
@@ -61,12 +66,13 @@ public class BindColorTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getColorStateList(1);",
+            "    target.one = res.getColorStateList(R.color.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -85,8 +91,10 @@ public class BindColorTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindColor;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindColor(1) String one;",
+        "  @BindColor(\"one\") String one;",
         "}"
     ));
 
@@ -94,6 +102,6 @@ public class BindColorTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindColor field type must be 'int' or 'ColorStateList'. (test.Test.one)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 }

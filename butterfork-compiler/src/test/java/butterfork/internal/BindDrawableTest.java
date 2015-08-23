@@ -17,8 +17,10 @@ public class BindDrawableTest {
         "import android.app.Activity;",
         "import android.graphics.drawable.Drawable;",
         "import butterfork.BindDrawable;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindDrawable(1) Drawable one;",
+        "  @BindDrawable(\"one\") Drawable one;",
         "}"
     ));
 
@@ -27,12 +29,13 @@ public class BindDrawableTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getDrawable(1);",
+            "    target.one = res.getDrawable(R.drawable.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -51,8 +54,10 @@ public class BindDrawableTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindDrawable;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindDrawable(1) String one;",
+        "  @BindDrawable(\"one\") String one;",
         "}"
     ));
 
@@ -60,6 +65,6 @@ public class BindDrawableTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindDrawable field type must be 'Drawable'. (test.Test.one)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 }

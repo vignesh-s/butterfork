@@ -15,9 +15,11 @@ public class OnItemLongClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnItemLongClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnItemLongClick(1) boolean doStuff() { return false; }",
+        "  @OnItemLongClick(\"one\") boolean doStuff() { return false; }",
         "}"
     ));
 
@@ -27,12 +29,13 @@ public class OnItemLongClickTest {
             "import android.view.View;",
             "import android.widget.AdapterView;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff'\");",
             "    ((AdapterView<?>) view).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {",
             "      @Override public boolean onItemLongClick(AdapterView<?> p0, View p1, int p2, long p3) {",
             "        return target.doStuff();",

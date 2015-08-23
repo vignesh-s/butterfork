@@ -15,9 +15,11 @@ public class OnCheckedChangedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnCheckedChanged;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnCheckedChanged(1) void doStuff() {}",
+        "  @OnCheckedChanged(\"one\") void doStuff() {}",
         "}"
     ));
 
@@ -27,12 +29,13 @@ public class OnCheckedChangedTest {
             "import android.view.View;",
             "import android.widget.CompoundButton;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff'\");",
             "    ((CompoundButton) view).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {",
             "      @Override public void onCheckedChanged(CompoundButton p0, boolean p1) {",
             "        target.doStuff();",

@@ -17,8 +17,10 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind(1) View thing;",
+        "    @Bind(\"one\") View thing;",
         "}"
     ));
 
@@ -27,12 +29,13 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'thing'\");",
             "    target.thing = view;",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -53,16 +56,18 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind({1, 2}) View thing;",
+        "    @Bind({\"one\", \"two\"}) View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
-        .withErrorContaining("@Bind for a view must only specify one ID. Found: [1, 2]. (test.Test.thing)")
-        .in(source).onLine(6);
+        .withErrorContaining("@Bind for a view must only specify one ID. Found: [one, two]. (test.Test.thing)")
+        .in(source).onLine(8);
   }
 
   @Test public void bindingInterface() throws Exception {
@@ -71,9 +76,11 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    interface TestInterface {}",
-        "    @Bind(1) TestInterface thing;",
+        "    @Bind(\"one\") TestInterface thing;",
         "}"
     ));
 
@@ -82,13 +89,14 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
-            "    target.thing = finder.castView(view, 1, \"field 'thing'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'thing'\");",
+            "    target.thing = finder.castView(view, R.id.one, \"field 'thing'\");",
             "  }",
             "  @Override public void unbind(T target) {",
             "    target.thing = null;",
@@ -110,8 +118,10 @@ public class BindTest {
         "import android.widget.EditText;",
         "import android.widget.TextView;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "class Test<T extends TextView> extends Activity {",
-        "    @Bind(1) T thing;",
+        "    @Bind(\"one\") T thing;",
         "}"
     ));
 
@@ -120,13 +130,14 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
-            "    target.thing = finder.castView(view, 1, \"field 'thing'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'thing'\");",
+            "    target.thing = finder.castView(view, R.id.one, \"field 'thing'\");",
             "  }",
             "  @Override public void unbind(T target) {",
             "    target.thing = null;",
@@ -147,10 +158,12 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @Bind(1) View thing1;",
-        "  @OnClick(1) void doStuff() {}",
+        "  @Bind(\"one\") View thing1;",
+        "  @OnClick(\"one\") void doStuff() {}",
         "}"
     ));
 
@@ -160,12 +173,13 @@ public class BindTest {
             "import android.view.View;",
             "import butterfork.ButterFork;",
             "import butterfork.internal.DebouncingOnClickListener;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'thing1' and method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'thing1' and method 'doStuff'\");",
             "    target.thing1 = view;",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
@@ -192,10 +206,12 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @Bind(1) public View thing1;",
-        "  @Bind(2) View thing2;",
-        "  @Bind(3) protected View thing3;",
+        "  @Bind(\"one\") public View thing1;",
+        "  @Bind(\"two\") View thing2;",
+        "  @Bind(\"three\") protected View thing3;",
         "}"
     ));
 
@@ -210,9 +226,11 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @interface Nullable {}",
-        "  @Nullable @Bind(1) View view;",
+        "  @Nullable @Bind(\"one\") View view;",
         "}"
     ));
 
@@ -221,12 +239,13 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findOptionalView(source, 1, null);",
+            "    view = finder.findOptionalView(source, R.id.one, null);",
             "    target.view = view;",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -248,11 +267,13 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @Bind(1) View view;",
+        "  @Bind(\"one\") View view;",
         "}",
         "class TestOne extends Test {",
-        "  @Bind(1) View thing;",
+        "  @Bind(\"one\") View thing;",
         "}",
         "class TestTwo extends Test {",
         "}"
@@ -263,12 +284,13 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'view'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'view'\");",
             "    target.view = view;",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -282,6 +304,7 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class TestOne$$ViewBinder<T extends TestOne> ",
@@ -289,7 +312,7 @@ public class BindTest {
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    super.bind(finder, target, source);",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'thing'\");",
             "    target.thing = view;",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -312,11 +335,13 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test<T> extends Activity {",
-        "  @Bind(1) View view;",
+        "  @Bind(\"one\") View view;",
         "}",
         "class TestOne extends Test<String> {",
-        "  @Bind(1) View thing;",
+        "  @Bind(\"one\") View thing;",
         "}",
         "class TestTwo extends Test<Object> {",
         "}"
@@ -327,12 +352,13 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'view'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'view'\");",
             "    target.view = view;",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -346,6 +372,7 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class TestOne$$ViewBinder<T extends TestOne> ",
@@ -353,7 +380,7 @@ public class BindTest {
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    super.bind(finder, target, source);",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'thing'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'thing'\");",
             "    target.thing = view;",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -376,7 +403,7 @@ public class BindTest {
         "import android.view.View;",
         "import butterfork.Bind;",
         "public class Test {",
-        "  @Bind(1) View thing;",
+        "  @Bind(\"one\") View thing;",
         "}"
     ));
 
@@ -394,7 +421,7 @@ public class BindTest {
         "import android.view.View;",
         "import butterfork.Bind;",
         "public class Test {",
-        "  @Bind(1) View thing;",
+        "  @Bind(\"one\") View thing;",
         "}"
     ));
 
@@ -413,7 +440,7 @@ public class BindTest {
         "import butterfork.Bind;",
         "public class Test {",
         "  private static class Inner {",
-        "    @Bind(1) View thing;",
+        "    @Bind(\"one\") View thing;",
         "  }",
         "}"
     ));
@@ -431,8 +458,10 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @Bind(1) String thing;",
+        "  @Bind(\"one\") String thing;",
         "}"
     ));
 
@@ -440,7 +469,7 @@ public class BindTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must extend from View or be an interface. (test.Test.thing)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 
   @Test public void failsIfInInterface() {
@@ -449,7 +478,7 @@ public class BindTest {
         "import android.view.View;",
         "import butterfork.Bind;",
         "public interface Test {",
-        "    @Bind(1) View thing = null;",
+        "    @Bind(\"one\") View thing = null;",
         "}"
     ));
 
@@ -467,8 +496,10 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind(1) private View thing;",
+        "    @Bind(\"one\") private View thing;",
         "}"
     ));
 
@@ -476,7 +507,7 @@ public class BindTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must not be private or static. (test.Test.thing)")
-        .in(source).onLine(6);
+        .in(source).onLine(8);
   }
 
   @Test public void failsIfStatic() {
@@ -485,8 +516,10 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind(1) static View thing;",
+        "    @Bind(\"one\") static View thing;",
         "}"
     ));
 
@@ -494,7 +527,7 @@ public class BindTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must not be private or static. (test.Test.thing)")
-        .in(source).onLine(6);
+        .in(source).onLine(8);
   }
 
   @Test public void duplicateBindingFails() throws Exception {
@@ -503,9 +536,11 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind(1) View thing1;",
-        "    @Bind(1) View thing2;",
+        "    @Bind(\"one\") View thing1;",
+        "    @Bind(\"one\") View thing2;",
         "}"
     ));
 
@@ -513,8 +548,8 @@ public class BindTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
-            "Attempt to use @Bind for an already bound ID 1 on 'thing1'. (test.Test.thing2)")
-        .in(source).onLine(7);
+            "Attempt to use @Bind for an already bound ID one on 'thing1'. (test.Test.thing2)")
+        .in(source).onLine(9);
   }
 
   @Test public void failsRootViewBindingWithBadTarget() throws Exception {
@@ -573,8 +608,10 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind({1, 2, 3}) View[] thing;",
+        "    @Bind({\"one\", \"two\", \"three\"}) View[] thing;",
         "}"
     ));
 
@@ -583,15 +620,16 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    target.thing = ButterFork.Finder.arrayOf(",
-            "        finder.<View>findRequiredView(source, 1, \"field 'thing'\"),",
-            "        finder.<View>findRequiredView(source, 2, \"field 'thing'\"),",
-            "        finder.<View>findRequiredView(source, 3, \"field 'thing'\")",
+            "        finder.<View>findRequiredView(source, R.id.one, \"field 'thing'\"),",
+            "        finder.<View>findRequiredView(source, R.id.two, \"field 'thing'\"),",
+            "        finder.<View>findRequiredView(source, R.id.three, \"field 'thing'\")",
             "    );",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -613,8 +651,10 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test<T extends View> extends Activity {",
-        "    @Bind({1, 2, 3}) T[] thing;",
+        "    @Bind({\"one\", \"two\", \"three\"}) T[] thing;",
         "}"
     ));
 
@@ -623,15 +663,16 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    target.thing = ButterFork.Finder.arrayOf(",
-            "        finder.<View>findRequiredView(source, 1, \"field 'thing'\"),",
-            "        finder.<View>findRequiredView(source, 2, \"field 'thing'\"),",
-            "        finder.<View>findRequiredView(source, 3, \"field 'thing'\")",
+            "        finder.<View>findRequiredView(source, R.id.one, \"field 'thing'\"),",
+            "        finder.<View>findRequiredView(source, R.id.two, \"field 'thing'\"),",
+            "        finder.<View>findRequiredView(source, R.id.three, \"field 'thing'\")",
             "    );",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -653,8 +694,10 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.widget.TextView;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind({1, 2, 3}) TextView[] thing;",
+        "    @Bind({\"one\", \"two\", \"three\"}) TextView[] thing;",
         "}"
     ));
 
@@ -664,15 +707,16 @@ public class BindTest {
             "import android.view.View;",
             "import android.widget.TextView;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    target.thing = ButterFork.Finder.arrayOf(",
-            "        finder.<TextView>findRequiredView(source, 1, \"field 'thing'\"),",
-            "        finder.<TextView>findRequiredView(source, 2, \"field 'thing'\"),",
-            "        finder.<TextView>findRequiredView(source, 3, \"field 'thing'\")",
+            "        finder.<TextView>findRequiredView(source, R.id.one, \"field 'thing'\"),",
+            "        finder.<TextView>findRequiredView(source, R.id.two, \"field 'thing'\"),",
+            "        finder.<TextView>findRequiredView(source, R.id.three, \"field 'thing'\")",
             "    );",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -694,9 +738,11 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import java.util.List;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind({1, 2, 3}) List<View> thing;",
+        "    @Bind({\"one\", \"two\", \"three\"}) List<View> thing;",
         "}"
     ));
 
@@ -705,15 +751,16 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    target.thing = ButterFork.Finder.listOf(",
-            "        finder.<View>findRequiredView(source, 1, \"field 'thing'\"),",
-            "        finder.<View>findRequiredView(source, 2, \"field 'thing'\"),",
-            "        finder.<View>findRequiredView(source, 3, \"field 'thing'\")",
+            "        finder.<View>findRequiredView(source, R.id.one, \"field 'thing'\"),",
+            "        finder.<View>findRequiredView(source, R.id.two, \"field 'thing'\"),",
+            "        finder.<View>findRequiredView(source, R.id.three, \"field 'thing'\")",
             "    );",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -734,10 +781,12 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import java.util.List;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test {",
         "    interface TestInterface {}",
-        "    @Bind({1, 2, 3}) List<TestInterface> thing;",
+        "    @Bind({\"one\", \"two\", \"three\"}) List<TestInterface> thing;",
         "}"
     ));
 
@@ -746,15 +795,16 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    target.thing = ButterFork.Finder.listOf(",
-            "        finder.<Test.TestInterface>findRequiredView(source, 1, \"field 'thing'\"),",
-            "        finder.<Test.TestInterface>findRequiredView(source, 2, \"field 'thing'\"),",
-            "        finder.<Test.TestInterface>findRequiredView(source, 3, \"field 'thing'\")",
+            "        finder.<Test.TestInterface>findRequiredView(source, R.id.one, \"field 'thing'\"),",
+            "        finder.<Test.TestInterface>findRequiredView(source, R.id.two, \"field 'thing'\"),",
+            "        finder.<Test.TestInterface>findRequiredView(source, R.id.three, \"field 'thing'\")",
             "    );",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -776,9 +826,11 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import java.util.List;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test<T extends View> extends Activity {",
-        "    @Bind({1, 2, 3}) List<T> thing;",
+        "    @Bind({\"one\", \"two\", \"three\"}) List<T> thing;",
         "}"
     ));
 
@@ -787,15 +839,16 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    target.thing = ButterFork.Finder.listOf(",
-            "        finder.<View>findRequiredView(source, 1, \"field 'thing'\"),",
-            "        finder.<View>findRequiredView(source, 2, \"field 'thing'\"),",
-            "        finder.<View>findRequiredView(source, 3, \"field 'thing'\")",
+            "        finder.<View>findRequiredView(source, R.id.one, \"field 'thing'\"),",
+            "        finder.<View>findRequiredView(source, R.id.two, \"field 'thing'\"),",
+            "        finder.<View>findRequiredView(source, R.id.three, \"field 'thing'\")",
             "    );",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -817,10 +870,12 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import java.util.List;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @interface Nullable {}",
-        "    @Nullable @Bind({1, 2, 3}) List<View> thing;",
+        "    @Nullable @Bind({\"one\", \"two\", \"three\"}) List<View> thing;",
         "}"
     ));
 
@@ -829,15 +884,16 @@ public class BindTest {
             "package test;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
             "    target.thing = ButterFork.Finder.listOf(",
-            "        finder.<View>findOptionalView(source, 1, \"field 'thing'\"),",
-            "        finder.<View>findOptionalView(source, 2, \"field 'thing'\"),",
-            "        finder.<View>findOptionalView(source, 3, \"field 'thing'\")",
+            "        finder.<View>findOptionalView(source, R.id.one, \"field 'thing'\"),",
+            "        finder.<View>findOptionalView(source, R.id.two, \"field 'thing'\"),",
+            "        finder.<View>findOptionalView(source, R.id.three, \"field 'thing'\")",
             "    );",
             "  }",
             "  @Override public void unbind(T target) {",
@@ -877,7 +933,7 @@ public class BindTest {
         "import butterfork.Bind;",
         "import java.util.List;",
         "public class Test {",
-        "  @Bind(1) List thing;",
+        "  @Bind(\"one\") List thing;",
         "}"
     ));
 
@@ -895,7 +951,7 @@ public class BindTest {
         "import butterfork.Bind;",
         "import java.util.Deque;",
         "public class Test {",
-        "  @Bind(1) Deque<View> thing;",
+        "  @Bind(\"one\") Deque<View> thing;",
         "}"
     ));
 
@@ -911,9 +967,11 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import java.util.List;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @Bind(1) List<String> thing;",
+        "  @Bind(\"one\") List<String> thing;",
         "}"
     ));
 
@@ -921,7 +979,7 @@ public class BindTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind List or array type must extend from View or be an interface. (test.Test.thing)")
-        .in(source).onLine(6);
+        .in(source).onLine(8);
   }
 
   @Test public void failsIfArrayNotView() {
@@ -929,15 +987,17 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @Bind(1) String[] thing;",
+        "  @Bind(\"one\") String[] thing;",
         "}"));
 
     ASSERT.about(javaSource()).that(source)
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind List or array type must extend from View or be an interface. (test.Test.thing)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 
   @Test public void failsIfContainsDuplicateIds() throws Exception {
@@ -946,16 +1006,18 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import java.util.List;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "    @Bind({1, 1}) List<View> thing;",
+        "    @Bind({\"one\", \"one\"}) List<View> thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
-        .withErrorContaining("@Bind annotation contains duplicate ID 1. (test.Test.thing)")
-        .in(source).onLine(7);
+        .withErrorContaining("@Bind annotation contains duplicate ID one. (test.Test.thing)")
+        .in(source).onLine(9);
   }
 }

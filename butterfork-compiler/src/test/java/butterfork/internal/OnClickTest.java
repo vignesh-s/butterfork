@@ -15,9 +15,11 @@ public class OnClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick(1) void doStuff() {}",
+        "  @OnClick(\"one\") void doStuff() {}",
         "}"));
 
     JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Test$$ViewBinder",
@@ -26,12 +28,13 @@ public class OnClickTest {
             "import android.view.View;",
             "import butterfork.ButterFork;",
             "import butterfork.internal.DebouncingOnClickListener;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.doStuff();",
@@ -55,11 +58,13 @@ public class OnClickTest {
         "package test;",
         "import android.view.View;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick(1) void doStuff1() {}",
-        "  @OnClick(1) void doStuff2() {}",
-        "  @OnClick({1, 2}) void doStuff3(View v) {}",
+        "  @OnClick(\"one\") void doStuff1() {}",
+        "  @OnClick(\"one\") void doStuff2() {}",
+        "  @OnClick({\"one\", \"two\"}) void doStuff3(View v) {}",
         "}"));
 
     JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Test$$ViewBinder",
@@ -68,12 +73,13 @@ public class OnClickTest {
             "import android.view.View;",
             "import butterfork.ButterFork;",
             "import butterfork.internal.DebouncingOnClickListener;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff1', method 'doStuff2', and method 'doStuff3'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff1', method 'doStuff2', and method 'doStuff3'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.doStuff1();",
@@ -81,7 +87,7 @@ public class OnClickTest {
             "        target.doStuff3(p0);",
             "      }",
             "    });",
-            "    view = finder.findRequiredView(source, 2, \"method 'doStuff3'\");",
+            "    view = finder.findRequiredView(source, R.id.two, \"method 'doStuff3'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.doStuff3(p0);",
@@ -104,10 +110,12 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @Bind(1) View view;",
-        "  @OnClick(1) void doStuff() {}",
+        "  @Bind(\"one\") View view;",
+        "  @OnClick(\"one\") void doStuff() {}",
         "}"));
 
     JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Test$$ViewBinder",
@@ -116,12 +124,13 @@ public class OnClickTest {
             "import android.view.View;",
             "import butterfork.ButterFork;",
             "import butterfork.internal.DebouncingOnClickListener;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'view' and method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'view' and method 'doStuff'\");",
             "    target.view = view;",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
@@ -147,11 +156,13 @@ public class OnClickTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick(1) public void thing1() {}",
-        "  @OnClick(2) void thing2() {}",
-        "  @OnClick(3) protected void thing3() {}",
+        "  @OnClick(\"one\") public void thing1() {}",
+        "  @OnClick(\"two\") void thing2() {}",
+        "  @OnClick(\"three\") protected void thing3() {}",
         "}"
     ));
 
@@ -167,14 +178,16 @@ public class OnClickTest {
         "import android.view.View;",
         "import android.widget.Button;",
         "import android.widget.TextView;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  interface TestInterface {}",
-        "  @OnClick(0) void click0() {}",
-        "  @OnClick(1) void click1(View view) {}",
-        "  @OnClick(2) void click2(TextView view) {}",
-        "  @OnClick(3) void click3(Button button) {}",
-        "  @OnClick(4) void click4(TestInterface thing) {}",
+        "  @OnClick(\"zero\") void click0() {}",
+        "  @OnClick(\"one\") void click1(View view) {}",
+        "  @OnClick(\"two\") void click2(TextView view) {}",
+        "  @OnClick(\"three\") void click3(Button button) {}",
+        "  @OnClick(\"four\") void click4(TestInterface thing) {}",
         "}"
     ));
 
@@ -186,36 +199,37 @@ public class OnClickTest {
             "import android.widget.TextView;",
             "import butterfork.ButterFork;",
             "import butterfork.internal.DebouncingOnClickListener;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 0, \"method 'click0'\");",
+            "    view = finder.findRequiredView(source, R.id.zero, \"method 'click0'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.click0();",
             "      }",
             "    });",
-            "    view = finder.findRequiredView(source, 1, \"method 'click1'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'click1'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.click1(p0);",
             "      }",
             "    });",
-            "    view = finder.findRequiredView(source, 2, \"method 'click2'\");",
+            "    view = finder.findRequiredView(source, R.id.two, \"method 'click2'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.click2(finder.<TextView>castParam(p0, \"doClick\", 0, \"click2\", 0));",
             "      }",
             "    });",
-            "    view = finder.findRequiredView(source, 3, \"method 'click3'\");",
+            "    view = finder.findRequiredView(source, R.id.three, \"method 'click3'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.click3(finder.<Button>castParam(p0, \"doClick\", 0, \"click3\", 0);",
             "      }",
             "    });",
-            "    view = finder.findRequiredView(source, 4, \"method 'click4'\");",
+            "    view = finder.findRequiredView(source, R.id.four, \"method 'click4'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.click4(finder.<Test.TestInterface>castParam(p0, \"doClick\", 0, \"click4\", 0);",
@@ -239,9 +253,11 @@ public class OnClickTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick({1, 2, 3}) void click() {}",
+        "  @OnClick({\"one\", \"two\", \"three\"}) void click() {}",
         "}"
     ));
 
@@ -251,24 +267,25 @@ public class OnClickTest {
             "import android.view.View;",
             "import butterfork.ButterFork;",
             "import butterfork.internal.DebouncingOnClickListener;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'click'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'click'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.click();",
             "      }",
             "    });",
-            "    view = finder.findRequiredView(source, 2, \"method 'click'\");",
+            "    view = finder.findRequiredView(source, R.id.two, \"method 'click'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.click();",
             "      }",
             "    });",
-            "    view = finder.findRequiredView(source, 3, \"method 'click'\");",
+            "    view = finder.findRequiredView(source, R.id.three, \"method 'click'\");",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
             "        target.click();",
@@ -291,10 +308,12 @@ public class OnClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @interface Nullable {}",
-        "  @Nullable @OnClick(1) void doStuff() {}",
+        "  @Nullable @OnClick(\"one\") void doStuff() {}",
         "}"));
 
     JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Test$$ViewBinder",
@@ -303,12 +322,13 @@ public class OnClickTest {
             "import android.view.View;",
             "import butterfork.ButterFork;",
             "import butterfork.internal.DebouncingOnClickListener;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findOptionalView(source, 1, null);",
+            "    view = finder.findOptionalView(source, R.id.one, null);",
             "    if (view != null) {",
             "      view.setOnClickListener(new DebouncingOnClickListener() {",
             "        @Override public void doClick(View p0) {",
@@ -335,11 +355,13 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @interface Nullable {}",
-        "  @Bind(1) View view;",
-        "  @Nullable @OnClick(1) void doStuff() {}",
+        "  @Bind(\"one\") View view;",
+        "  @Nullable @OnClick(\"one\") void doStuff() {}",
         "}"));
 
     JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Test$$ViewBinder",
@@ -348,12 +370,13 @@ public class OnClickTest {
             "import android.view.View;",
             "import butterfork.ButterFork;",
             "import butterfork.internal.DebouncingOnClickListener;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"field 'view'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"field 'view'\");",
             "    target.view = view;",
             "    view.setOnClickListener(new DebouncingOnClickListener() {",
             "      @Override public void doClick(View p0) {",
@@ -379,7 +402,7 @@ public class OnClickTest {
         "package java.test;",
         "import butterfork.OnClick;",
         "public class Test {",
-        "  @OnClick(1) void doStuff() {}",
+        "  @OnClick(\"one\") void doStuff() {}",
         "}"
     ));
 
@@ -396,7 +419,7 @@ public class OnClickTest {
         "package android.test;",
         "import butterfork.OnClick;",
         "public class Test {",
-        "  @OnClick(1) void doStuff() {}",
+        "  @OnClick(\"one\") void doStuff() {}",
         "}"
     ));
 
@@ -412,9 +435,11 @@ public class OnClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(\"one\")",
         "  public String doStuff() {",
         "  }",
         "}"));
@@ -423,16 +448,18 @@ public class OnClickTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@OnClick methods must have a 'void' return type. (test.Test.doStuff)")
-        .in(source).onLine(6);
+        .in(source).onLine(8);
   }
 
   @Test public void failsIfPrivateMethod() {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(\"one\")",
         "  private void doStuff() {",
         "  }",
         "}"));
@@ -441,16 +468,18 @@ public class OnClickTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@OnClick methods must not be private or static. (test.Test.doStuff)")
-        .in(source).onLine(6);
+        .in(source).onLine(8);
   }
 
   @Test public void failsIfStatic() {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(\"one\")",
         "  public static void doStuff() {",
         "  }",
         "}"));
@@ -459,16 +488,18 @@ public class OnClickTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@OnClick methods must not be private or static. (test.Test.doStuff)")
-        .in(source).onLine(6);
+        .in(source).onLine(8);
   }
 
   @Test public void failsIfParameterNotView() {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(\"one\")",
         "  public void doStuff(String thing) {",
         "  }",
         "}"));
@@ -487,7 +518,7 @@ public class OnClickTest {
             "    android.view.View",
             "  ",
             "  These may be listed in any order but will be searched for from top to bottom."))
-        .in(source).onLine(6);
+        .in(source).onLine(8);
   }
 
   @Test public void failsIfMoreThanOneParameter() {
@@ -495,9 +526,11 @@ public class OnClickTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(\"one\")",
         "  public void doStuff(View thing, View otherThing) {",
         "  }",
         "}"));
@@ -507,7 +540,7 @@ public class OnClickTest {
         .failsToCompile()
         .withErrorContaining(
             "@OnClick methods can have at most 1 parameter(s). (test.Test.doStuff)")
-        .in(source).onLine(7);
+        .in(source).onLine(9);
   }
 
   @Test public void failsIfInInterface() {
@@ -515,7 +548,7 @@ public class OnClickTest {
         "package test;",
         "import butterfork.OnClick;",
         "public interface Test {",
-        "  @OnClick(1)",
+        "  @OnClick(\"one\")",
         "  void doStuff();",
         "}"));
 
@@ -531,9 +564,11 @@ public class OnClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnClick({1, 2, 3, 1})",
+        "  @OnClick({\"one\", \"two\", \"three\", \"one\"})",
         "  void doStuff() {",
         "  }",
         "}"));
@@ -542,7 +577,7 @@ public class OnClickTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
-            "@OnClick annotation for method contains duplicate ID 1. (test.Test.doStuff)")
-        .in(source).onLine(6);
+            "@OnClick annotation for method contains duplicate ID one. (test.Test.doStuff)")
+        .in(source).onLine(8);
   }
 }

@@ -15,9 +15,11 @@ public class OnPageChangeTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnPageChange;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnPageChange(1) void doStuff() {}",
+        "  @OnPageChange(\"one\") void doStuff() {}",
         "}"
     ));
 
@@ -27,12 +29,13 @@ public class OnPageChangeTest {
             "import android.support.v4.view.ViewPager;",
             "import android.view.View;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff'\");",
             "    ((ViewPager) view).setOnPageChangeListener(new ViewPager.OnPageChangeListener() {",
             "      @Override public void onPageSelected(int p0) {",
             "        target.doStuff();",

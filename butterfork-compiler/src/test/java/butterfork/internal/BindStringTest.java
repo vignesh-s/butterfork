@@ -15,9 +15,11 @@ public class BindStringTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.BindString;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindString(1) String one;",
+        "  @BindString(\"one\") String one;",
         "}"
     ));
 
@@ -26,12 +28,13 @@ public class BindStringTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getString(1);",
+            "    target.one = res.getString(R.string.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -49,9 +52,11 @@ public class BindStringTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.BindString;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindString(1) boolean one;",
+        "  @BindString(\"one\") boolean one;",
         "}"
     ));
 
@@ -59,6 +64,6 @@ public class BindStringTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindString field type must be 'String'. (test.Test.one)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 }

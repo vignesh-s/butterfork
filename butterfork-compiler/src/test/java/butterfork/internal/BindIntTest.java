@@ -16,8 +16,10 @@ public class BindIntTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindInt;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindInt(1) int one;",
+        "  @BindInt(\"one\") int one;",
         "}"
     ));
 
@@ -26,12 +28,13 @@ public class BindIntTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getInteger(1);",
+            "    target.one = res.getInteger(R.integer.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -50,8 +53,10 @@ public class BindIntTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindInt;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindInt(1) String one;",
+        "  @BindInt(\"one\") String one;",
         "}"
     ));
 
@@ -59,6 +64,6 @@ public class BindIntTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindInt field type must be 'int'. (test.Test.one)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 }

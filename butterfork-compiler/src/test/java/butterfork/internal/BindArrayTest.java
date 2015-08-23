@@ -16,8 +16,10 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindArray(1) String[] one;",
+        "  @BindArray(\"one\") String[] one;",
         "}"
     ));
 
@@ -26,12 +28,13 @@ public class BindArrayTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getStringArray(1);",
+            "    target.one = res.getStringArray(R.array.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -50,8 +53,10 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindArray(1) int[] one;",
+        "  @BindArray(\"one\") int[] one;",
         "}"
     ));
 
@@ -60,12 +65,13 @@ public class BindArrayTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getIntArray(1);",
+            "    target.one = res.getIntArray(R.array.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -84,8 +90,10 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindArray(1) CharSequence[] one;",
+        "  @BindArray(\"one\") CharSequence[] one;",
         "}"
     ));
 
@@ -94,12 +102,13 @@ public class BindArrayTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.getTextArray(1);",
+            "    target.one = res.getTextArray(R.array.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -118,9 +127,11 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
+        "import butterfork.BindResources;",
         "import android.content.res.TypedArray;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindArray(1) TypedArray one;",
+        "  @BindArray(\"one\") TypedArray one;",
         "}"
     ));
 
@@ -129,12 +140,13 @@ public class BindArrayTest {
             "package test;",
             "import android.content.res.Resources;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = res.obtainTypedArray(1);",
+            "    target.one = res.obtainTypedArray(R.array.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -153,8 +165,10 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindArray(1) String one;",
+        "  @BindArray(\"one\") String one;",
         "}"
     ));
 
@@ -164,6 +178,6 @@ public class BindArrayTest {
         .withErrorContaining(
             "@BindArray field type must be one of: String[], int[], CharSequence[], "
                 + "android.content.res.TypedArray. (test.Test.one)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 }

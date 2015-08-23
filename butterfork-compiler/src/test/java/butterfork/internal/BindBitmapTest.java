@@ -17,8 +17,10 @@ public class BindBitmapTest {
         "import android.app.Activity;",
         "import android.graphics.Bitmap;",
         "import butterfork.BindBitmap;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindBitmap(1) Bitmap one;",
+        "  @BindBitmap(\"one\") Bitmap one;",
         "}"
     ));
 
@@ -28,12 +30,13 @@ public class BindBitmapTest {
             "import android.content.res.Resources;",
             "import android.graphics.BitmapFactory;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    Resources res = finder.getContext(source).getResources();",
-            "    target.one = BitmapFactory.decodeResource(res, 1);",
+            "    target.one = BitmapFactory.decodeResource(res, R.drawable.one);",
             "  }",
             "  @Override public void unbind(T target) {",
             "  }",
@@ -52,8 +55,10 @@ public class BindBitmapTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindBitmap;",
+        "import butterfork.BindResources;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @BindBitmap(1) String one;",
+        "  @BindBitmap(\"one\") String one;",
         "}"
     ));
 
@@ -61,6 +66,6 @@ public class BindBitmapTest {
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindBitmap field type must be 'Bitmap'. (test.Test.one)")
-        .in(source).onLine(5);
+        .in(source).onLine(7);
   }
 }

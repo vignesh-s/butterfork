@@ -15,9 +15,11 @@ public class OnTextChangedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
+        "import butterfork.BindResources;",
         "import butterfork.OnTextChanged;",
+        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
-        "  @OnTextChanged(1) void doStuff() {}",
+        "  @OnTextChanged(\"one\") void doStuff() {}",
         "}"
     ));
 
@@ -29,13 +31,14 @@ public class OnTextChangedTest {
             "import android.view.View;",
             "import android.widget.TextView;",
             "import butterfork.ButterFork;",
+            "import butterfork.internal.R;",
             "import java.lang.CharSequence;",
             "import java.lang.Object;",
             "import java.lang.Override;",
             "public class Test$$ViewBinder<T extends Test> implements ButterFork.ViewBinder<T> {",
             "  @Override public void bind(final ButterFork.Finder finder, final T target, Object source) {",
             "    View view;",
-            "    view = finder.findRequiredView(source, 1, \"method 'doStuff'\");",
+            "    view = finder.findRequiredView(source, R.id.one, \"method 'doStuff'\");",
             "    ((TextView) view).addTextChangedListener(new TextWatcher() {",
             "      @Override public void onTextChanged(CharSequence p0, int p1, int p2, int p3) {",
             "        target.doStuff();",
