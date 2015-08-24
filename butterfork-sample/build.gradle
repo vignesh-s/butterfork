@@ -1,5 +1,17 @@
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.oguzbabaoglu:butterfork-plugin:1.0.0-SNAPSHOT'
+    }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.oguzbabaoglu.butterfork-plugin'
 
 android {
     compileSdkVersion 22
@@ -18,9 +30,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
 
+project.afterEvaluate {
     // Ensure processor is compiled
-    applicationVariants.all { variant ->
+    android.applicationVariants.all { variant ->
         variant.javaCompile.dependsOn ':butterfork-compiler:jar'
     }
 }
