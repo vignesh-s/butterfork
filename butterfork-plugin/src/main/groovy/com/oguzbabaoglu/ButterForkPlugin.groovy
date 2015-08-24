@@ -11,6 +11,7 @@ import org.gradle.api.tasks.SourceSet
 class ButterForkPlugin implements Plugin<Project> {
 
     private Project project
+    private String packageName
 
     void apply(Project project) {
 
@@ -46,9 +47,18 @@ class ButterForkPlugin implements Plugin<Project> {
     private addTaskForVariant(final Object variant) {
 
         String taskName = 'generate' + getSubstringForTaskName(variant.name) + 'B'
+        String rFilePath = 'build/generated/source/r/' + variant.dirName + '/' +
+                getPackageName().replace('.', '/') + '/R.java'
 
-        GenerateBTask task = project.getTasks().create(taskName, GenerateBTask.class);
-        variant.javaCompile.dependsOn(taskName)
+        String bDirectoryPath = 'build/generated/source/b/' + variant.dirName
+
+        GenerateBTask task = project.tasks.create(taskName, GenerateBTask)
+        task.rFilePath = rFilePath
+        task.bDirectoryPath = bDirectoryPath
+        task.packageName = getPackageName()
+
+        variant.javaCompile.dependsOn(task)
+        variant.registerJavaGeneratingTask(task, project.file(bDirectoryPath))
     }
 
     /**
@@ -58,6 +68,21 @@ class ButterForkPlugin implements Plugin<Project> {
     static String getSubstringForTaskName(String variantName) {
         return variantName == SourceSet.MAIN_SOURCE_SET_NAME ?
                 '' : variantName.capitalize()
+    }
+
+    /**
+     * Helper method that parses the manifest file and returns package name
+     *
+     * @return package name defined in manifest file
+     */
+    private String getPackageName() {
+
+        if (packageName == null) {
+            File manifestFile = project.file(project.android.sourceSets.main.manifest.srcFile.toString())
+            packageName = (new XmlParser()).parse(manifestFile).@package
+        }
+
+        return packageName
     }
 
 }
