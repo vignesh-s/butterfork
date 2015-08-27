@@ -16,8 +16,6 @@ public class BindIntTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindInt;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindInt(\"one\") int one;",
         "}"
@@ -42,6 +40,7 @@ public class BindIntTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -53,17 +52,16 @@ public class BindIntTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindInt;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindInt(\"one\") String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindInt field type must be 'int'. (test.Test.one)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 }

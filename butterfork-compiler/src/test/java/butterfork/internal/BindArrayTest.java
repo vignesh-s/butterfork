@@ -16,8 +16,6 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindArray(\"one\") String[] one;",
         "}"
@@ -42,6 +40,7 @@ public class BindArrayTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -53,8 +52,6 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindArray(\"one\") int[] one;",
         "}"
@@ -79,6 +76,7 @@ public class BindArrayTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -90,8 +88,6 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindArray(\"one\") CharSequence[] one;",
         "}"
@@ -116,6 +112,7 @@ public class BindArrayTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -127,9 +124,7 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
-        "import butterfork.BindResources;",
         "import android.content.res.TypedArray;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindArray(\"one\") TypedArray one;",
         "}"
@@ -154,6 +149,7 @@ public class BindArrayTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -165,19 +161,18 @@ public class BindArrayTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindArray;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindArray(\"one\") String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "@BindArray field type must be one of: String[], int[], CharSequence[], "
                 + "android.content.res.TypedArray. (test.Test.one)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 }

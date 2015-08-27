@@ -45,11 +45,11 @@ final class BindingClass {
   private final ClassName resClass;
   private String parentViewBinder;
 
-  BindingClass(String classPackage, String className, String targetClass, TypeElement resType) {
+  BindingClass(String classPackage, String className, String targetClass, String resPackage) {
     this.classPackage = classPackage;
     this.className = className;
     this.targetClass = targetClass;
-    this.resClass = ClassName.get(resType);
+    this.resClass = ClassName.get(resPackage, "R");
   }
 
   void addBitmap(FieldBitmapBinding binding) {

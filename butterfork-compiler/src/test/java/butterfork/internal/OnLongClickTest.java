@@ -16,9 +16,7 @@ public class OnLongClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnLongClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnLongClick(\"one\") boolean doStuff() {",
         "    return true;",
@@ -49,6 +47,7 @@ public class OnLongClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -59,9 +58,7 @@ public class OnLongClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnLongClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnLongClick(\"one\")",
         "  public void doStuff() {",
@@ -69,10 +66,11 @@ public class OnLongClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "@OnLongClick methods must have a 'boolean' return type. (test.Test.doStuff)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 }

@@ -17,8 +17,6 @@ public class BindDrawableTest {
         "import android.app.Activity;",
         "import android.graphics.drawable.Drawable;",
         "import butterfork.BindDrawable;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindDrawable(\"one\") Drawable one;",
         "}"
@@ -43,6 +41,7 @@ public class BindDrawableTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -54,17 +53,16 @@ public class BindDrawableTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindDrawable;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindDrawable(\"one\") String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindDrawable field type must be 'Drawable'. (test.Test.one)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 }

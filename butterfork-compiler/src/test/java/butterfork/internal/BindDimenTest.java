@@ -16,8 +16,6 @@ public class BindDimenTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindDimen;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindDimen(\"one\") float one;",
         "}"
@@ -42,6 +40,7 @@ public class BindDimenTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -53,8 +52,6 @@ public class BindDimenTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindDimen;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindDimen(\"one\") int one;",
         "}"
@@ -79,6 +76,7 @@ public class BindDimenTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -90,17 +88,16 @@ public class BindDimenTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindDimen;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindDimen(\"one\") String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindDimen field type must be 'int' or 'float'. (test.Test.one)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 }

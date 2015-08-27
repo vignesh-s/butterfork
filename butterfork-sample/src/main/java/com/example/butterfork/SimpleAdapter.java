@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import butterfork.Bind;
-import butterfork.BindResources;
 import butterfork.ButterFork;
 
 public class SimpleAdapter extends BaseAdapter {
@@ -52,11 +51,10 @@ public class SimpleAdapter extends BaseAdapter {
     return view;
   }
 
-  @BindResources(R.class)
   static class ViewHolder {
-    @Bind("word") TextView word;
-    @Bind("length") TextView length;
-    @Bind("position") TextView position;
+    @Bind(B.id.word) TextView word;
+    @Bind(B.id.length) TextView length;
+    @Bind(B.id.position) TextView position;
 
     ViewHolder(View view) {
       ButterFork.bind(this, view);

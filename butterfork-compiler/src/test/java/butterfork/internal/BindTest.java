@@ -17,8 +17,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind(\"one\") View thing;",
         "}"
@@ -45,6 +43,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -56,18 +55,17 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind({\"one\", \"two\"}) View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind for a view must only specify one ID. Found: [one, two]. (test.Test.thing)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void bindingInterface() throws Exception {
@@ -76,8 +74,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    interface TestInterface {}",
         "    @Bind(\"one\") TestInterface thing;",
@@ -105,6 +101,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -118,8 +115,6 @@ public class BindTest {
         "import android.widget.EditText;",
         "import android.widget.TextView;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "class Test<T extends TextView> extends Activity {",
         "    @Bind(\"one\") T thing;",
         "}"
@@ -146,6 +141,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -158,9 +154,7 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @Bind(\"one\") View thing1;",
         "  @OnClick(\"one\") void doStuff() {}",
@@ -194,6 +188,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -206,8 +201,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @Bind(\"one\") public View thing1;",
         "  @Bind(\"two\") View thing2;",
@@ -216,6 +209,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError();
   }
@@ -226,8 +220,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @interface Nullable {}",
         "  @Nullable @Bind(\"one\") View view;",
@@ -255,6 +247,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -267,8 +260,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @Bind(\"one\") View view;",
         "}",
@@ -323,6 +314,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -335,8 +327,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test<T> extends Activity {",
         "  @Bind(\"one\") View view;",
         "}",
@@ -391,6 +381,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -408,6 +399,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
@@ -426,6 +418,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
@@ -446,6 +439,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
@@ -458,18 +452,17 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @Bind(\"one\") String thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must extend from View or be an interface. (test.Test.thing)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 
   @Test public void failsIfInInterface() {
@@ -483,6 +476,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
@@ -496,18 +490,17 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind(\"one\") private View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must not be private or static. (test.Test.thing)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void failsIfStatic() {
@@ -516,18 +509,17 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind(\"one\") static View thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind fields must not be private or static. (test.Test.thing)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void duplicateBindingFails() throws Exception {
@@ -536,8 +528,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind(\"one\") View thing1;",
         "    @Bind(\"one\") View thing2;",
@@ -545,11 +535,12 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "Attempt to use @Bind for an already bound ID one on 'thing1'. (test.Test.thing2)")
-        .in(source).onLine(9);
+        .in(source).onLine(7);
   }
 
   @Test public void failsRootViewBindingWithBadTarget() throws Exception {
@@ -568,6 +559,7 @@ public class BindTest {
 
     ASSERT.about(javaSource())
         .that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining((
@@ -594,6 +586,7 @@ public class BindTest {
 
     ASSERT.about(javaSource())
         .that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
@@ -608,8 +601,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind({\"one\", \"two\", \"three\"}) View[] thing;",
         "}"
@@ -639,6 +630,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -651,8 +643,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test<T extends View> extends Activity {",
         "    @Bind({\"one\", \"two\", \"three\"}) T[] thing;",
         "}"
@@ -682,6 +672,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -694,8 +685,6 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.widget.TextView;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind({\"one\", \"two\", \"three\"}) TextView[] thing;",
         "}"
@@ -726,6 +715,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -738,9 +728,7 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import java.util.List;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind({\"one\", \"two\", \"three\"}) List<View> thing;",
         "}"
@@ -770,6 +758,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -781,9 +770,7 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import java.util.List;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test {",
         "    interface TestInterface {}",
         "    @Bind({\"one\", \"two\", \"three\"}) List<TestInterface> thing;",
@@ -814,6 +801,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -826,9 +814,7 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import java.util.List;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test<T extends View> extends Activity {",
         "    @Bind({\"one\", \"two\", \"three\"}) List<T> thing;",
         "}"
@@ -858,6 +844,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -870,9 +857,7 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import java.util.List;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @interface Nullable {}",
         "    @Nullable @Bind({\"one\", \"two\", \"three\"}) List<View> thing;",
@@ -903,6 +888,7 @@ public class BindTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -921,6 +907,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind must specify at least one ID. (test.Test.thing)")
@@ -938,6 +925,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind List must have a generic component. (test.Test.thing)")
@@ -956,6 +944,7 @@ public class BindTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind must be a List or array. (test.Test.thing)")
@@ -967,19 +956,18 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import java.util.List;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @Bind(\"one\") List<String> thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind List or array type must extend from View or be an interface. (test.Test.thing)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void failsIfArrayNotView() {
@@ -987,17 +975,16 @@ public class BindTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @Bind(\"one\") String[] thing;",
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind List or array type must extend from View or be an interface. (test.Test.thing)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 
   @Test public void failsIfContainsDuplicateIds() throws Exception {
@@ -1006,18 +993,17 @@ public class BindTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import java.util.List;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "    @Bind({\"one\", \"one\"}) List<View> thing;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@Bind annotation contains duplicate ID one. (test.Test.thing)")
-        .in(source).onLine(9);
+        .in(source).onLine(7);
   }
 }

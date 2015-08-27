@@ -15,9 +15,7 @@ public class OnEditorActionTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnEditorAction;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnEditorAction(\"one\") boolean doStuff() { return false; }",
         "}"
@@ -49,6 +47,7 @@ public class OnEditorActionTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()

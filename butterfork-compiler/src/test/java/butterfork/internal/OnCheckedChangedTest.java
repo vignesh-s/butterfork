@@ -15,9 +15,7 @@ public class OnCheckedChangedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnCheckedChanged;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnCheckedChanged(\"one\") void doStuff() {}",
         "}"
@@ -48,6 +46,7 @@ public class OnCheckedChangedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()

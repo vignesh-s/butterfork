@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -32,7 +33,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
@@ -47,7 +47,6 @@ import butterfork.BindColor;
 import butterfork.BindDimen;
 import butterfork.BindDrawable;
 import butterfork.BindInt;
-import butterfork.BindResources;
 import butterfork.BindString;
 import butterfork.OnCheckedChanged;
 import butterfork.OnClick;
@@ -79,6 +78,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
   private static final String NULLABLE_ANNOTATION_NAME = "Nullable";
   private static final String ITERABLE_TYPE = "java.lang.Iterable<?>";
   private static final String LIST_TYPE = List.class.getCanonicalName();
+  private static final String JVM_ARGUMENT = "respackagename";
   private static final List<Class<? extends Annotation>> LISTENERS = Arrays.asList(//
       OnCheckedChanged.class, //
       OnClick.class, //
@@ -96,6 +96,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
   private Elements elementUtils;
   private Types typeUtils;
   private Filer filer;
+  private String resPackage;
 
   @Override public synchronized void init(ProcessingEnvironment env) {
     super.init(env);
@@ -103,12 +104,16 @@ public final class ButterForkProcessor extends AbstractProcessor {
     elementUtils = env.getElementUtils();
     typeUtils = env.getTypeUtils();
     filer = env.getFiler();
+    resPackage = env.getOptions().get(JVM_ARGUMENT);
+  }
+
+  @Override public Set<String> getSupportedOptions() {
+    return Collections.singleton(JVM_ARGUMENT);
   }
 
   @Override public Set<String> getSupportedAnnotationTypes() {
     Set<String> types = new LinkedHashSet<>();
 
-    types.add(BindResources.class.getCanonicalName());
     types.add(Bind.class.getCanonicalName());
 
     for (Class<? extends Annotation> listener : LISTENERS) {
@@ -148,15 +153,6 @@ public final class ButterForkProcessor extends AbstractProcessor {
   private Map<TypeElement, BindingClass> findAndParseTargets(RoundEnvironment env) {
     Map<TypeElement, BindingClass> targetClassMap = new LinkedHashMap<>();
     Set<String> erasedTargetNames = new LinkedHashSet<>();
-
-    // Process each @BindResources element. Must be done first.
-    for (Element element : env.getElementsAnnotatedWith(BindResources.class)) {
-      try {
-        parseBindResources(element, targetClassMap, erasedTargetNames);
-      } catch (Exception e) {
-        logParsingError(element, BindResources.class, e);
-      }
-    }
 
     // Process each @Bind element.
     for (Element element : env.getElementsAnnotatedWith(Bind.class)) {
@@ -314,28 +310,6 @@ public final class ButterForkProcessor extends AbstractProcessor {
     return false;
   }
 
-  private void parseBindResources(Element element, Map<TypeElement, BindingClass> targetClassMap,
-      Set<String> erasedTargetNames) {
-
-    if (element.getKind() != CLASS) {
-      error(element, "Only classes can be annotated with @%s",
-          BindResources.class.getSimpleName());
-      return;
-    }
-
-    TypeElement resClass = null;
-
-    try {
-      element.getAnnotation(BindResources.class).value();
-    } catch (MirroredTypeException exception) {
-      resClass = (TypeElement) typeUtils.asElement(exception.getTypeMirror());
-    }
-
-    createTargetClass(targetClassMap, (TypeElement) element, resClass);
-
-    erasedTargetNames.add(element.toString());
-  }
-
   private void parseBind(Element element, Map<TypeElement, BindingClass> targetClassMap,
       Set<String> erasedTargetNames) {
     // Verify common generated code restrictions.
@@ -389,7 +363,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     }
 
     String id = ids[0];
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     if (bindingClass != null) {
       ViewBindings viewBindings = bindingClass.getViewBinding(id);
       if (viewBindings != null) {
@@ -403,7 +377,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
         }
       }
     } else {
-      bindingClass = targetClassMap.get(enclosingElement);
+      bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     }
 
     String name = element.getSimpleName().toString();
@@ -481,7 +455,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     TypeName type = TypeName.get(viewType);
     boolean required = isRequiredBinding(element);
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldCollectionViewBinding binding = new FieldCollectionViewBinding(name, type, kind, required);
     bindingClass.addFieldCollection(ids, binding);
 
@@ -513,7 +487,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String name = element.getSimpleName().toString();
     String id = element.getAnnotation(BindBool.class).value();
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name, "getBoolean", "bool");
     bindingClass.addResource(binding);
 
@@ -549,7 +523,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String name = element.getSimpleName().toString();
     String id = element.getAnnotation(BindColor.class).value();
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name,
         isColorStateList ? "getColorStateList" : "getColor", "color");
     bindingClass.addResource(binding);
@@ -586,7 +560,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String name = element.getSimpleName().toString();
     String id = element.getAnnotation(BindDimen.class).value();
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name,
         isInt ? "getDimensionPixelSize" : "getDimension", "dimen");
     bindingClass.addResource(binding);
@@ -619,7 +593,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String name = element.getSimpleName().toString();
     String id = element.getAnnotation(BindBitmap.class).value();
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldBitmapBinding binding = new FieldBitmapBinding(id, name);
     bindingClass.addBitmap(binding);
 
@@ -651,7 +625,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String name = element.getSimpleName().toString();
     String id = element.getAnnotation(BindDrawable.class).value();
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name, "getDrawable", "drawable");
     bindingClass.addResource(binding);
 
@@ -682,7 +656,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String name = element.getSimpleName().toString();
     String id = element.getAnnotation(BindInt.class).value();
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name, "getInteger", "integer");
     bindingClass.addResource(binding);
 
@@ -714,7 +688,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String name = element.getSimpleName().toString();
     String id = element.getAnnotation(BindString.class).value();
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name, "getString", "string");
     bindingClass.addResource(binding);
 
@@ -748,7 +722,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     String name = element.getSimpleName().toString();
     String id = element.getAnnotation(BindArray.class).value();
 
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     FieldResourceBinding binding = new FieldResourceBinding(id, name, methodName, "array");
     bindingClass.addResource(binding);
 
@@ -1003,7 +977,7 @@ public final class ButterForkProcessor extends AbstractProcessor {
     }
 
     MethodViewBinding binding = new MethodViewBinding(name, Arrays.asList(parameters), required);
-    BindingClass bindingClass = targetClassMap.get(enclosingElement);
+    BindingClass bindingClass = getOrCreateTargetClass(targetClassMap, enclosingElement);
     for (String id : ids) {
       if (!bindingClass.addMethod(id, listener, method, binding)) {
         error(element, "Multiple listener methods with return value specified for ID %s. (%s.%s)",
@@ -1061,15 +1035,15 @@ public final class ButterForkProcessor extends AbstractProcessor {
     return false;
   }
 
-  private BindingClass createTargetClass(Map<TypeElement, BindingClass> targetClassMap,
-      TypeElement enclosingElement, TypeElement resClass) {
+  private BindingClass getOrCreateTargetClass(Map<TypeElement, BindingClass> targetClassMap,
+      TypeElement enclosingElement) {
     BindingClass bindingClass = targetClassMap.get(enclosingElement);
     if (bindingClass == null) {
       String targetType = enclosingElement.getQualifiedName().toString();
       String classPackage = getPackageName(enclosingElement);
       String className = getClassName(enclosingElement, classPackage) + BINDING_CLASS_SUFFIX;
 
-      bindingClass = new BindingClass(classPackage, className, targetType, resClass);
+      bindingClass = new BindingClass(classPackage, className, targetType, resPackage);
       targetClassMap.put(enclosingElement, bindingClass);
     }
     return bindingClass;

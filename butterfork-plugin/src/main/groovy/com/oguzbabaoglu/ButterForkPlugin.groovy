@@ -3,7 +3,6 @@ package com.oguzbabaoglu
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
 
 /**
  * The ButterFork plugin will add build tasks to generate B files from R files.
@@ -11,7 +10,6 @@ import org.gradle.api.tasks.SourceSet
 class ButterForkPlugin implements Plugin<Project> {
 
     private Project project
-    private String packageName
 
     void apply(Project project) {
 
@@ -22,8 +20,11 @@ class ButterForkPlugin implements Plugin<Project> {
         }
 
         project.afterEvaluate {
+
+            String packageName = findPackageName()
+
             // The Android variants are only available at this point.
-            addGenerateTasks()
+            addGenerateTasks(packageName)
         }
     }
 
@@ -35,39 +36,38 @@ class ButterForkPlugin implements Plugin<Project> {
     /**
      * Adds generateB tasks to the project.
      */
-    private addGenerateTasks() {
+    private addGenerateTasks(String packageName) {
         getNonTestVariants().each { variant ->
-            addTaskForVariant(variant)
+            addTaskForVariant(variant, packageName)
         }
     }
 
     /**
      * Creates generateB task for a variant in an Android project.
      */
-    private addTaskForVariant(final Object variant) {
+    private addTaskForVariant(final Object variant, final String packageName) {
 
-        String taskName = 'generate' + getSubstringForTaskName(variant.name) + 'B'
+        String taskName = 'generate' + variant.name.capitalize() + 'B'
         String rFilePath = 'build/generated/source/r/' + variant.dirName + '/' +
-                getPackageName().replace('.', '/') + '/R.java'
+                packageName.replace('.', '/') + '/R.java'
 
         String bDirectoryPath = 'build/generated/source/b/' + variant.dirName
 
         GenerateBTask task = project.tasks.create(taskName, GenerateBTask)
         task.rFilePath = rFilePath
         task.bDirectoryPath = bDirectoryPath
-        task.packageName = getPackageName()
+        task.packageName = packageName
+
+        variant.outputs.each { output ->
+            if (output.name == variant.name) {
+                task.dependsOn(output.processResources)
+            }
+        }
+
+        variant.javaCompile.options.compilerArgs << "-Arespackagename=" + packageName
 
         variant.javaCompile.dependsOn(task)
         variant.registerJavaGeneratingTask(task, project.file(bDirectoryPath))
-    }
-
-    /**
-     * Returns the conventional substring that represents the variant in task names,
-     * e.g., "generateDebugB"
-     */
-    static String getSubstringForTaskName(String variantName) {
-        return variantName == SourceSet.MAIN_SOURCE_SET_NAME ?
-                '' : variantName.capitalize()
     }
 
     /**
@@ -75,14 +75,9 @@ class ButterForkPlugin implements Plugin<Project> {
      *
      * @return package name defined in manifest file
      */
-    private String getPackageName() {
-
-        if (packageName == null) {
-            File manifestFile = project.file(project.android.sourceSets.main.manifest.srcFile.toString())
-            packageName = (new XmlParser()).parse(manifestFile).@package
-        }
-
-        return packageName
+    private String findPackageName() {
+        File manifestFile = project.android.sourceSets.main.manifest.srcFile
+        return (new XmlParser()).parse(manifestFile).@package
     }
 
 }

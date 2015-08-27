@@ -15,9 +15,7 @@ public class OnPageChangeTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnPageChange;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnPageChange(\"one\") void doStuff() {}",
         "}"
@@ -52,6 +50,7 @@ public class OnPageChangeTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()

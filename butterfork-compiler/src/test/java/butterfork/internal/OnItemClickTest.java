@@ -16,9 +16,7 @@ public class OnItemClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemClick(\"one\") void doStuff() {}",
         "}"));
@@ -48,6 +46,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -60,9 +59,7 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import android.widget.AdapterView;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemClick(\"one\") void doStuff(",
         "    AdapterView<?> parent,",
@@ -97,6 +94,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -109,9 +107,7 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import android.widget.ListView;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemClick(\"one\") void doStuff(",
         "    ListView parent,",
@@ -145,6 +141,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -157,9 +154,7 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import android.widget.ListView;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test<T extends ListView> extends Activity {",
         "  @OnItemClick(\"one\") void doStuff(",
         "    T parent,",
@@ -193,6 +188,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -204,9 +200,7 @@ public class OnItemClickTest {
         "package test;",
         "import android.content.Context;",
         "import android.widget.ListView;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends ListView {",
         "  @OnItemClick void doStuff() {}",
         "  public Test(Context context) {",
@@ -238,6 +232,7 @@ public class OnItemClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -249,18 +244,17 @@ public class OnItemClickTest {
         "package test;",
         "import android.content.Context;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemClick({\"one\", \"\"}) void doStuff() {}",
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@OnItemClick annotation contains empty ID. (test.Test.doStuff)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void failsWithInvalidParameterConfiguration() {
@@ -269,9 +263,7 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import android.widget.AdapterView;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemClick(\"one\") void doStuff(",
         "    AdapterView<?> parent,",
@@ -281,6 +273,7 @@ public class OnItemClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(Joiner.on('\n').join(
@@ -303,6 +296,6 @@ public class OnItemClickTest {
             "    long",
             "  ",
             "  These may be listed in any order but will be searched for from top to bottom."))
-        .in(source).onLine(9);
+        .in(source).onLine(7);
   }
 }

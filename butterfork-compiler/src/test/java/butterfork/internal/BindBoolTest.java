@@ -16,8 +16,6 @@ public class BindBoolTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindBool;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindBool(\"one\") boolean one;",
         "}"
@@ -42,6 +40,7 @@ public class BindBoolTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -53,17 +52,16 @@ public class BindBoolTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindBool;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindBool(\"one\") String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindBool field type must be 'boolean'. (test.Test.one)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 }

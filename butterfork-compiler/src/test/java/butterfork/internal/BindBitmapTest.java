@@ -17,8 +17,6 @@ public class BindBitmapTest {
         "import android.app.Activity;",
         "import android.graphics.Bitmap;",
         "import butterfork.BindBitmap;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindBitmap(\"one\") Bitmap one;",
         "}"
@@ -44,6 +42,7 @@ public class BindBitmapTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -55,17 +54,16 @@ public class BindBitmapTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindBitmap;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindBitmap(\"one\") String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindBitmap field type must be 'Bitmap'. (test.Test.one)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 }

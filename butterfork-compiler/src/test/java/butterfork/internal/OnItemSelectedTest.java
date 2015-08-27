@@ -16,9 +16,7 @@ public class OnItemSelectedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemSelected;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemSelected(\"one\") void doStuff() {}",
         "}"
@@ -51,6 +49,7 @@ public class OnItemSelectedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -61,10 +60,8 @@ public class OnItemSelectedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemSelected;",
         "import static butterfork.OnItemSelected.Callback.NOTHING_SELECTED;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemSelected(value = \"one\", callback = NOTHING_SELECTED)",
         "  void doStuff() {}",
@@ -98,6 +95,7 @@ public class OnItemSelectedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -108,10 +106,8 @@ public class OnItemSelectedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemSelected;",
         "import static butterfork.OnItemSelected.Callback.NOTHING_SELECTED;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemSelected(\"one\")",
         "  void onItemSelected() {}",
@@ -148,6 +144,7 @@ public class OnItemSelectedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -158,10 +155,8 @@ public class OnItemSelectedTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnItemSelected;",
         "import static butterfork.OnItemSelected.Callback.NOTHING_SELECTED;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnItemSelected({ \"one\", \"two\" })",
         "  void onItemSelected() {}",
@@ -214,6 +209,7 @@ public class OnItemSelectedTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()

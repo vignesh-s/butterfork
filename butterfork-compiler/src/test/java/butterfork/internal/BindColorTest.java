@@ -16,8 +16,6 @@ public class BindColorTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindColor;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindColor(\"one\") int one;",
         "}"
@@ -42,6 +40,7 @@ public class BindColorTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -54,8 +53,6 @@ public class BindColorTest {
         "import android.app.Activity;",
         "import android.content.res.ColorStateList;",
         "import butterfork.BindColor;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindColor(\"one\") ColorStateList one;",
         "}"
@@ -80,6 +77,7 @@ public class BindColorTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -91,17 +89,16 @@ public class BindColorTest {
         "package test;",
         "import android.app.Activity;",
         "import butterfork.BindColor;",
-        "import butterfork.BindResources;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @BindColor(\"one\") String one;",
         "}"
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@BindColor field type must be 'int' or 'ColorStateList'. (test.Test.one)")
-        .in(source).onLine(7);
+        .in(source).onLine(5);
   }
 }

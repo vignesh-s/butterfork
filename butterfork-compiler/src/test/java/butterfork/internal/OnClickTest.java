@@ -15,9 +15,7 @@ public class OnClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick(\"one\") void doStuff() {}",
         "}"));
@@ -47,6 +45,7 @@ public class OnClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -58,9 +57,7 @@ public class OnClickTest {
         "package test;",
         "import android.view.View;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick(\"one\") void doStuff1() {}",
         "  @OnClick(\"one\") void doStuff2() {}",
@@ -98,6 +95,7 @@ public class OnClickTest {
             "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -110,9 +108,7 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @Bind(\"one\") View view;",
         "  @OnClick(\"one\") void doStuff() {}",
@@ -145,6 +141,7 @@ public class OnClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -156,9 +153,7 @@ public class OnClickTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick(\"one\") public void thing1() {}",
         "  @OnClick(\"two\") void thing2() {}",
@@ -167,6 +162,7 @@ public class OnClickTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError();
   }
@@ -178,9 +174,7 @@ public class OnClickTest {
         "import android.view.View;",
         "import android.widget.Button;",
         "import android.widget.TextView;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  interface TestInterface {}",
         "  @OnClick(\"zero\") void click0() {}",
@@ -242,6 +236,7 @@ public class OnClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -253,9 +248,7 @@ public class OnClickTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick({\"one\", \"two\", \"three\"}) void click() {}",
         "}"
@@ -298,6 +291,7 @@ public class OnClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -308,9 +302,7 @@ public class OnClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @interface Nullable {}",
         "  @Nullable @OnClick(\"one\") void doStuff() {}",
@@ -343,6 +335,7 @@ public class OnClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -355,9 +348,7 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import android.view.View;",
         "import butterfork.Bind;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @interface Nullable {}",
         "  @Bind(\"one\") View view;",
@@ -391,6 +382,7 @@ public class OnClickTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -407,6 +399,7 @@ public class OnClickTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
@@ -424,6 +417,7 @@ public class OnClickTest {
     ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
@@ -435,9 +429,7 @@ public class OnClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick(\"one\")",
         "  public String doStuff() {",
@@ -445,19 +437,18 @@ public class OnClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@OnClick methods must have a 'void' return type. (test.Test.doStuff)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void failsIfPrivateMethod() {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick(\"one\")",
         "  private void doStuff() {",
@@ -465,19 +456,18 @@ public class OnClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@OnClick methods must not be private or static. (test.Test.doStuff)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void failsIfStatic() {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick(\"one\")",
         "  public static void doStuff() {",
@@ -485,19 +475,18 @@ public class OnClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining("@OnClick methods must not be private or static. (test.Test.doStuff)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void failsIfParameterNotView() {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick(\"one\")",
         "  public void doStuff(String thing) {",
@@ -505,6 +494,7 @@ public class OnClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(Joiner.on('\n').join(
@@ -518,7 +508,7 @@ public class OnClickTest {
             "    android.view.View",
             "  ",
             "  These may be listed in any order but will be searched for from top to bottom."))
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 
   @Test public void failsIfMoreThanOneParameter() {
@@ -526,9 +516,7 @@ public class OnClickTest {
         "package test;",
         "import android.app.Activity;",
         "import android.view.View;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick(\"one\")",
         "  public void doStuff(View thing, View otherThing) {",
@@ -536,11 +524,12 @@ public class OnClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "@OnClick methods can have at most 1 parameter(s). (test.Test.doStuff)")
-        .in(source).onLine(9);
+        .in(source).onLine(7);
   }
 
   @Test public void failsIfInInterface() {
@@ -553,6 +542,7 @@ public class OnClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
@@ -564,9 +554,7 @@ public class OnClickTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnClick;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnClick({\"one\", \"two\", \"three\", \"one\"})",
         "  void doStuff() {",
@@ -574,10 +562,11 @@ public class OnClickTest {
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "@OnClick annotation for method contains duplicate ID one. (test.Test.doStuff)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 }

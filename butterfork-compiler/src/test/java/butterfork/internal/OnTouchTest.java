@@ -15,9 +15,7 @@ public class OnTouchTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnTouch;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnTouch(\"one\") boolean doStuff() { return false; }",
         "}"
@@ -48,6 +46,7 @@ public class OnTouchTest {
         ));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .compilesWithoutError()
         .and()
@@ -58,19 +57,18 @@ public class OnTouchTest {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n').join(
         "package test;",
         "import android.app.Activity;",
-        "import butterfork.BindResources;",
         "import butterfork.OnTouch;",
-        "@BindResources(butterfork.internal.R.class)",
         "public class Test extends Activity {",
         "  @OnTouch(\"one\") boolean doStuff1() {}",
         "  @OnTouch(\"one\") boolean doStuff2() {}",
         "}"));
 
     ASSERT.about(javaSource()).that(source)
+        .withCompilerOptions("-Arespackagename=" + R.class.getPackage().getName())
         .processedWith(new ButterForkProcessor())
         .failsToCompile()
         .withErrorContaining(
             "Multiple listener methods with return value specified for ID one. (test.Test.doStuff2)")
-        .in(source).onLine(8);
+        .in(source).onLine(6);
   }
 }
