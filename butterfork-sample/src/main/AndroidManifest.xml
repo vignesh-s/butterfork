@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.butterfork">
 
-    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="21"/>
+    <!--For Robolectric-->
+    <uses-sdk android:minSdkVersion="16" />
 
     <application
         android:label="@string/app_name"

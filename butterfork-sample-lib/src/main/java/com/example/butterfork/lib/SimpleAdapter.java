@@ -1,4 +1,4 @@
-package com.example.butterfork;
+package com.example.butterfork.lib;
 
 import android.content.Context;
 import android.view.LayoutInflater;

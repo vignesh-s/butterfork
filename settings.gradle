@@ -2,5 +2,6 @@ include ':butterfork'
 include ':butterfork-compiler'
 include ':butterfork-plugin'
 include ':butterfork-sample'
+include ':butterfork-sample-lib'
 
 rootProject.name = 'butterfork-parent'

@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.butterfork.lib.SimpleAdapter;
+
 import java.util.List;
 
 import butterfork.Bind;
