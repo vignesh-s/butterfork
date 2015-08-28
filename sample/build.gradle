@@ -43,14 +43,14 @@ android {
 project.afterEvaluate {
     // Ensure processor is compiled
     android.applicationVariants.all { variant ->
-        variant.javaCompile.dependsOn ':butterfork-compiler:jar'
+        variant.javaCompile.dependsOn ':compiler:jar'
     }
 }
 
 dependencies {
-    compile project(':butterfork')
-    apt project(':butterfork-compiler')
-    compile project(':butterfork-sample-lib')
+    compile project(':binder')
+    apt project(':compiler')
+    compile project(':sample-lib')
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'com.squareup.assertj', name: 'assertj-android', version: '1.1.0'

@@ -1,7 +1,7 @@
-include ':butterfork'
-include ':butterfork-compiler'
-include ':butterfork-plugin'
-include ':butterfork-sample'
-include ':butterfork-sample-lib'
+include ':binder'
+include ':compiler'
+include ':plugin'
+include ':sample'
+include ':sample-lib'
 
 rootProject.name = 'butterfork-parent'
