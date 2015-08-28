@@ -48,7 +48,9 @@ final class BindingClassBuilder {
     List<String> supportedTypes = Arrays.asList(SUPPORTED_TYPES);
 
     for (Node node : resourceClass.getChildrenNodes()) {
-      addResourceType(supportedTypes, result, (TypeDeclaration) node);
+      if (node instanceof TypeDeclaration) {
+        addResourceType(supportedTypes, result, (TypeDeclaration) node);
+      }
     }
 
     JavaFile bFile = JavaFile.builder(packageName, result.build())
@@ -70,7 +72,9 @@ final class BindingClassBuilder {
         .addModifiers(PUBLIC, STATIC, FINAL);
 
     for (BodyDeclaration field : node.getMembers()) {
-      addResourceField(resourceType, ((FieldDeclaration) field).getVariables().get(0));
+      if (field instanceof FieldDeclaration) {
+        addResourceField(resourceType, ((FieldDeclaration) field).getVariables().get(0));
+      }
     }
 
     result.addType(resourceType.build());
