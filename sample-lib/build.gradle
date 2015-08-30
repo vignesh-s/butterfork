@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.oguzbabaoglu:plugin:0.1.0-SNAPSHOT'
+        classpath 'com.oguzbabaoglu:butterfork-plugin:1.0.0'
     }
 }
 

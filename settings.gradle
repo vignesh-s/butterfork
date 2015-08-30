@@ -2,8 +2,7 @@ include ':binder'
 include ':compiler'
 include ':plugin'
 
-// Need to exclude sample modules from release build in JitPack
-//include ':sample'
-//include ':sample-lib'
+include ':sample'
+include ':sample-lib'
 
 rootProject.name = 'butterfork-parent'

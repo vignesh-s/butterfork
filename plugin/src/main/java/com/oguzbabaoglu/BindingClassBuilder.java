@@ -24,7 +24,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 /**
  * Generates a B class that contains all supported field names in target R file as final values.
  */
-final class BindingClassBuilder {
+public final class BindingClassBuilder {
 
   private static final String className = "B";
   private static final String[] SUPPORTED_TYPES = {
