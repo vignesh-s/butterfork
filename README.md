@@ -95,7 +95,8 @@ There are a couple of issue threads where this problem was discussed for ButterK
 License
 -------
 
-    Copyright 2013 Jake Wharton
+    Original work Copyright 2013 Jake Wharton
+    Modified work Copyright 2015 Oguz Babaoglu
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
