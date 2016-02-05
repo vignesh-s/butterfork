@@ -1,15 +1,14 @@
-
 apply plugin: 'java'
 
 project.ext.set('pomId', 'butterfork-binder')
 
 dependencies {
 
-    compile group: 'com.google.android', name: 'android', version: '4.1.1.4'
+  compile group: 'com.google.android', name: 'android', version: '4.1.1.4'
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.1'
-    testCompile group: 'org.robolectric', name: 'robolectric', version: '3.0'
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.1'
+  testCompile group: 'org.robolectric', name: 'robolectric', version: '3.0'
 }
 
 apply from: '../maven.gradle'

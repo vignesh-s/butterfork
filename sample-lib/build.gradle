@@ -1,12 +1,11 @@
-
 buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.oguzbabaoglu:butterfork-plugin:1.0.0'
-    }
+  repositories {
+    mavenLocal()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.oguzbabaoglu:butterfork-plugin:1.0.0'
+  }
 }
 
 apply plugin: 'com.android.library'
@@ -14,35 +13,35 @@ apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.oguzbabaoglu.butterfork-plugin'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.0"
+  compileSdkVersion 23
+  buildToolsVersion "23.0.2"
 
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+  defaultConfig {
+    minSdkVersion 16
+    targetSdkVersion 23
+    versionCode 1
+    versionName "1.0"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+  }
 }
 
 project.afterEvaluate {
-    // Ensure processor is compiled
-    android.libraryVariants.all { variant ->
-        variant.javaCompile.dependsOn ':compiler:jar'
-    }
+  // Ensure processor is compiled
+  android.libraryVariants.all { variant ->
+    variant.javaCompile.dependsOn ':compiler:jar'
+  }
 }
 
 dependencies {
-    compile project(':binder')
-    apt project(':compiler')
+  compile project(':binder')
+  apt project(':compiler')
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'com.squareup.assertj', name: 'assertj-android', version: '1.1.0'
-    testCompile group: 'org.robolectric', name: 'robolectric', version: '3.0'
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: 'com.squareup.assertj', name: 'assertj-android', version: '1.1.0'
+  testCompile group: 'org.robolectric', name: 'robolectric', version: '3.0'
 }
