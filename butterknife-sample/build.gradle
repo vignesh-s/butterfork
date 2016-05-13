@@ -33,8 +33,6 @@ android {
 
 dependencies {
   compile project(':butterfork-sample')
-  compile project(':butterknife')
-  apt project(':butterknife-compiler')
 
   testCompile deps.junit
   testCompile deps.truth

@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-  compile project(':butterknife-annotations')
+  compile project(':butterfork-annotations')
   compile deps.supportAnnotations
   provided deps.supportv4
 

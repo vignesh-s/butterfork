@@ -13,7 +13,7 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 }
 
 dependencies {
-  compile project(':butterknife-annotations')
+  compile project(':butterfork-annotations')
   compile deps.autoservice
   compile deps.autocommon
   compile deps.javapoet
