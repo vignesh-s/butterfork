@@ -41,7 +41,7 @@ afterEvaluate { project ->
     publish = true
     pkg {
       repo = 'maven'
-      name = POM_NAME
+      name = POM_ARTIFACT_ID
       desc = POM_DESCRIPTION
       websiteUrl = POM_URL
       issueTrackerUrl = 'https://github.com/oguzbabaoglu/butterfork/issues'
