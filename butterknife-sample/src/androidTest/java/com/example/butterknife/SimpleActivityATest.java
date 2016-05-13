@@ -2,8 +2,8 @@ package com.example.butterknife;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-public final class SimpleActivityTest extends ActivityInstrumentationTestCase2<SimpleActivity> {
-  public SimpleActivityTest() {
+public final class SimpleActivityATest extends ActivityInstrumentationTestCase2<SimpleActivity> {
+  public SimpleActivityATest() {
     super(SimpleActivity.class);
   }
 

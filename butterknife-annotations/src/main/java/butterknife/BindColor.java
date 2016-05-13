@@ -1,6 +1,5 @@
 package butterknife;
 
-import android.support.annotation.ColorRes;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -18,5 +17,5 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS) @Target(FIELD)
 public @interface BindColor {
   /** Color resource ID to which the field will be bound. */
-  @ColorRes int value();
+  String value();
 }

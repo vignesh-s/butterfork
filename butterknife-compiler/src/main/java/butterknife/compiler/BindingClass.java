@@ -1,7 +1,5 @@
 package butterknife.compiler;
 
-import butterknife.internal.ListenerClass;
-import butterknife.internal.ListenerMethod;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -12,6 +10,7 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeVariableName;
 import com.squareup.javapoet.WildcardTypeName;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +20,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.lang.model.element.Modifier;
+
+import butterknife.internal.ListenerClass;
+import butterknife.internal.ListenerMethod;
 
 import static butterknife.compiler.ButterKnifeProcessor.VIEW_TYPE;
 import static java.util.Collections.singletonList;
@@ -45,8 +48,8 @@ final class BindingClass {
   private static final String UNBINDER_SIMPLE_NAME = "InnerUnbinder";
   private static final String BIND_TO_TARGET = "bindToTarget";
 
-  private final Map<Integer, ViewBindings> viewIdMap = new LinkedHashMap<>();
-  private final Map<FieldCollectionViewBinding, int[]> collectionBindings = new LinkedHashMap<>();
+  private final Map<String, ViewBindings> viewIdMap = new LinkedHashMap<>();
+  private final Map<FieldCollectionViewBinding, String[]> collectionBindings = new LinkedHashMap<>();
   private final List<FieldBitmapBinding> bitmapBindings = new ArrayList<>();
   private final List<FieldDrawableBinding> drawableBindings = new ArrayList<>();
   private final List<FieldResourceBinding> resourceBindings = new ArrayList<>();
@@ -71,16 +74,16 @@ final class BindingClass {
     drawableBindings.add(binding);
   }
 
-  void addField(int id, FieldViewBinding binding) {
+  void addField(String id, FieldViewBinding binding) {
     getOrCreateViewBindings(id).setFieldBinding(binding);
   }
 
-  void addFieldCollection(int[] ids, FieldCollectionViewBinding binding) {
+  void addFieldCollection(String[] ids, FieldCollectionViewBinding binding) {
     collectionBindings.put(binding, ids);
   }
 
   boolean addMethod(
-      int id,
+      String id,
       ListenerClass listener,
       ListenerMethod method,
       MethodViewBinding binding) {
@@ -100,11 +103,11 @@ final class BindingClass {
     this.parentBinding = parent;
   }
 
-  ViewBindings getViewBinding(int id) {
+  ViewBindings getViewBinding(String id) {
     return viewIdMap.get(id);
   }
 
-  private ViewBindings getOrCreateViewBindings(int id) {
+  private ViewBindings getOrCreateViewBindings(String id) {
     ViewBindings viewId = viewIdMap.get(id);
     if (viewId == null) {
       viewId = new ViewBindings(id);
@@ -264,7 +267,7 @@ final class BindingClass {
 
     String fieldName = "target";
     if (!bindings.isBoundToRoot()) {
-      fieldName = "view" + bindings.getId();
+      fieldName = bindings.getId().replace(".", "");
       result.addField(VIEW, fieldName, PRIVATE);
     }
 
@@ -421,7 +424,7 @@ final class BindingClass {
       }
 
       // Loop over each collection binding and emit it.
-      for (Map.Entry<FieldCollectionViewBinding, int[]> entry : collectionBindings.entrySet()) {
+      for (Map.Entry<FieldCollectionViewBinding, String[]> entry : collectionBindings.entrySet()) {
         emitCollectionBinding(result, entry.getKey(), entry.getValue());
       }
 
@@ -437,8 +440,8 @@ final class BindingClass {
       }
 
       for (FieldDrawableBinding binding : drawableBindings) {
-        int tintAttributeId = binding.getTintAttributeId();
-        if (tintAttributeId != 0) {
+        String tintAttributeId = binding.getTintAttributeId();
+        if (tintAttributeId != null  && !tintAttributeId.isEmpty()) {
           result.addStatement("target.$L = $T.getTintedDrawable(res, theme, $L, $L)",
               binding.getName(), UTILS, binding.getId(), tintAttributeId);
         } else {
@@ -463,7 +466,7 @@ final class BindingClass {
   private void emitCollectionBinding(
       MethodSpec.Builder result,
       FieldCollectionViewBinding binding,
-      int[] ids) {
+      String[] ids) {
     String ofName;
     switch (binding.getKind()) {
       case ARRAY:
@@ -558,7 +561,7 @@ final class BindingClass {
     String fieldName = "target";
     String bindName = "target";
     if (!bindings.isBoundToRoot()) {
-      fieldName = "view" + bindings.getId();
+      fieldName = bindings.getId().replace(".", "");
       bindName = "view";
 
       if (isGeneratingUnbinder()) {

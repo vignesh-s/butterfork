@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class BindDimenTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindDimen;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindDimen(1) float one;\n"
+        + "  @BindDimen(B.dimen.one) float one;\n"
         + "}"
     );
 
@@ -37,7 +40,7 @@ public class BindDimenTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.getDimension(1);\n"
+        + "    target.one = res.getDimension(test.R.dimen.one);\n"
         + "  }\n"
         + "}"
     );
@@ -55,7 +58,7 @@ public class BindDimenTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindDimen;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindDimen(1) int one;\n"
+        + "  @BindDimen(B.dimen.one) int one;\n"
         + "}"
     );
 
@@ -77,7 +80,7 @@ public class BindDimenTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.getDimensionPixelSize(1);\n"
+        + "    target.one = res.getDimensionPixelSize(test.R.dimen.one);\n"
         + "  }\n"
         + "}"
     );
@@ -95,7 +98,7 @@ public class BindDimenTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindDimen;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindDimen(1) String one;\n"
+        + "  @BindDimen(B.dimen.one) String one;\n"
         + "}"
     );
 

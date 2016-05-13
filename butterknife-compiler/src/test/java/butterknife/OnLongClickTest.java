@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -16,7 +19,7 @@ public class OnLongClickTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnLongClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnLongClick(1) boolean doStuff() {\n"
+        + "  @OnLongClick(B.id.one) boolean doStuff() {\n"
         + "    return true;\n"
         + "  }\n"
         + "}"
@@ -38,12 +41,12 @@ public class OnLongClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      view.setOnLongClickListener(new View.OnLongClickListener() {\n"
         + "        @Override\n"
         + "        public boolean onLongClick(View p0) {\n"
@@ -54,8 +57,8 @@ public class OnLongClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      view1.setOnLongClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      testRidone.setOnLongClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -75,7 +78,7 @@ public class OnLongClickTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnLongClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnLongClick(1)\n"
+        + "  @OnLongClick(B.id.one)\n"
         + "  public void doStuff() {\n"
         + "  }\n"
         + "}"

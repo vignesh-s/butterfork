@@ -1,19 +1,19 @@
 package butterknife.compiler;
 
 final class FieldResourceBinding {
-  private final int id;
+  private final String id;
   private final String name;
   private final String method;
   private final boolean themeable;
 
-  FieldResourceBinding(int id, String name, String method, boolean themeable) {
+  FieldResourceBinding(String id, String name, String method, boolean themeable) {
     this.id = id;
     this.name = name;
     this.method = method;
     this.themeable = themeable;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 

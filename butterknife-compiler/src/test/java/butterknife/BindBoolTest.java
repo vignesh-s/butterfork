@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class BindBoolTest {
         + "import android.app.Activity;"
         + "import butterknife.BindBool;"
         + "public class Test extends Activity {"
-        + "  @BindBool(1) boolean one;"
+        + "  @BindBool(B.bool.one) boolean one;"
         + "}"
     );
 
@@ -37,7 +40,7 @@ public class BindBoolTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.getBoolean(1);\n"
+        + "    target.one = res.getBoolean(test.R.bool.one);\n"
         + "  }\n"
         + "}"
     );
@@ -55,7 +58,7 @@ public class BindBoolTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindBool;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindBool(1) String one;\n"
+        + "  @BindBool(B.bool.one) String one;\n"
         + "}"
     );
 

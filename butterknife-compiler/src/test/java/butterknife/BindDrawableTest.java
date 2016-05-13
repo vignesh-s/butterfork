@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -16,7 +19,7 @@ public class BindDrawableTest {
         + "import android.graphics.drawable.Drawable;\n"
         + "import butterknife.BindDrawable;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindDrawable(1) Drawable one;\n"
+        + "  @BindDrawable(B.drawable.one) Drawable one;\n"
         + "}"
     );
 
@@ -42,7 +45,7 @@ public class BindDrawableTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res, Resources.Theme theme) {\n"
-        + "    target.one = Utils.getDrawable(res, theme, 1);\n"
+        + "    target.one = Utils.getDrawable(res, theme, test.R.drawable.one);\n"
         + "  }\n"
         + "}"
     );
@@ -61,7 +64,7 @@ public class BindDrawableTest {
         + "import android.graphics.drawable.Drawable;\n"
         + "import butterknife.BindDrawable;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindDrawable(value = 1, tint = 2) Drawable one;\n"
+        + "  @BindDrawable(value = B.drawable.one, tint = B.attr.one) Drawable one;\n"
         + "}"
     );
 
@@ -87,7 +90,7 @@ public class BindDrawableTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res, Resources.Theme theme) {\n"
-        + "    target.one = Utils.getTintedDrawable(res, theme, 1, 2);\n"
+        + "    target.one = Utils.getTintedDrawable(res, theme, test.R.drawable.one, test.R.attr.one);\n"
         + "  }\n"
         + "}"
     );
@@ -105,7 +108,7 @@ public class BindDrawableTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindDrawable;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindDrawable(1) String one;\n"
+        + "  @BindDrawable(B.drawable.one) String one;\n"
         + "}"
     );
 

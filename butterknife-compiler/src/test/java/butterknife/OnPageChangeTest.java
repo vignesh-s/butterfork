@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class OnPageChangeTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnPageChange;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnPageChange(1) void doStuff() {}\n"
+        + "  @OnPageChange(B.id.one) void doStuff() {}\n"
         + "}"
     );
 
@@ -36,12 +39,12 @@ public class OnPageChangeTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      ((ViewPager) view).setOnPageChangeListener(new ViewPager.OnPageChangeListener() {\n"
         + "        @Override\n"
         + "        public void onPageSelected(int p0) {\n"
@@ -58,8 +61,8 @@ public class OnPageChangeTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      ((ViewPager) view1).setOnPageChangeListener(null);\n"
-        + "      view1 = null;\n"
+        + "      ((ViewPager) testRidone).setOnPageChangeListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"

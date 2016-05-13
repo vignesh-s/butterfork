@@ -20,7 +20,7 @@ public class OnItemClickTest {
         + "import android.app.Activity;"
         + "import butterknife.OnItemClick;"
         + "public class Test extends Activity {"
-        + "  @OnItemClick(1) void doStuff() {}"
+        + "  @OnItemClick(B.id.one) void doStuff() {}"
         + "}"
     );
 
@@ -41,12 +41,12 @@ public class OnItemClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {\n"
         + "        @Override\n"
         + "        public void onItemClick(AdapterView<?> p0, View p1, int p2, long p3) {\n"
@@ -57,8 +57,8 @@ public class OnItemClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      ((AdapterView<?>) view1).setOnItemClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      ((AdapterView<?>) testRidone).setOnItemClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -80,7 +80,7 @@ public class OnItemClickTest {
         + "import android.widget.AdapterView;\n"
         + "import butterknife.OnItemClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnItemClick(1) void doStuff(\n"
+        + "  @OnItemClick(B.id.one) void doStuff(\n"
         + "    AdapterView<?> parent,\n"
         + "    View view,\n"
         + "    int position,\n"
@@ -106,12 +106,12 @@ public class OnItemClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {\n"
         + "        @Override\n"
         + "        public void onItemClick(AdapterView<?> p0, View p1, int p2, long p3) {\n"
@@ -122,8 +122,8 @@ public class OnItemClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      ((AdapterView<?>) view1).setOnItemClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      ((AdapterView<?>) testRidone).setOnItemClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -145,7 +145,7 @@ public class OnItemClickTest {
         + "import android.widget.ListView;\n"
         + "import butterknife.OnItemClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnItemClick(1) void doStuff(\n"
+        + "  @OnItemClick(B.id.one) void doStuff(\n"
         + "    ListView parent,\n"
         + "    int position\n"
         + "  ) {}\n"
@@ -170,12 +170,12 @@ public class OnItemClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, final Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {\n"
         + "        @Override\n"
         + "        public void onItemClick(AdapterView<?> p0, View p1, int p2, long p3) {\n"
@@ -186,8 +186,8 @@ public class OnItemClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      ((AdapterView<?>) view1).setOnItemClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      ((AdapterView<?>) testRidone).setOnItemClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -209,7 +209,7 @@ public class OnItemClickTest {
         + "import android.widget.ListView;\n"
         + "import butterknife.OnItemClick;\n"
         + "public class Test<T extends ListView> extends Activity {\n"
-        + "  @OnItemClick(1) void doStuff(\n"
+        + "  @OnItemClick(B.id.one) void doStuff(\n"
         + "    T parent,\n"
         + "    int position\n"
         + "  ) {}\n"
@@ -234,12 +234,12 @@ public class OnItemClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, final Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      ((AdapterView<?>) view).setOnItemClickListener(new AdapterView.OnItemClickListener() {\n"
         + "        @Override\n"
         + "        public void onItemClick(AdapterView<?> p0, View p1, int p2, long p3) {\n"
@@ -251,8 +251,8 @@ public class OnItemClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      ((AdapterView<?>) view1).setOnItemClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      ((AdapterView<?>) testRidone).setOnItemClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -330,13 +330,13 @@ public class OnItemClickTest {
         "import android.app.Activity;",
         "import butterknife.OnItemClick;",
         "public class Test extends Activity {",
-        "  @OnItemClick({1, -1}) void doStuff() {}",
+        "  @OnItemClick({B.id.one, \"\"}) void doStuff() {}",
         "}"));
 
     assertAbout(javaSource()).that(source)
         .processedWith(new ButterKnifeProcessor())
         .failsToCompile()
-        .withErrorContaining("@OnItemClick annotation contains invalid ID -1. (test.Test.doStuff)")
+        .withErrorContaining("@OnItemClick annotation contains invalid ID . (test.Test.doStuff)")
         .in(source).onLine(6);
   }
 
@@ -348,7 +348,7 @@ public class OnItemClickTest {
         "import android.widget.AdapterView;",
         "import butterknife.OnItemClick;",
         "public class Test extends Activity {",
-        "  @OnItemClick(1) void doStuff(",
+        "  @OnItemClick(B.id.one) void doStuff(",
         "    AdapterView<?> parent,",
         "    View view,",
         "    View whatIsThis",

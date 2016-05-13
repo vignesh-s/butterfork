@@ -1,17 +1,17 @@
 package butterknife.compiler;
 
 final class FieldDrawableBinding {
-  private final int id;
+  private final String id;
   private final String name;
-  private final int tintAttributeId;
+  private final String tintAttributeId;
 
-  FieldDrawableBinding(int id, String name, int tintAttributeId) {
+  FieldDrawableBinding(String id, String name, String tintAttributeId) {
     this.id = id;
     this.name = name;
     this.tintAttributeId = tintAttributeId;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
@@ -19,7 +19,7 @@ final class FieldDrawableBinding {
     return name;
   }
 
-  public int getTintAttributeId() {
+  public String getTintAttributeId() {
     return tintAttributeId;
   }
 }

@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class OnTextChangedTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnTextChanged;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnTextChanged(1) void doStuff() {}\n"
+        + "  @OnTextChanged(B.id.one) void doStuff() {}\n"
         + "}"
     );
 
@@ -39,14 +42,14 @@ public class OnTextChangedTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
-        + "    private TextWatcher view1TextWatcher;\n"
+        + "    private View testRidone;\n"
+        + "    private TextWatcher testRidoneTextWatcher;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
-        + "      this.view1TextWatcher = new TextWatcher() {\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
+        + "      this.testRidoneTextWatcher = new TextWatcher() {\n"
         + "        @Override\n"
         + "        public void onTextChanged(CharSequence p0, int p1, int p2, int p3) {\n"
         + "          target.doStuff();\n"
@@ -58,14 +61,14 @@ public class OnTextChangedTest {
         + "        public void afterTextChanged(Editable p0) {\n"
         + "        }\n"
         + "      };\n"
-        + "      ((TextView) view).addTextChangedListener(view1TextWatcher);\n"
+        + "      ((TextView) view).addTextChangedListener(testRidoneTextWatcher);\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      ((TextView) view1).removeTextChangedListener(view1TextWatcher);\n"
-        + "      view1TextWatcher = null;\n"
-        + "      view1 = null;\n"
+        + "      ((TextView) testRidone).removeTextChangedListener(testRidoneTextWatcher);\n"
+        + "      testRidoneTextWatcher = null;\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"

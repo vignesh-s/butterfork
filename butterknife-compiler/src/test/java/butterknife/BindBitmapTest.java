@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -16,7 +19,7 @@ public class BindBitmapTest {
         + "import android.graphics.Bitmap;\n"
         + "import butterknife.BindBitmap;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindBitmap(1) Bitmap one;\n"
+        + "  @BindBitmap(B.drawable.one) Bitmap one;\n"
         + "}"
     );
 
@@ -39,7 +42,7 @@ public class BindBitmapTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = BitmapFactory.decodeResource(res, 1);\n"
+        + "    target.one = BitmapFactory.decodeResource(res, test.R.drawable.one);\n"
         + "  }\n"
         + "}"
     );
@@ -57,7 +60,7 @@ public class BindBitmapTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindBitmap;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindBitmap(1) String one;\n"
+        + "  @BindBitmap(B.drawable.one) String one;\n"
         + "}"
     );
 

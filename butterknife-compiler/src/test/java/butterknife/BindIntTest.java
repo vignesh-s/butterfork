@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class BindIntTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindInt;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindInt(1) int one;\n"
+        + "  @BindInt(B.integer.one) int one;\n"
         + "}"
     );
 
@@ -37,7 +40,7 @@ public class BindIntTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.getInteger(1);\n"
+        + "    target.one = res.getInteger(test.R.integer.one);\n"
         + "  }\n"
         + "}"
     );
@@ -55,7 +58,7 @@ public class BindIntTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindInt;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindInt(1) String one;\n"
+        + "  @BindInt(B.integer.one) String one;\n"
         + "}"
     );
 

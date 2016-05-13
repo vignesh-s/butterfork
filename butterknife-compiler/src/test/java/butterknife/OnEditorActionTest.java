@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class OnEditorActionTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnEditorAction;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnEditorAction(1) boolean doStuff() { return false; }\n"
+        + "  @OnEditorAction(B.id.one) boolean doStuff() { return false; }\n"
         + "}"
     );
 
@@ -37,12 +40,12 @@ public class OnEditorActionTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      ((TextView) view).setOnEditorActionListener(new TextView.OnEditorActionListener() {\n"
         + "        @Override\n"
         + "        public boolean onEditorAction(TextView p0, int p1, KeyEvent p2) {\n"
@@ -53,8 +56,8 @@ public class OnEditorActionTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      ((TextView) view1).setOnEditorActionListener(null);\n"
-        + "      view1 = null;\n"
+        + "      ((TextView) testRidone).setOnEditorActionListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"

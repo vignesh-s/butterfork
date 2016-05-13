@@ -1,0 +1,9 @@
+apply plugin: 'groovy'
+
+dependencies {
+  compile gradleApi()
+  compile deps.javapoet
+  compile 'com.github.javaparser:javaparser-core:2.4.0'
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class BindColorTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindColor;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindColor(1) int one;\n"
+        + "  @BindColor(B.color.one) int one;\n"
         + "}"
     );
 
@@ -41,7 +44,7 @@ public class BindColorTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res, Resources.Theme theme) {\n"
-        + "    target.one = Utils.getColor(res, theme, 1);\n"
+        + "    target.one = Utils.getColor(res, theme, test.R.color.one);\n"
         + "  }\n"
         + "}"
     );
@@ -60,7 +63,7 @@ public class BindColorTest {
         + "import android.content.res.ColorStateList;\n"
         + "import butterknife.BindColor;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindColor(1) ColorStateList one;\n"
+        + "  @BindColor(B.color.one) ColorStateList one;\n"
         +"}"
     );
 
@@ -86,7 +89,7 @@ public class BindColorTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res, Resources.Theme theme) {\n"
-        + "    target.one = Utils.getColorStateList(res, theme, 1);\n"
+        + "    target.one = Utils.getColorStateList(res, theme, test.R.color.one);\n"
         + "  }\n"
         + "}"
     );
@@ -104,7 +107,7 @@ public class BindColorTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindColor;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindColor(1) String one;\n"
+        + "  @BindColor(B.color.one) String one;\n"
         + "}"
     );
 

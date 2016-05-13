@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class BindStringTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindString;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindString(1) String one;\n"
+        + "  @BindString(B.string.one) String one;\n"
         + "}"
     );
 
@@ -37,7 +40,7 @@ public class BindStringTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.getString(1);\n"
+        + "    target.one = res.getString(test.R.string.one);\n"
         + "  }\n"
         + "}"
     );
@@ -55,7 +58,7 @@ public class BindStringTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindString;\n"
         + "public final class Test extends Activity {\n"
-        + "  @BindString(1) String one;\n"
+        + "  @BindString(B.string.one) String one;\n"
         + "}"
     );
 
@@ -73,7 +76,7 @@ public class BindStringTest {
         + "  @SuppressWarnings(\"ResourceType\")"
         + "  public Unbinder bind(Finder finder, Test target, Object source) {\n"
         + "    Resources res = finder.getContext(source).getResources();\n"
-        + "    target.one = res.getString(1);\n"
+        + "    target.one = res.getString(test.R.string.one);\n"
         + "    return Unbinder.EMPTY;\n"
         + "  }\n"
         + "}"
@@ -92,7 +95,7 @@ public class BindStringTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindString;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindString(1) boolean one;\n"
+        + "  @BindString(B.string.one) boolean one;\n"
         + "}"
     );
 

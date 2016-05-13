@@ -1,11 +1,15 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.common.base.Joiner;
 import com.google.testing.compile.JavaFileObjects;
-import java.util.Arrays;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import java.util.Arrays;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -20,7 +24,7 @@ public class BindViewTest {
             "import android.view.View;",
             "import butterknife.BindView;",
             "public class Test extends Activity {",
-            "    @BindView(1) View thing;",
+            "    @BindView(B.id.one) View thing;",
             "}"
         ));
 
@@ -41,7 +45,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.thing = finder.findRequiredView(source, 1, \"field 'thing'\");\n"
+        + "      target.thing = finder.findRequiredView(source, test.R.id.one, \"field 'thing'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -69,7 +73,7 @@ public class BindViewTest {
             "import android.view.View;",
             "import butterknife.BindView;",
             "public final class Test extends Activity {",
-            "    @BindView(1) View thing;",
+            "    @BindView(B.id.one) View thing;",
             "}"
         ));
 
@@ -90,7 +94,7 @@ public class BindViewTest {
         + "    private Test target;\n"
         + "    InnerUnbinder(Test target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.thing = finder.findRequiredView(source, 1, \"field 'thing'\");\n"
+        + "      target.thing = finder.findRequiredView(source, test.R.id.one, \"field 'thing'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -118,7 +122,7 @@ public class BindViewTest {
             "import android.view.View;",
             "import butterknife.BindView;",
             "public class Base extends Activity {",
-            "    @BindView(1) View thing;",
+            "    @BindView(B.id.one) View thing;",
             "}"
         ));
     JavaFileObject testSource = JavaFileObjects.forSourceString("test.Test",
@@ -127,7 +131,7 @@ public class BindViewTest {
             "import android.view.View;",
             "import butterknife.BindView;",
             "public final class Test extends Base {",
-            "    @BindView(1) View thing;",
+            "    @BindView(B.id.one) View thing;",
             "}"
         ));
 
@@ -148,7 +152,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.thing = finder.findRequiredView(source, 1, \"field 'thing'\");\n"
+        + "      target.thing = finder.findRequiredView(source, test.R.id.one, \"field 'thing'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -175,7 +179,7 @@ public class BindViewTest {
         + "  private static final class InnerUnbinder extends Base$$ViewBinder.InnerUnbinder<Test> {\n"
         + "    InnerUnbinder(Test target, Finder finder, Object source) {\n"
         + "      super(target, finder, source);\n"
-        + "      target.thing = finder.findRequiredView(source, 1, \"field 'thing'\");\n"
+        + "      target.thing = finder.findRequiredView(source, test.R.id.one, \"field 'thing'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -203,7 +207,7 @@ public class BindViewTest {
             "import butterknife.BindView;",
             "public class Outer {",
             "  public static class Test extends Activity {",
-            "    @BindView(1) View thing;",
+            "    @BindView(B.id.one) View thing;",
             "  }",
             "}"
         ));
@@ -225,7 +229,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.thing = finder.findRequiredView(source, 1, \"field 'thing'\");\n"
+        + "      target.thing = finder.findRequiredView(source, test.R.id.one, \"field 'thing'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -253,7 +257,7 @@ public class BindViewTest {
             "import android.view.View;",
             "import butterknife.BindView;",
             "public class Test extends Activity {",
-            "    @BindView(1) View thing;",
+            "    @BindView(test.B.id.one) View thing;",
             "}"
         ));
 
@@ -274,7 +278,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.thing = finder.findRequiredView(source, 1, \"field 'thing'\");\n"
+        + "      target.thing = finder.findRequiredView(source, test.R.id.one, \"field 'thing'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -302,7 +306,7 @@ public class BindViewTest {
         "import butterknife.BindView;",
         "public class Test extends Activity {",
         "    interface TestInterface {}",
-        "    @BindView(1) TestInterface thing;",
+        "    @BindView(B.id.one) TestInterface thing;",
         "}"
     ));
 
@@ -323,7 +327,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.thing = finder.findRequiredViewAsType(source, 1, \"field 'thing'\", Test.TestInterface.class);\n"
+        + "      target.thing = finder.findRequiredViewAsType(source, test.R.id.one, \"field 'thing'\", Test.TestInterface.class);\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -351,7 +355,7 @@ public class BindViewTest {
         "import android.widget.TextView;",
         "import butterknife.BindView;",
         "class Test<T extends TextView> extends Activity {",
-        "    @BindView(1) T thing;",
+        "    @BindView(B.id.one) T thing;",
         "}"
     ));
 
@@ -373,7 +377,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.thing = finder.findRequiredViewAsType(source, 1, \"field 'thing'\", TextView.class);\n"
+        + "      target.thing = finder.findRequiredViewAsType(source, test.R.id.one, \"field 'thing'\", TextView.class);\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -401,8 +405,8 @@ public class BindViewTest {
         "import butterknife.BindView;",
         "import butterknife.OnClick;",
         "public class Test extends Activity {",
-        "  @BindView(1) View thing1;",
-        "  @OnClick(1) void doStuff() {}",
+        "  @BindView(B.id.one) View thing1;",
+        "  @OnClick(B.id.one) void doStuff() {}",
         "}"
     ));
 
@@ -423,13 +427,13 @@ public class BindViewTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"field 'thing1' and method 'doStuff'\");\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"field 'thing1' and method 'doStuff'\");\n"
         + "      target.thing1 = view;\n"
-        + "      view1 = view;\n"
+        + "      testRidone = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -442,8 +446,8 @@ public class BindViewTest {
         + "      T target = this.target;\n"
         + "      if (target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
         + "      target.thing1 = null;\n"
-        + "      view1.setOnClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      testRidone.setOnClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -464,9 +468,9 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public class Test extends Activity {",
-        "  @BindView(1) public View thing1;",
-        "  @BindView(2) View thing2;",
-        "  @BindView(3) protected View thing3;",
+        "  @BindView(B.id.one) public View thing1;",
+        "  @BindView(B.id.two) View thing2;",
+        "  @BindView(B.id.three) protected View thing3;",
         "}"
     ));
 
@@ -483,7 +487,7 @@ public class BindViewTest {
         "import butterknife.BindView;",
         "public class Test extends Activity {",
         "  @interface Nullable {}",
-        "  @Nullable @BindView(1) View view;",
+        "  @Nullable @BindView(B.id.one) View view;",
         "}"
     ));
 
@@ -504,7 +508,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.view = finder.findOptionalView(source, 1);\n"
+        + "      target.view = finder.findOptionalView(source, test.R.id.one);\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -531,10 +535,10 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public class Test extends Activity {",
-        "  @BindView(1) View view;",
+        "  @BindView(B.id.one) View view;",
         "}",
         "class TestOne extends Test {",
-        "  @BindView(1) View thing;",
+        "  @BindView(B.id.one) View thing;",
         "}",
         "class TestTwo extends Test {",
         "}"
@@ -557,7 +561,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.view = finder.findRequiredView(source, 1, \"field 'view'\");\n"
+        + "      target.view = finder.findRequiredView(source, test.R.id.one, \"field 'view'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -584,7 +588,7 @@ public class BindViewTest {
         + "  protected static class InnerUnbinder<T extends TestOne> extends Test$$ViewBinder.InnerUnbinder<T> {\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      super(target, finder, source);\n"
-        + "      target.thing = finder.findRequiredView(source, 1, \"field 'thing'\");\n"
+        + "      target.thing = finder.findRequiredView(source, test.R.id.one, \"field 'thing'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -610,10 +614,10 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public class Test<T> extends Activity {",
-        "  @BindView(1) View view;",
+        "  @BindView(B.id.one) View view;",
         "}",
         "class TestOne extends Test<String> {",
-        "  @BindView(1) View thing;",
+        "  @BindView(B.id.one) View thing;",
         "}",
         "class TestTwo extends Test<Object> {",
         "}"
@@ -636,7 +640,7 @@ public class BindViewTest {
         + "    protected T target;\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
-        + "      target.view = finder.findRequiredView(source, 1, \"field 'view'\");\n"
+        + "      target.view = finder.findRequiredView(source, test.R.id.one, \"field 'view'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -663,7 +667,7 @@ public class BindViewTest {
         + "  protected static class InnerUnbinder<T extends TestOne> extends Test$$ViewBinder.InnerUnbinder<T> {\n"
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      super(target, finder, source);\n"
-        + "      target.thing = finder.findRequiredView(source, 1, \"field 'thing'\");\n"
+        + "      target.thing = finder.findRequiredView(source, test.R.id.one, \"field 'thing'\");\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -688,7 +692,7 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public class Test {",
-        "  @BindView(1) View thing;",
+        "  @BindView(B.id.one) View thing;",
         "}"
     ));
 
@@ -706,7 +710,7 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public class Test {",
-        "  @BindView(1) View thing;",
+        "  @BindView(B.id.one) View thing;",
         "}"
     ));
 
@@ -725,7 +729,7 @@ public class BindViewTest {
         "import butterknife.BindView;",
         "public class Test {",
         "  private static class Inner {",
-        "    @BindView(1) View thing;",
+        "    @BindView(B.id.one) View thing;",
         "  }",
         "}"
     ));
@@ -744,7 +748,7 @@ public class BindViewTest {
         "import android.app.Activity;",
         "import butterknife.BindView;",
         "public class Test extends Activity {",
-        "  @BindView(1) String thing;",
+        "  @BindView(B.id.one) String thing;",
         "}"
     ));
 
@@ -761,7 +765,7 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public interface Test {",
-        "    @BindView(1) View thing = null;",
+        "    @BindView(B.id.one) View thing = null;",
         "}"
     ));
 
@@ -780,7 +784,7 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public class Test extends Activity {",
-        "    @BindView(1) private View thing;",
+        "    @BindView(B.id.one) private View thing;",
         "}"
     ));
 
@@ -798,7 +802,7 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public class Test extends Activity {",
-        "    @BindView(1) static View thing;",
+        "    @BindView(B.id.one) static View thing;",
         "}"
     ));
 
@@ -816,8 +820,8 @@ public class BindViewTest {
         "import android.view.View;",
         "import butterknife.BindView;",
         "public class Test extends Activity {",
-        "    @BindView(1) View thing1;",
-        "    @BindView(1) View thing2;",
+        "    @BindView(B.id.one) View thing1;",
+        "    @BindView(B.id.one) View thing2;",
         "}"
     ));
 
@@ -825,7 +829,7 @@ public class BindViewTest {
         .processedWith(new ButterKnifeProcessor())
         .failsToCompile()
         .withErrorContaining(
-            "Attempt to use @BindView for an already bound ID 1 on 'thing1'. (test.Test.thing2)")
+            "Attempt to use @BindView for an already bound ID <test.R.id.one> on 'thing1'. (test.Test.thing2)")
         .in(source).onLine(7);
   }
 

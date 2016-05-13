@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.oguzbabaoglu.butterfork-plugin'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -31,6 +32,7 @@ android {
 }
 
 dependencies {
+  compile project(':butterfork-sample')
   compile project(':butterknife')
   apt project(':butterknife-compiler')
 

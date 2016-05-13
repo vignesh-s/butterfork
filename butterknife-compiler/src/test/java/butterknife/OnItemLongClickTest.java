@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class OnItemLongClickTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnItemLongClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnItemLongClick(1) boolean doStuff() { return false; }\n"
+        + "  @OnItemLongClick(B.id.one) boolean doStuff() { return false; }\n"
         + "}"
     );
 
@@ -36,12 +39,12 @@ public class OnItemLongClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      ((AdapterView<?>) view).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {\n"
         + "        @Override\n"
         + "        public boolean onItemLongClick(AdapterView<?> p0, View p1, int p2, long p3) {\n"
@@ -52,8 +55,8 @@ public class OnItemLongClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      ((AdapterView<?>) view1).setOnItemLongClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      ((AdapterView<?>) testRidone).setOnItemLongClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"

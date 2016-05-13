@@ -8,7 +8,7 @@ import butterknife.ButterKnife;
 
 public final class F extends D {
 
-  @BindColor(android.R.color.background_light) @ColorInt int backgroundLightColor;
+  @BindColor("android.R.color.background_light") @ColorInt int backgroundLightColor;
 
   public F(View view) {
     super(view);

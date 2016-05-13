@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.butterfork">
+
+  <application
+      android:allowBackup="false"
+      android:fullBackupContent="false" >
+
+    <activity
+        android:label="@string/lib_name"
+        android:name=".SimpleLibActivity" />
+
+  </application>
+
+</manifest>

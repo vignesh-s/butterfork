@@ -1,11 +1,10 @@
 package butterknife;
 
-import android.support.annotation.IdRes;
-import android.view.View;
-import butterknife.internal.ListenerClass;
-import butterknife.internal.ListenerMethod;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
+import butterknife.internal.ListenerClass;
+import butterknife.internal.ListenerMethod;
 
 import static android.view.View.OnLongClickListener;
 import static java.lang.annotation.ElementType.METHOD;
@@ -41,5 +40,5 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 )
 public @interface OnLongClick {
   /** View IDs to which the method will be bound. */
-  @IdRes int[] value() default { View.NO_ID };
+  String[] value() default { "" };
 }

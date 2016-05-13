@@ -19,7 +19,7 @@ public class OnClickTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnClick(1) void doStuff() {}\n"
+        + "  @OnClick(B.id.one) void doStuff() {}\n"
         + "}"
     );
 
@@ -40,12 +40,12 @@ public class OnClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -56,8 +56,8 @@ public class OnClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      view1.setOnClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      testRidone.setOnClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -77,7 +77,7 @@ public class OnClickTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnClick;\n"
         + "public final class Test extends Activity {\n"
-        + "  @OnClick(1) void doStuff() {}\n"
+        + "  @OnClick(B.id.one) void doStuff() {}\n"
         + "}"
     );
 
@@ -98,12 +98,12 @@ public class OnClickTest {
         + "  }\n"
         + "  private static final class InnerUnbinder implements Unbinder {\n"
         + "    private Test target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    InnerUnbinder(final Test target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -114,8 +114,8 @@ public class OnClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      view1.setOnClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      testRidone.setOnClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -136,9 +136,9 @@ public class OnClickTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnClick(1) void doStuff1() {}\n"
-        + "  @OnClick(1) void doStuff2() {}\n"
-        + "  @OnClick({1, 2}) void doStuff3(View v) {}\n"
+        + "  @OnClick(B.id.one) void doStuff1() {}\n"
+        + "  @OnClick(B.id.one) void doStuff2() {}\n"
+        + "  @OnClick({B.id.one, B.id.two}) void doStuff3(View v) {}\n"
         + "}"
     );
 
@@ -159,13 +159,13 @@ public class OnClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
-        + "    private View view2;\n"
+        + "    private View testRidone;\n"
+        + "    private View testRidtwo;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff1', method 'doStuff2', and method 'doStuff3'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff1', method 'doStuff2', and method 'doStuff3'\");\n"
+        + "      testRidone = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -174,8 +174,8 @@ public class OnClickTest {
         + "          target.doStuff3(p0);\n"
         + "        }\n"
         + "      });\n"
-        + "      view = finder.findRequiredView(source, 2, \"method 'doStuff3'\");\n"
-        + "      view2 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.two, \"method 'doStuff3'\");\n"
+        + "      testRidtwo = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -186,10 +186,10 @@ public class OnClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      view1.setOnClickListener(null);\n"
-        + "      view1 = null;\n"
-        + "      view2.setOnClickListener(null);\n"
-        + "      view2 = null;\n"
+        + "      testRidone.setOnClickListener(null);\n"
+        + "      testRidone = null;\n"
+        + "      testRidtwo.setOnClickListener(null);\n"
+        + "      testRidtwo = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -211,8 +211,8 @@ public class OnClickTest {
         + "import butterknife.BindView;\n"
         + "import butterknife.OnClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindView(1) View view;\n"
-        + "  @OnClick(1) void doStuff() {}\n"
+        + "  @BindView(B.id.one) View view;\n"
+        + "  @OnClick(B.id.one) void doStuff() {}\n"
         + "}"
     );
 
@@ -233,13 +233,13 @@ public class OnClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"field 'view' and method 'doStuff'\");\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"field 'view' and method 'doStuff'\");\n"
         + "      target.view = view;\n"
-        + "      view1 = view;\n"
+        + "      testRidone = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -252,8 +252,8 @@ public class OnClickTest {
         + "      T target = this.target;\n"
         + "      if (target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
         + "      target.view = null;\n"
-        + "      view1.setOnClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      testRidone.setOnClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -274,9 +274,9 @@ public class OnClickTest {
         "import android.view.View;",
         "import butterknife.OnClick;",
         "public class Test extends Activity {",
-        "  @OnClick(1) public void thing1() {}",
-        "  @OnClick(2) void thing2() {}",
-        "  @OnClick(3) protected void thing3() {}",
+        "  @OnClick(B.id.one) public void thing1() {}",
+        "  @OnClick(B.id.two) void thing2() {}",
+        "  @OnClick(B.id.three) protected void thing3() {}",
         "}"
     ));
 
@@ -295,11 +295,11 @@ public class OnClickTest {
         + "import butterknife.OnClick;\n"
         + "public class Test extends Activity {\n"
         + "  interface TestInterface {}\n"
-        + "  @OnClick(0) void click0() {}\n"
-        + "  @OnClick(1) void click1(View view) {}\n"
-        + "  @OnClick(2) void click2(TextView view) {}\n"
-        + "  @OnClick(3) void click3(Button button) {}\n"
-        + "  @OnClick(4) void click4(TestInterface thing) {}\n"
+        + "  @OnClick(B.id.zero) void click0() {}\n"
+        + "  @OnClick(B.id.one) void click1(View view) {}\n"
+        + "  @OnClick(B.id.two) void click2(TextView view) {}\n"
+        + "  @OnClick(B.id.three) void click3(Button button) {}\n"
+        + "  @OnClick(B.id.four) void click4(TestInterface thing) {}\n"
         + "}"
     );
 
@@ -322,48 +322,48 @@ public class OnClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view0;\n"
-        + "    private View view1;\n"
-        + "    private View view2;\n"
-        + "    private View view3;\n"
-        + "    private View view4;\n"
+        + "    private View testRidzero;\n"
+        + "    private View testRidone;\n"
+        + "    private View testRidtwo;\n"
+        + "    private View testRidthree;\n"
+        + "    private View testRidfour;\n"
         + "    protected InnerUnbinder(final T target, final Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 0, \"method 'click0'\");\n"
-        + "      view0 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.zero, \"method 'click0'\");\n"
+        + "      testRidzero = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
         + "          target.click0();\n"
         + "        }\n"
         + "      });\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'click1'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'click1'\");\n"
+        + "      testRidone = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
         + "          target.click1(p0);\n"
         + "        }\n"
         + "      });\n"
-        + "      view = finder.findRequiredView(source, 2, \"method 'click2'\");\n"
-        + "      view2 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.two, \"method 'click2'\");\n"
+        + "      testRidtwo = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
         + "          target.click2(finder.<TextView>castParam(p0, \"doClick\", 0, \"click2\", 0));\n"
         + "        }\n"
         + "      });\n"
-        + "      view = finder.findRequiredView(source, 3, \"method 'click3'\");\n"
-        + "      view3 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.three, \"method 'click3'\");\n"
+        + "      testRidthree = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
         + "          target.click3(finder.<Button>castParam(p0, \"doClick\", 0, \"click3\", 0));\n"
         + "        }\n"
         + "      });\n"
-        + "      view = finder.findRequiredView(source, 4, \"method 'click4'\");\n"
-        + "      view4 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.four, \"method 'click4'\");\n"
+        + "      testRidfour = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -374,16 +374,16 @@ public class OnClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      view0.setOnClickListener(null);\n"
-        + "      view0 = null;\n"
-        + "      view1.setOnClickListener(null);\n"
-        + "      view1 = null;\n"
-        + "      view2.setOnClickListener(null);\n"
-        + "      view2 = null;\n"
-        + "      view3.setOnClickListener(null);\n"
-        + "      view3 = null;\n"
-        + "      view4.setOnClickListener(null);\n"
-        + "      view4 = null;\n"
+        + "      testRidzero.setOnClickListener(null);\n"
+        + "      testRidzero = null;\n"
+        + "      testRidone.setOnClickListener(null);\n"
+        + "      testRidone = null;\n"
+        + "      testRidtwo.setOnClickListener(null);\n"
+        + "      testRidtwo = null;\n"
+        + "      testRidthree.setOnClickListener(null);\n"
+        + "      testRidthree = null;\n"
+        + "      testRidfour.setOnClickListener(null);\n"
+        + "      testRidfour = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -404,7 +404,7 @@ public class OnClickTest {
         + "import android.view.View;\n"
         + "import butterknife.OnClick;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnClick({1, 2, 3}) void click() {}\n"
+        + "  @OnClick({B.id.one, B.id.two, B.id.three}) void click() {}\n"
         + "}"
     );
 
@@ -425,30 +425,30 @@ public class OnClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
-        + "    private View view2;\n"
-        + "    private View view3;\n"
+        + "    private View testRidone;\n"
+        + "    private View testRidtwo;\n"
+        + "    private View testRidthree;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'click'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'click'\");\n"
+        + "      testRidone = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
         + "          target.click();\n"
         + "        }\n"
         + "      });\n"
-        + "      view = finder.findRequiredView(source, 2, \"method 'click'\");\n"
-        + "      view2 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.two, \"method 'click'\");\n"
+        + "      testRidtwo = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
         + "          target.click();\n"
         + "        }\n"
         + "      });\n"
-        + "      view = finder.findRequiredView(source, 3, \"method 'click'\");\n"
-        + "      view3 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.three, \"method 'click'\");\n"
+        + "      testRidthree = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -459,12 +459,12 @@ public class OnClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      view1.setOnClickListener(null);\n"
-        + "      view1 = null;\n"
-        + "      view2.setOnClickListener(null);\n"
-        + "      view2 = null;\n"
-        + "      view3.setOnClickListener(null);\n"
-        + "      view3 = null;\n"
+        + "      testRidone.setOnClickListener(null);\n"
+        + "      testRidone = null;\n"
+        + "      testRidtwo.setOnClickListener(null);\n"
+        + "      testRidtwo = null;\n"
+        + "      testRidthree.setOnClickListener(null);\n"
+        + "      testRidthree = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -485,7 +485,7 @@ public class OnClickTest {
         "import butterknife.OnClick;",
         "import butterknife.Optional;",
         "public class Test extends Activity {",
-        "  @Optional @OnClick(1) void doStuff() {}",
+        "  @Optional @OnClick(B.id.one) void doStuff() {}",
         "}"));
 
     JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Test$$ViewBinder", ""
@@ -505,13 +505,13 @@ public class OnClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findOptionalView(source, 1);\n"
+        + "      view = finder.findOptionalView(source, test.R.id.one);\n"
         + "      if (view != null) {\n"
-        + "        view1 = view;\n"
+        + "        testRidone = view;\n"
         + "        view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "          @Override\n"
         + "          public void doClick(View p0) {\n"
@@ -523,9 +523,9 @@ public class OnClickTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      if (view1 != null) {\n"
-        + "        view1.setOnClickListener(null);\n"
-        + "        view1 = null;\n"
+        + "      if (testRidone != null) {\n"
+        + "        testRidone.setOnClickListener(null);\n"
+        + "        testRidone = null;\n"
         + "      }\n"
         + "      this.target = null;\n"
         + "    }\n"
@@ -549,8 +549,8 @@ public class OnClickTest {
         "import butterknife.OnClick;",
         "import butterknife.Optional;",
         "public class Test extends Activity {",
-        "  @BindView(1) View view;",
-        "  @Optional @OnClick(1) void doStuff() {}",
+        "  @BindView(B.id.one) View view;",
+        "  @Optional @OnClick(B.id.one) void doStuff() {}",
         "}"));
 
     JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Test$$ViewBinder", ""
@@ -570,13 +570,13 @@ public class OnClickTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"field 'view'\");\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"field 'view'\");\n"
         + "      target.view = view;\n"
-        + "      view1 = view;\n"
+        + "      testRidone = view;\n"
         + "      view.setOnClickListener(new DebouncingOnClickListener() {\n"
         + "        @Override\n"
         + "        public void doClick(View p0) {\n"
@@ -589,8 +589,8 @@ public class OnClickTest {
         + "      T target = this.target;\n"
         + "      if (target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
         + "      target.view = null;\n"
-        + "      view1.setOnClickListener(null);\n"
-        + "      view1 = null;\n"
+        + "      testRidone.setOnClickListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -609,7 +609,7 @@ public class OnClickTest {
         "package java.test;",
         "import butterknife.OnClick;",
         "public class Test {",
-        "  @OnClick(1) void doStuff() {}",
+        "  @OnClick(test.B.id.one) void doStuff() {}",
         "}"
     ));
 
@@ -626,7 +626,7 @@ public class OnClickTest {
         "package android.test;",
         "import butterknife.OnClick;",
         "public class Test {",
-        "  @OnClick(1) void doStuff() {}",
+        "  @OnClick(test.B.id.one) void doStuff() {}",
         "}"
     ));
 
@@ -644,7 +644,7 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import butterknife.OnClick;",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(B.id.one)",
         "  public String doStuff() {",
         "  }",
         "}"));
@@ -662,7 +662,7 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import butterknife.OnClick;",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(B.id.one)",
         "  private void doStuff() {",
         "  }",
         "}"));
@@ -680,7 +680,7 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import butterknife.OnClick;",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(B.id.one)",
         "  public static void doStuff() {",
         "  }",
         "}"));
@@ -698,7 +698,7 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import butterknife.OnClick;",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(B.id.one)",
         "  public void doStuff(String thing) {",
         "  }",
         "}"));
@@ -727,7 +727,7 @@ public class OnClickTest {
         "import android.view.View;",
         "import butterknife.OnClick;",
         "public class Test extends Activity {",
-        "  @OnClick(1)",
+        "  @OnClick(B.id.one)",
         "  public void doStuff(View thing, View otherThing) {",
         "  }",
         "}"));
@@ -745,7 +745,7 @@ public class OnClickTest {
         "package test;",
         "import butterknife.OnClick;",
         "public interface Test {",
-        "  @OnClick(1)",
+        "  @OnClick(B.id.one)",
         "  void doStuff();",
         "}"));
 
@@ -763,7 +763,7 @@ public class OnClickTest {
         "import android.app.Activity;",
         "import butterknife.OnClick;",
         "public class Test extends Activity {",
-        "  @OnClick({1, 2, 3, 1})",
+        "  @OnClick({B.id.one, B.id.two, B.id.three, B.id.one})",
         "  void doStuff() {",
         "  }",
         "}"));
@@ -772,7 +772,7 @@ public class OnClickTest {
         .processedWith(new ButterKnifeProcessor())
         .failsToCompile()
         .withErrorContaining(
-            "@OnClick annotation for method contains duplicate ID 1. (test.Test.doStuff)")
+            "@OnClick annotation for method contains duplicate ID <test.R.id.one>. (test.Test.doStuff)")
         .in(source).onLine(6);
   }
 }

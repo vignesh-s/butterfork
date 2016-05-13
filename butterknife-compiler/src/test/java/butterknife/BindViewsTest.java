@@ -1,10 +1,13 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.common.base.Joiner;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -18,9 +21,9 @@ public class BindViewsTest {
         "import butterknife.BindViews;",
         "import java.util.List;",
         "public class Test extends Activity {",
-        "  @BindViews(1) public List<View> thing1;",
-        "  @BindViews(2) List<View> thing2;",
-        "  @BindViews(3) protected List<View> thing3;",
+        "  @BindViews(B.id.one) public List<View> thing1;",
+        "  @BindViews(B.id.two) List<View> thing2;",
+        "  @BindViews(B.id.three) protected List<View> thing3;",
         "}"
     ));
 
@@ -36,7 +39,7 @@ public class BindViewsTest {
         "import android.view.View;",
         "import butterknife.BindViews;",
         "public class Test extends Activity {",
-        "    @BindViews({1, 2, 3}) View[] thing;",
+        "    @BindViews({B.id.one, B.id.two, B.id.three}) View[] thing;",
         "}"
     ));
 
@@ -59,9 +62,9 @@ public class BindViewsTest {
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      target.thing = Utils.arrayOf(\n"
-        + "          finder.findRequiredView(source, 1, \"field 'thing'\"), \n"
-        + "          finder.findRequiredView(source, 2, \"field 'thing'\"), \n"
-        + "          finder.findRequiredView(source, 3, \"field 'thing'\"));\n"
+        + "          finder.findRequiredView(source, test.R.id.one, \"field 'thing'\"), \n"
+        + "          finder.findRequiredView(source, test.R.id.two, \"field 'thing'\"), \n"
+        + "          finder.findRequiredView(source, test.R.id.three, \"field 'thing'\"));\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -88,7 +91,7 @@ public class BindViewsTest {
         "import android.view.View;",
         "import butterknife.BindViews;",
         "public class Test<T extends View> extends Activity {",
-        "    @BindViews({1, 2, 3}) T[] thing;",
+        "    @BindViews({B.id.one, B.id.two, B.id.three}) T[] thing;",
         "}"
     ));
 
@@ -111,9 +114,9 @@ public class BindViewsTest {
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      target.thing = Utils.arrayOf(\n"
-        + "          finder.findRequiredView(source, 1, \"field 'thing'\"), \n"
-        + "          finder.findRequiredView(source, 2, \"field 'thing'\"), \n"
-        + "          finder.findRequiredView(source, 3, \"field 'thing'\"));\n"
+        + "          finder.findRequiredView(source, test.R.id.one, \"field 'thing'\"), \n"
+        + "          finder.findRequiredView(source, test.R.id.two, \"field 'thing'\"), \n"
+        + "          finder.findRequiredView(source, test.R.id.three, \"field 'thing'\"));\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -140,7 +143,7 @@ public class BindViewsTest {
         "import android.widget.TextView;",
         "import butterknife.BindViews;",
         "public class Test extends Activity {",
-        "    @BindViews({1, 2, 3}) TextView[] thing;",
+        "    @BindViews({B.id.one, B.id.two, B.id.three}) TextView[] thing;",
         "}"
     ));
 
@@ -164,9 +167,9 @@ public class BindViewsTest {
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      target.thing = Utils.arrayOf(\n"
-        + "          (TextView) finder.findRequiredView(source, 1, \"field 'thing'\"), \n"
-        + "          (TextView) finder.findRequiredView(source, 2, \"field 'thing'\"), \n"
-        + "          (TextView) finder.findRequiredView(source, 3, \"field 'thing'\"));\n"
+        + "          (TextView) finder.findRequiredView(source, test.R.id.one, \"field 'thing'\"), \n"
+        + "          (TextView) finder.findRequiredView(source, test.R.id.two, \"field 'thing'\"), \n"
+        + "          (TextView) finder.findRequiredView(source, test.R.id.three, \"field 'thing'\"));\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -194,7 +197,7 @@ public class BindViewsTest {
         "import butterknife.BindViews;",
         "import java.util.List;",
         "public class Test extends Activity {",
-        "    @BindViews({1, 2, 3}) List<View> thing;",
+        "    @BindViews({B.id.one, B.id.two, B.id.three}) List<View> thing;",
         "}"
     ));
 
@@ -217,9 +220,9 @@ public class BindViewsTest {
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      target.thing = Utils.listOf(\n"
-        + "          finder.findRequiredView(source, 1, \"field 'thing'\"), \n"
-        + "          finder.findRequiredView(source, 2, \"field 'thing'\"), \n"
-        + "          finder.findRequiredView(source, 3, \"field 'thing'\"));\n"
+        + "          finder.findRequiredView(source, test.R.id.one, \"field 'thing'\"), \n"
+        + "          finder.findRequiredView(source, test.R.id.two, \"field 'thing'\"), \n"
+        + "          finder.findRequiredView(source, test.R.id.three, \"field 'thing'\"));\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -247,7 +250,7 @@ public class BindViewsTest {
         "import java.util.List;",
         "public class Test {",
         "    interface TestInterface {}",
-        "    @BindViews({1, 2, 3}) List<TestInterface> thing;",
+        "    @BindViews({B.id.one, B.id.two, B.id.three}) List<TestInterface> thing;",
         "}"
     ));
 
@@ -270,9 +273,9 @@ public class BindViewsTest {
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      target.thing = Utils.listOf(\n"
-        + "          (Test.TestInterface) finder.findRequiredView(source, 1, \"field 'thing'\"), \n"
-        + "          (Test.TestInterface) finder.findRequiredView(source, 2, \"field 'thing'\"), \n"
-        + "          (Test.TestInterface) finder.findRequiredView(source, 3, \"field 'thing'\"));\n"
+        + "          (Test.TestInterface) finder.findRequiredView(source, test.R.id.one, \"field 'thing'\"), \n"
+        + "          (Test.TestInterface) finder.findRequiredView(source, test.R.id.two, \"field 'thing'\"), \n"
+        + "          (Test.TestInterface) finder.findRequiredView(source, test.R.id.three, \"field 'thing'\"));\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -300,7 +303,7 @@ public class BindViewsTest {
         "import butterknife.BindViews;",
         "import java.util.List;",
         "public class Test<T extends View> extends Activity {",
-        "    @BindViews({1, 2, 3}) List<T> thing;",
+        "    @BindViews({B.id.one, B.id.two, B.id.three}) List<T> thing;",
         "}"
     ));
 
@@ -323,9 +326,9 @@ public class BindViewsTest {
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      target.thing = Utils.listOf(\n"
-        + "          finder.findRequiredView(source, 1, \"field 'thing'\"), \n"
-        + "          finder.findRequiredView(source, 2, \"field 'thing'\"), \n"
-        + "          finder.findRequiredView(source, 3, \"field 'thing'\"));\n"
+        + "          finder.findRequiredView(source, test.R.id.one, \"field 'thing'\"), \n"
+        + "          finder.findRequiredView(source, test.R.id.two, \"field 'thing'\"), \n"
+        + "          finder.findRequiredView(source, test.R.id.three, \"field 'thing'\"));\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -354,7 +357,7 @@ public class BindViewsTest {
         "import java.util.List;",
         "public class Test extends Activity {",
         "    @interface Nullable {}",
-        "    @Nullable @BindViews({1, 2, 3}) List<View> thing;",
+        "    @Nullable @BindViews({B.id.one, B.id.two, B.id.three}) List<View> thing;",
         "}"
     ));
 
@@ -377,9 +380,9 @@ public class BindViewsTest {
         + "    protected InnerUnbinder(T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      target.thing = Utils.listOf(\n"
-        + "          finder.findOptionalView(source, 1), \n"
-        + "          finder.findOptionalView(source, 2), \n"
-        + "          finder.findOptionalView(source, 3));\n"
+        + "          finder.findOptionalView(source, test.R.id.one), \n"
+        + "          finder.findOptionalView(source, test.R.id.two), \n"
+        + "          finder.findOptionalView(source, test.R.id.three));\n"
         + "    }\n"
         + "    @Override\n"
         + "    public void unbind() {\n"
@@ -423,7 +426,7 @@ public class BindViewsTest {
         "import butterknife.BindViews;",
         "import java.util.List;",
         "public class Test {",
-        "  @BindViews(1) List thing;",
+        "  @BindViews(B.id.one) List thing;",
         "}"
     ));
 
@@ -441,7 +444,7 @@ public class BindViewsTest {
         "import butterknife.BindViews;",
         "import java.util.Deque;",
         "public class Test {",
-        "  @BindViews(1) Deque<View> thing;",
+        "  @BindViews(B.id.one) Deque<View> thing;",
         "}"
     ));
 
@@ -459,7 +462,7 @@ public class BindViewsTest {
         "import butterknife.BindViews;",
         "import java.util.List;",
         "public class Test extends Activity {",
-        "  @BindViews(1) List<String> thing;",
+        "  @BindViews(B.id.one) List<String> thing;",
         "}"
     ));
 
@@ -476,7 +479,7 @@ public class BindViewsTest {
         "import android.app.Activity;",
         "import butterknife.BindViews;",
         "public class Test extends Activity {",
-        "  @BindViews(1) String[] thing;",
+        "  @BindViews(B.id.one) String[] thing;",
         "}"));
 
     assertAbout(javaSource()).that(source)
@@ -494,14 +497,14 @@ public class BindViewsTest {
         "import butterknife.BindViews;",
         "import java.util.List;",
         "public class Test extends Activity {",
-        "    @BindViews({1, 1}) List<View> thing;",
+        "    @BindViews({B.id.one, B.id.one}) List<View> thing;",
         "}"
     ));
 
     assertAbout(javaSource()).that(source)
         .processedWith(new ButterKnifeProcessor())
         .failsToCompile()
-        .withErrorContaining("@BindViews annotation contains duplicate ID 1. (test.Test.thing)")
+        .withErrorContaining("@BindViews annotation contains duplicate ID <test.R.id.one>. (test.Test.thing)")
         .in(source).onLine(7);
   }
 }

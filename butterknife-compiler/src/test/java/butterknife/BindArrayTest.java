@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class BindArrayTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindArray;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindArray(1) String[] one;\n"
+        + "  @BindArray(B.array.one) String[] one;\n"
         + "}"
     );
 
@@ -37,7 +40,7 @@ public class BindArrayTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.getStringArray(1);\n"
+        + "    target.one = res.getStringArray(test.R.array.one);\n"
         + "  }\n"
         + "}"
     );
@@ -55,7 +58,7 @@ public class BindArrayTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindArray;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindArray(1) int[] one;\n"
+        + "  @BindArray(B.array.one) int[] one;\n"
         + "}"
     );
 
@@ -77,7 +80,7 @@ public class BindArrayTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.getIntArray(1);\n"
+        + "    target.one = res.getIntArray(test.R.array.one);\n"
         + "  }\n"
         + "}"
     );
@@ -95,7 +98,7 @@ public class BindArrayTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindArray;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindArray(1) CharSequence[] one;\n"
+        + "  @BindArray(B.array.one) CharSequence[] one;\n"
         + "}"
     );
 
@@ -117,7 +120,7 @@ public class BindArrayTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.getTextArray(1);\n"
+        + "    target.one = res.getTextArray(test.R.array.one);\n"
         + "  }\n"
         + "}"
     );
@@ -136,7 +139,7 @@ public class BindArrayTest {
         + "import butterknife.BindArray;\n"
         + "import android.content.res.TypedArray;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindArray(1) TypedArray one;\n"
+        + "  @BindArray(B.array.one) TypedArray one;\n"
         + "}"
     );
 
@@ -158,7 +161,7 @@ public class BindArrayTest {
         + "  }\n"
         + "  @SuppressWarnings(\"ResourceType\")\n"
         + "  protected static void bindToTarget(Test target, Resources res) {\n"
-        + "    target.one = res.obtainTypedArray(1);\n"
+        + "    target.one = res.obtainTypedArray(test.R.array.one);\n"
         + "  }\n"
         + "}"
     );
@@ -176,7 +179,7 @@ public class BindArrayTest {
         + "import android.app.Activity;\n"
         + "import butterknife.BindArray;\n"
         + "public class Test extends Activity {\n"
-        + "  @BindArray(1) String one;\n"
+        + "  @BindArray(B.array.one) String one;\n"
         + "}"
     );
 

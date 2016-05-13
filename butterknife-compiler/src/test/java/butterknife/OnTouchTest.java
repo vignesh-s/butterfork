@@ -1,9 +1,12 @@
 package butterknife;
 
-import butterknife.compiler.ButterKnifeProcessor;
 import com.google.testing.compile.JavaFileObjects;
-import javax.tools.JavaFileObject;
+
 import org.junit.Test;
+
+import javax.tools.JavaFileObject;
+
+import butterknife.compiler.ButterKnifeProcessor;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -15,7 +18,7 @@ public class OnTouchTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnTouch;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnTouch(1) boolean doStuff() { return false; }\n"
+        + "  @OnTouch(B.id.one) boolean doStuff() { return false; }\n"
         + "}"
     );
 
@@ -36,12 +39,12 @@ public class OnTouchTest {
         + "  }\n"
         + "  protected static class InnerUnbinder<T extends Test> implements Unbinder {\n"
         + "    protected T target;\n"
-        + "    private View view1;\n"
+        + "    private View testRidone;\n"
         + "    protected InnerUnbinder(final T target, Finder finder, Object source) {\n"
         + "      this.target = target;\n"
         + "      View view;\n"
-        + "      view = finder.findRequiredView(source, 1, \"method 'doStuff'\");\n"
-        + "      view1 = view;\n"
+        + "      view = finder.findRequiredView(source, test.R.id.one, \"method 'doStuff'\");\n"
+        + "      testRidone = view;\n"
         + "      view.setOnTouchListener(new View.OnTouchListener() {\n"
         + "        @Override\n"
         + "        public boolean onTouch(View p0, MotionEvent p1) {\n"
@@ -52,8 +55,8 @@ public class OnTouchTest {
         + "    @Override\n"
         + "    public void unbind() {\n"
         + "      if (this.target == null) throw new IllegalStateException(\"Bindings already cleared.\");\n"
-        + "      view1.setOnTouchListener(null);\n"
-        + "      view1 = null;\n"
+        + "      testRidone.setOnTouchListener(null);\n"
+        + "      testRidone = null;\n"
         + "      this.target = null;\n"
         + "    }\n"
         + "  }\n"
@@ -73,8 +76,8 @@ public class OnTouchTest {
         + "import android.app.Activity;\n"
         + "import butterknife.OnTouch;\n"
         + "public class Test extends Activity {\n"
-        + "  @OnTouch(1) boolean doStuff1() {}\n"
-        + "  @OnTouch(1) boolean doStuff2() {}\n"
+        + "  @OnTouch(B.id.one) boolean doStuff1() {}\n"
+        + "  @OnTouch(B.id.one) boolean doStuff2() {}\n"
         + "}"
     );
 
@@ -82,7 +85,7 @@ public class OnTouchTest {
         .processedWith(new ButterKnifeProcessor())
         .failsToCompile()
         .withErrorContaining(
-            "Multiple listener methods with return value specified for ID 1. (test.Test.doStuff2)")
+            "Multiple listener methods with return value specified for ID <test.R.id.one>. (test.Test.doStuff2)")
         .in(source).onLine(6);
   }
 }
