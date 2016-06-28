@@ -1,4 +1,4 @@
-package com.example.butterknife;
+package com.example.butterfork;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static com.example.butterknife.SimpleAdapter.ViewHolder;
+import static com.example.butterfork.SimpleAdapter.ViewHolder;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(RobolectricTestRunner.class) //

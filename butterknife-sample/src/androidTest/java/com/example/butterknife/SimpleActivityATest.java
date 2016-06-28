@@ -1,4 +1,4 @@
-package com.example.butterknife;
+package com.example.butterfork;
 
 import android.test.ActivityInstrumentationTestCase2;
 

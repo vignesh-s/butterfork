@@ -1,4 +1,4 @@
-package com.example.butterknife.unbinder;
+package com.example.butterfork.unbinder;
 
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +10,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import butterfork.ButterKnife;
+import butterfork.Unbinder;
 
 import static com.google.common.truth.Truth.assertThat;
 

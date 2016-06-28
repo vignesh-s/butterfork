@@ -3,9 +3,9 @@ package com.example.butterfork.unbinder;
 import android.support.annotation.ColorInt;
 import android.view.View;
 
-import butterknife.BindColor;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterfork.BindColor;
+import butterfork.BindView;
+import butterfork.ButterKnife;
 
 public class C extends B {
 

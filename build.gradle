@@ -32,7 +32,7 @@ subprojects { project ->
       classpath 'com.android.tools.build:gradle:2.1.0'
       classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
       classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
-      classpath 'com.oguzbabaoglu:butterfork-plugin:2.0.0'
+      classpath 'com.github.vignesh-s:butterfork-plugin:2.0.1'
     }
   }
 }

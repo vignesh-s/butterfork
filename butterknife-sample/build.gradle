@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.oguzbabaoglu.butterfork-plugin'
+apply plugin: 'com.github.vignesh-s.butterfork-plugin'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -12,7 +12,7 @@ android {
   }
 
   defaultConfig {
-    applicationId 'com.example.butterknife'
+    applicationId 'com.example.butterfork'
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
     versionCode 1

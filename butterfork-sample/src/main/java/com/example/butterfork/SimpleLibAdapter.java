@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterfork.BindView;
+import butterfork.ButterKnife;
 
 public class SimpleLibAdapter extends BaseAdapter {
   private static final String[] CONTENTS =

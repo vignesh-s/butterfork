@@ -1,7 +1,7 @@
-package com.example.butterknife;
+package com.example.butterfork;
 
 import android.app.Application;
-import butterknife.ButterKnife;
+import butterfork.ButterKnife;
 
 public class SimpleApp extends Application {
   @Override public void onCreate() {
