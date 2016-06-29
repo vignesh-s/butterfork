@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'checkstyle'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.vignesh-s'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7

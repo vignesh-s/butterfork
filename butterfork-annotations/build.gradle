@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'checkstyle'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.vignesh-s'
 
 def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
 def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)

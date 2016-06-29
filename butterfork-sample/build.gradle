@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.github.vignesh-s.butterfork-plugin'
+apply plugin: 'com.github.vignesh-s.butterfork:butterfork-plugin'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
