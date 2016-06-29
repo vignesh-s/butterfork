@@ -1,8 +1,6 @@
 include ':butterfork'
 include ':butterfork-annotations'
 include ':butterfork-compiler'
-include ':butterfork-sample'
 include ':butterfork-plugin'
-include ':butterfork-sample'
 
 rootProject.name = 'butterknife-parent'

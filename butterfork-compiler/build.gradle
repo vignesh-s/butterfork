@@ -35,4 +35,3 @@ checkstyle {
   sourceSets = [sourceSets.main]
 }
 
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
