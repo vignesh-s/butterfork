@@ -22,13 +22,9 @@ group = GROUP
 
 def bin_user = ""
 def bin_key = ""
-def oss_user = ""
-def oss_pass = ""
 try {
   bin_user = BINTRAY_USER
   bin_key = BINTRAY_KEY
-  oss_user = OSS_USER
-  oss_pass = OSS_PASS
 } catch (Exception ignored) {
   println 'Failed to find credentials. Maven deploy disabled'
 }
@@ -44,26 +40,21 @@ afterEvaluate { project ->
       name = POM_ARTIFACT_ID
       desc = POM_DESCRIPTION
       websiteUrl = POM_URL
-      issueTrackerUrl = 'https://github.com/oguzbabaoglu/butterfork/issues'
-      vcsUrl = 'https://github.com/oguzbabaoglu/butterfork.git'
+      vcsUrl = GIT_URL
       licenses = ['Apache-2.0']
       version {
         name = VERSION_NAME
         vcsTag = VERSION_NAME
         gpg {
           sign = true
-        }
-        mavenCentralSync {
-          sync = true
-          user = oss_user
-          password = oss_pass
+          passphrase = PASS_PHRASE
         }
       }
     }
   }
 
   if (project.getPlugins().hasPlugin('com.android.application') ||
-      project.getPlugins().hasPlugin('com.android.library')) {
+          project.getPlugins().hasPlugin('com.android.library')) {
     task install(type: Upload, dependsOn: assemble) {
       repositories.mavenInstaller {
         configuration = configurations.archives
@@ -174,7 +165,7 @@ afterEvaluate { project ->
 
   artifacts {
     if (project.getPlugins().hasPlugin('com.android.application') ||
-        project.getPlugins().hasPlugin('com.android.library')) {
+            project.getPlugins().hasPlugin('com.android.library')) {
       archives androidSourcesJar
       archives androidJavadocsJar
     } else {

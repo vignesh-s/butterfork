@@ -20,8 +20,8 @@ class ButterForkPlugin implements Plugin<Project> {
     }
 
     project.dependencies {
-      apt 'com.github.vignesh-s:butterfork-compiler:2.0.1'
-      compile 'com.github.vignesh-s:butterfork:2.0.1'
+      apt 'com.github.vignesh-s:butterfork-compiler:2.0.2'
+      compile 'com.github.vignesh-s:butterfork:2.0.2'
     }
 
     project.afterEvaluate {
