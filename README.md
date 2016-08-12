@@ -1,9 +1,14 @@
+# DEPRECATED
+
+ButterKnife supports library projects starting with version [8.2.0](https://github.com/JakeWharton/butterknife/blob/master/CHANGELOG.md#version-820-2016-07-10). No new development will be taking place on this fork.
+
+
 Butter Fork
 ===========
 
 ![Logo](website/static/logo.png)
 
-A fork of [ButterKnife](https://github.com/JakeWharton/butterknife) with support for Library projects (Solves the non-final id problem).
+A fork of [Butter Fork](https://github.com/oguzbabaoglu/butterfork) that is a fork of [ButterKnife](https://github.com/JakeWharton/butterknife) with support for Library projects (Solves the non-final id problem).
 
 This change is incompatible with the current library and is therefore distributed under a different name. See the [Limitations](#limitations) and [Why Fork?](#why-fork) sections below.
 
@@ -27,14 +32,14 @@ buildscript {
   }
   dependencies {
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    classpath 'com.oguzbabaoglu:butterfork-plugin:2.0.0'
+    classpath 'com.github.vignesh-s:butterfork-plugin:2.0.0'
   }
 }
 
 // It is important that the library apt plugin are applied before butterfork-plugin
 apply plugin: 'com.android.library'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.oguzbabaoglu.butterfork-plugin'
+apply plugin: 'com.github.vignesh-s.butterfork-plugin'
 
 // No need to declare dependencies, this is handled by the plugin
 
